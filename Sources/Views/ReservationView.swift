@@ -10,6 +10,14 @@ import SwiftUI
 
 struct ReservationView: View {
     var body: some View {
-        Text("내 예약상황 화면")
+        ScrollView(showsIndicators: false) {
+            VSpacer(height: Device.VerticalPadding)
+            VStack(spacing: 8) {
+                ForEach(0..<8) { _ in
+                    ReservationItem()
+                }
+            }
+        }
+        .navigationTitle("예약 상황")
     }
 }
