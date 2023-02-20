@@ -13,9 +13,3 @@ struct ReservationView: View {
         Text("내 예약상황 화면")
     }
 }
-
-struct ReservationView_Previews: PreviewProvider {
-    static var previews: some View {
-        ReservationView()
-    }
-}

@@ -12,7 +12,6 @@ struct TabbarItem: View {
     var body: some View {
         VStack {
             Rectangle()
-                .frame(width)
             Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         }
     }
