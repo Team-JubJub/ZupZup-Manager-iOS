@@ -9,10 +9,19 @@
 import SwiftUI
 
 struct TabbarItem: View {
+    
+    let symbolName: String
+    
     var body: some View {
         VStack {
             Rectangle()
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+                .frame(
+                    width: Device.Width / 2,
+                    height: 5
+                )
+                .foregroundColor(.pink)
+                .background(Color.pink)
+            Image(systemName: symbolName)
         }
     }
 }

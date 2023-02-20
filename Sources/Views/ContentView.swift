@@ -13,11 +13,11 @@ struct ContentView: View {
         TabView {
             ReservationView()
                 .tabItem {
-                    Text("내 예약")
+                    TabbarItem(symbolName: "shippingbox")
                 }
             SettingView()
                 .tabItem {
-                    Text("설정")
+                    TabbarItem(symbolName: "gearshape")
                 }
         }
     }
