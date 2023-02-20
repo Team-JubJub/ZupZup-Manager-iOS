@@ -9,13 +9,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var selectedIndex = 0
+    let tabBarImangeNames = ["shippingbox", "gearshape"]
+    let tabBarNames = ["Menu", "Order"]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+        VStack {
+            ZStack {
+                switch selectedIndex {
+                case 0:
+                    ReservationView()
+                default:
+                    SettingView()
+                }
+            }
+            Spacer()
+            HStack(spacing: 0) {
+                ForEach(tabBarImangeNames.indices, id: \.self) { num in
+                    TabbarItem(symbolName: tabBarImangeNames[num], selectedIndex: $selectedIndex, num: num)
+                }
+            }
+            .frame(height: Device.Height * 94 / 844)
+        }
     }
 }
