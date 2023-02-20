@@ -11,17 +11,24 @@ import SwiftUI
 struct TabbarItem: View {
     
     let symbolName: String
+    @Binding var selectedIndex: Int
+    let num: Int
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             Rectangle()
-                .frame(
-                    width: Device.Width / 2,
-                    height: 5
-                )
-                .foregroundColor(.pink)
-                .background(Color.pink)
+                .frame(height: 4)
+                .foregroundColor(selectedIndex == num ? Color.designSystem(.zupzupMain) : Color.designSystem(.zupzupWarmGray5))
+            VSpacer(height: 15)
             Image(systemName: symbolName)
+                .font(.system(size: 17, weight: .light))
+                .foregroundColor(selectedIndex == num ? Color.designSystem(.zupzupMain) : Color.designSystem(.zupzupWarmGray5))
         }
+        .gesture(
+            TapGesture()
+                .onEnded { _ in
+                    selectedIndex = num
+                }
+        )
     }
 }

@@ -9,16 +9,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var selectedIndex = 0
+    let tabBarImangeNames = ["shippingbox", "gearshape"]
+    let tabBarNames = ["Menu", "Order"]
+    
     var body: some View {
-        TabView {
-            ReservationView()
-                .tabItem {
-                    TabbarItem(symbolName: "shippingbox")
+        VStack {
+            ZStack {
+                switch selectedIndex {
+                case 0:
+                    ReservationView()
+                default:
+                    SettingView()
                 }
-            SettingView()
-                .tabItem {
-                    TabbarItem(symbolName: "gearshape")
+            }
+            Spacer()
+            HStack(spacing: 0) {
+                ForEach(tabBarImangeNames.indices, id: \.self) { num in
+                    TabbarItem(symbolName: tabBarImangeNames[num], selectedIndex: $selectedIndex, num: num)
                 }
+            }
+            .frame(height: Device.Height * 94 / 844)
         }
     }
 }
