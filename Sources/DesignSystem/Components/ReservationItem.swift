@@ -10,16 +10,26 @@ import SwiftUI
 
 struct ReservationItem: View {
     
-    private let date: String = "2022/12/31 00:00"
+    private let dateString: String = "2022/12/31 00:00"
+    private let MenuString: String = "메뉴명"
     
     var body: some View {
         VStack(spacing: 0) {
-            Rectangle()
-                .frame(
-                    width: Device.Width * 358 / 390,
-                    height: Device.Height * 104 / 844
-                )
-                .foregroundColor(Color.designSystem(.zupzupWarmGray3))
+            ZStack {
+                Rectangle()
+                    .frame(
+                        width: Device.Width * 358 / 390,
+                        height: Device.Height * 104 / 844
+                    )
+                    .foregroundColor(Color.designSystem(.zupzupWarmGray3))
+                
+                VStack(alignment: .leading) {
+                    Text(dateString)
+                        .foregroundColor(.designSystem(.zupzupCoolGray1))
+                    Text(MenuString)
+                        .font(SystemFont(size: ._22, weight: .bold))
+                }
+            }
             Rectangle()
                 .frame(
                     width: Device.Width * 358 / 390,
