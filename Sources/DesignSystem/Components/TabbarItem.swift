@@ -19,11 +19,13 @@ struct TabbarItem: View {
             Rectangle()
                 .frame(height: 4)
                 .foregroundColor(selectedIndex == num ? Color.designSystem(.zupzupMain) : Color.designSystem(.zupzupWarmGray5))
-            VSpacer(height: 15)
+            Spacer()
             Image(systemName: symbolName)
                 .font(.system(size: 17, weight: .light))
                 .foregroundColor(selectedIndex == num ? Color.designSystem(.zupzupMain) : Color.designSystem(.zupzupWarmGray5))
+            Spacer()
         }
+        .frame(height: Device.Height * 94 / 844)
         .gesture(
             TapGesture()
                 .onEnded { _ in
