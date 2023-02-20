@@ -12,7 +12,13 @@ struct ContentView: View {
     var body: some View {
         TabView {
             ReservationView()
+                .tabItem {
+                    Text("내 예약")
+                }
             SettingView()
+                .tabItem {
+                    Text("설정")
+                }
         }
     }
 }
