@@ -25,7 +25,7 @@ struct TabbarItem: View {
                 .foregroundColor(selectedIndex == num ? Color.designSystem(.zupzupMain) : Color.designSystem(.zupzupWarmGray5))
             Spacer()
         }
-        .frame(height: Device.Height * 94 / 844)
+        .frame(height: Device.Height * 84 / 844)
         .gesture(
             TapGesture()
                 .onEnded { _ in

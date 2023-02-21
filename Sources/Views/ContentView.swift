@@ -28,7 +28,11 @@ struct ContentView: View {
                 Spacer()
                 HStack(spacing: 0) {
                     ForEach(tabBarImangeNames.indices, id: \.self) { num in
-                        TabbarItem(symbolName: tabBarImangeNames[num], selectedIndex: $selectedIndex, num: num)
+                        TabbarItem(
+                            symbolName: tabBarImangeNames[num],
+                            selectedIndex: $selectedIndex,
+                            num: num
+                        )
                     }
                 }
             }
