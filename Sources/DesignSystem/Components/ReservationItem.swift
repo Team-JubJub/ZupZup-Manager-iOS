@@ -35,8 +35,8 @@ struct ReservationItem: View {
                     ZStack {
                         Capsule(style: .circular)
                             .frame(
-                                width: Device.Width * 75 / 390,
-                                height: Device.Height * 36 / 844
+                                width: 75,
+                                height: 36
                             )
                             .foregroundColor(reservationColor(state: state))
                         Text(reservationText(state: state))
