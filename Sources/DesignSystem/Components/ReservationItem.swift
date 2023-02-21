@@ -38,10 +38,16 @@ struct ReservationItem: View {
                                 width: 75,
                                 height: 36
                             )
-                            .foregroundColor(reservationColor(state: state))
-                        Text(reservationText(state: state))
-                            .font(SystemFont(size: ._15, weight: .regular))
-                            .foregroundColor(reservationTextColor(state: state))
+                            .foregroundColor(
+                                getCapsuleColor(state: state)
+                            )
+                        Text(
+                            getCapsuleText(state: state)
+                        )
+                        .font(SystemFont(size: ._15, weight: .regular))
+                        .foregroundColor(
+                            getCapsuleTextColor(state: state)
+                        )
                     }
                 }
                 .frame(width: Device.Width * 326 / 390)
@@ -93,7 +99,7 @@ struct ReservationItem: View {
 }
 
 extension ReservationItem {
-    func reservationColor(state: ReservationState) -> Color? {
+    func getCapsuleColor(state: ReservationState) -> Color? {
         switch state {
         case .new:
             return Color.designSystem(.BG_2)
@@ -106,7 +112,7 @@ extension ReservationItem {
         }
     }
     
-    func reservationText(state: ReservationState) -> String {
+    func getCapsuleText(state: ReservationState) -> String {
         switch state {
         case .new:
             return "신규"
@@ -119,7 +125,7 @@ extension ReservationItem {
         }
     }
     
-    func reservationTextColor(state: ReservationState) -> Color? {
+    func getCapsuleTextColor(state: ReservationState) -> Color? {
         switch state {
         case .new:
             return .designSystem(.Secondary)
