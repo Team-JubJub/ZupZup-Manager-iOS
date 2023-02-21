@@ -16,6 +16,9 @@ enum Palette {
     case zupzupCoolGray1
     case Secondary
     case BG_2
+    case completeColor
+    case confirmColor
+    case OffWhite
     
     var hexString: String {
         switch self {
@@ -33,6 +36,12 @@ enum Palette {
             return "Secondary"
         case .BG_2:
             return "BG_2"
+        case .completeColor:
+            return "completeColor"
+        case .confirmColor:
+            return "confirmColor"
+        case .OffWhite:
+            return "OffWhite"
         }
     }
 }
