@@ -15,22 +15,27 @@ struct ContentView: View {
     let tabBarNames = ["Menu", "Order"]
     
     var body: some View {
-        VStack {
-            ZStack {
-                switch selectedIndex {
-                case 0:
-                    ReservationView()
-                default:
-                    SettingView()
+        NavigationView {
+            VStack {
+                ZStack {
+                    switch selectedIndex {
+                    case 0:
+                        ReservationView()
+                    default:
+                        SettingView()
+                    }
+                }
+                Spacer()
+                HStack(spacing: 0) {
+                    ForEach(tabBarImangeNames.indices, id: \.self) { num in
+                        TabbarItem(
+                            symbolName: tabBarImangeNames[num],
+                            selectedIndex: $selectedIndex,
+                            num: num
+                        )
+                    }
                 }
             }
-            Spacer()
-            HStack(spacing: 0) {
-                ForEach(tabBarImangeNames.indices, id: \.self) { num in
-                    TabbarItem(symbolName: tabBarImangeNames[num], selectedIndex: $selectedIndex, num: num)
-                }
-            }
-            .frame(height: Device.Height * 94 / 844)
         }
     }
 }
