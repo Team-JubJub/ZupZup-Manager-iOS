@@ -25,6 +25,7 @@ struct ReserveDetailView: View {
                     VSpacer(height: Device.Height * 48 / 844)
                     SubTitleLabel(subtitle: "주문 내역")
                     VSpacer(height: Device.Height * 21 / 844)
+                    
                     VStack(spacing: 8) {
                         ForEach(0..<10) { _ in
                             OrderItem(
@@ -39,21 +40,12 @@ struct ReserveDetailView: View {
             }
             .navigationTitle("사이즈한도테스트테스트테스")
         }
+        
         Button {
+            // TODO: Bottom sheet Tigger
             print("tabbed")
         } label: {
-            ZStack {
-                Rectangle()
-                    .frame(
-                        width: Device.Width * 358 / 390,
-                        height: Device.Height * 64 / 844
-                    )
-                    .foregroundColor(.designSystem(.zupzupMain))
-                    .cornerRadius(Device.cornerRadious)
-                Text("예약 확인하기")
-                    .font(SystemFont(size: ._17, weight: .semibold))
-                    .foregroundColor(.designSystem(.OffWhite))
-            }
+            BottomButtonLabel(buttonTitle: "예약 확인하기")
         }
     }
 }
