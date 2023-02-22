@@ -13,9 +13,3 @@ struct SettingView: View {
         Text("설정 화면")
     }
 }
-
-struct SettingView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingView()
-    }
-}
