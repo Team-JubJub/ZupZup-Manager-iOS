@@ -11,10 +11,14 @@ import SwiftUI
 struct ReservationView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
-            VSpacer(height: Device.VerticalPadding)
+            VSpacer(height: Device.VPadding)
             VStack(spacing: 8) {
                 ForEach(0..<8) { _ in
-                    ReservationItem()
+                    NavigationLink {
+                        ReserveDetailView()
+                    } label: {
+                        ReservationItem()
+                    }
                 }
             }
         }
