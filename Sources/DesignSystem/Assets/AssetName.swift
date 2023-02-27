@@ -10,5 +10,9 @@ import Foundation
 
 enum AssetName: String {
     case ic_box
+    case ic_clock
+    case ic_user
+    case ic_plus
+    case ic_minus
     case clock
 }

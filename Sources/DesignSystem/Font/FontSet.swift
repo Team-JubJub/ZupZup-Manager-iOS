@@ -21,6 +21,7 @@ enum FontSet {
         case _13 = 13
         case _14 = 14
         case _15 = 15
+        case _16 = 16
         case _17 = 17
         case _18 = 18
         case _20 = 20
@@ -33,6 +34,7 @@ enum FontSet {
         case medium = "Medium"
         case regular = "Regular"
         case light = "Light"
+        case semibold = "SemiBold"
         
         var real: Font.Weight {
             switch self {
@@ -46,6 +48,8 @@ enum FontSet {
                 return .regular
             case .light:
                 return .light
+            case .semibold:
+                return .semibold
             }
         }
     }
