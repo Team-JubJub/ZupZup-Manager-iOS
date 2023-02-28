@@ -66,7 +66,7 @@ struct ReservationItem: View {
                         .padding(
                             EdgeInsets(
                                 top: 0,
-                                leading: Device.horizontalPadding,
+                                leading: Device.HPadding,
                                 bottom: 0,
                                 trailing: Device.Width * 6.5 / 390
                             )
