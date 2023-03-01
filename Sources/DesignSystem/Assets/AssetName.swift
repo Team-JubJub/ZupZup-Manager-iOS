@@ -16,4 +16,6 @@ enum AssetName: String {
     case ic_plus
     case ic_minus
     case clock
+    case xCircle
+    case ic_eye
 }
