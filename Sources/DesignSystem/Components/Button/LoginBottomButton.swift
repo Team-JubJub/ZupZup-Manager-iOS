@@ -27,5 +27,13 @@ struct LoginBottomButton: View {
                 .font(SystemFont(size: ._17, weight: .bold))
                 .foregroundColor(.designSystem(.Secondary))
         }
+        .padding(
+            EdgeInsets(
+                top: 0,
+                leading: 0,
+                bottom: Device.VPadding,
+                trailing: 0
+            )
+        )
     }
 }
