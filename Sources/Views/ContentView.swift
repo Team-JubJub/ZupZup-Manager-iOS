@@ -10,31 +10,36 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @State var isLogin = false
     @State private var selectedIndex = 0
     let tabBarImangeNames = ["shippingbox", "gearshape"]
     let tabBarNames = ["Menu", "Order"]
     
     var body: some View {
         NavigationView {
-            VStack {
-                ZStack {
-                    switch selectedIndex {
-                    case 0:
-                        ReservationView()
-                    default:
-                        SettingView()
+            if isLogin {
+                VStack {
+                    ZStack {
+                        switch selectedIndex {
+                        case 0:
+                            ReservationView()
+                        default:
+                            SettingView()
+                        }
+                    }
+                    Spacer()
+                    HStack(spacing: 0) {
+                        ForEach(tabBarImangeNames.indices, id: \.self) { num in
+                            TabbarItem(
+                                symbolName: tabBarImangeNames[num],
+                                selectedIndex: $selectedIndex,
+                                num: num
+                            )
+                        }
                     }
                 }
-                Spacer()
-                HStack(spacing: 0) {
-                    ForEach(tabBarImangeNames.indices, id: \.self) { num in
-                        TabbarItem(
-                            symbolName: tabBarImangeNames[num],
-                            selectedIndex: $selectedIndex,
-                            num: num
-                        )
-                    }
-                }
+            } else {
+                LoginView(isLogin: $isLogin)
             }
         }
     }
