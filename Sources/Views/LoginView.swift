@@ -31,7 +31,19 @@ struct LoginView: View {
                 // TODO: fix
                 self.isLogin.toggle()
             } label: {
-                LoginBottomButton()
+                BottomButton(
+                    height: 57,
+                    text: "로그인",
+                    textColor: .designSystem(.Secondary)!
+                )
+                .padding(
+                    EdgeInsets(
+                        top: Device.VPadding,
+                        leading: 0,
+                        bottom: Device.VPadding,
+                        trailing: 0
+                    )
+                )
             }
         }
     }

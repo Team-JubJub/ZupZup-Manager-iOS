@@ -18,13 +18,13 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             if isLogin {
-                VStack {
+                VStack(spacing: 0) {
                     ZStack {
                         switch selectedIndex {
                         case 0:
                             ReservationView()
                         default:
-                            SettingView()
+                            ManageView()
                         }
                     }
                     Spacer()
@@ -37,6 +37,7 @@ struct ContentView: View {
                             )
                         }
                     }
+                    .frame(height: Device.Height * 84 / 844)
                 }
             } else {
                 LoginView(isLogin: $isLogin)
