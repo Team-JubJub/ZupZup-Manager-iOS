@@ -25,15 +25,7 @@ struct ReserveInfoView: View {
                         )
                     HStack(spacing: 0) {
                         VStack(spacing: 0) {
-                            Rectangle()
-                                .frame(width: 30, height: 30)
-                                .cornerRadius(8)
-                                .foregroundColor(.designSystem(.zupzupWarmGray5))
-                                .overlay {
-                                    Image(assetName: .ic_user)
-                                        .resizable()
-                                        .frame(width: 22, height: 22)
-                                }
+                            RectangleWithIcon(assetName: .ic_user)
                             Spacer()
                         }
                         .padding(
@@ -66,15 +58,7 @@ struct ReserveInfoView: View {
                         .foregroundColor(.designSystem(.zupzupWarmGray3))
                     HStack(spacing: 0) {
                         VStack(spacing: 0) {
-                            Rectangle()
-                                .frame(width: 30, height: 30)
-                                .cornerRadius(8)
-                                .foregroundColor(.designSystem(.zupzupWarmGray5))
-                                .overlay {
-                                    Image(assetName: .ic_clock)
-                                        .resizable()
-                                        .frame(width: 22, height: 22)
-                                }
+                            RectangleWithIcon(assetName: .ic_clock)
                             Spacer()
                         }
                         .padding(
