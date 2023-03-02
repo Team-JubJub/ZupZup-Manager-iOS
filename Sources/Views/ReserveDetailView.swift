@@ -45,7 +45,19 @@ struct ReserveDetailView: View {
             // TODO: Bottom sheet Tigger
             print("tabbed")
         } label: {
-            BottomButtonLabel(buttonTitle: "예약 확인하기")
+            BottomButton(
+                height: 64,
+                text: "예약 확인하기",
+                textColor: .designSystem(.OffWhite)!
+            )
+            .padding(
+                EdgeInsets(
+                    top: 0,
+                    leading: 0,
+                    bottom: Device.VPadding / 2,
+                    trailing: 0
+                )
+            )
         }
     }
 }

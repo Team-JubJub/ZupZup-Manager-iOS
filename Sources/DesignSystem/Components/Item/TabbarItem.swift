@@ -29,7 +29,9 @@ struct TabbarItem: View {
         .gesture(
             TapGesture()
                 .onEnded { _ in
-                    selectedIndex = num
+                    withAnimation {
+                        selectedIndex = num
+                    }
                 }
         )
     }
