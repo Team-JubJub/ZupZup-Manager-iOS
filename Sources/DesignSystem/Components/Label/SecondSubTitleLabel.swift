@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct Secondary_22_Label: View {
+struct SecondSubTitleLabel: View {
     
     let title: String
     
@@ -27,11 +27,5 @@ struct Secondary_22_Label: View {
                 trailing: Device.HPadding
             )
         )
-    }
-}
-
-struct Secondary22Label_Previews: PreviewProvider {
-    static var previews: some View {
-        Secondary_22_Label()
     }
 }
