@@ -8,13 +8,18 @@
 
 import SwiftUI
 
-struct LoginBottomButton: View {
+struct BottomButton: View {
+    
+    let height: CGFloat
+    let text: String
+    let textColor: Color
+    
     var body: some View {
         ZStack {
             Rectangle()
                 .cornerRadius(14)
                 .foregroundColor(.designSystem(.zupzupMain))
-                .frame(height: 57)
+                .frame(height: height)
                 .padding(
                     EdgeInsets(
                         top: 0,
@@ -23,17 +28,9 @@ struct LoginBottomButton: View {
                         trailing: Device.HPadding
                     )
                 )
-            Text("로그인")
+            Text(text)
                 .font(SystemFont(size: ._17, weight: .bold))
-                .foregroundColor(.designSystem(.Secondary))
+                .foregroundColor(textColor)
         }
-        .padding(
-            EdgeInsets(
-                top: 0,
-                leading: 0,
-                bottom: Device.VPadding,
-                trailing: 0
-            )
-        )
     }
 }
