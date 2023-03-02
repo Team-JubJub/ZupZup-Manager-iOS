@@ -10,6 +10,8 @@ import SwiftUI
 
 struct LoginView: View {
     
+    @Binding var isLogin: Bool
+    
     @State var idString: String = ""
     @State var password: String = ""
     
@@ -26,6 +28,8 @@ struct LoginView: View {
             
             Button {
                 print("button tabbed")
+                // TODO: fix
+                self.isLogin.toggle()
             } label: {
                 LoginBottomButton()
             }
