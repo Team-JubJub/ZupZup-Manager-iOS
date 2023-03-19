@@ -46,25 +46,25 @@ struct ReserveDetailView: View {
                 .frame(width: Device.Width * 358 / 390)
             }
             .navigationTitle("사이즈한도테스트테스트테스")
-        }
-        
-        Button {
-            // TODO: Bottom sheet Tigger
-            print("tabbed")
-        } label: {
-            BottomButton(
-                height: 64,
-                text: "예약 확인하기",
-                textColor: .designSystem(.OffWhite)!
-            )
-            .padding(
-                EdgeInsets(
-                    top: 0 ,
-                    leading: 0,
-                    bottom: Device.VPadding / 2,
-                    trailing: 0
+            
+            Button {
+                // TODO: Bottom sheet Tigger
+                print("tabbed")
+            } label: {
+                BottomButton(
+                    height: 64,
+                    text: "예약 확인하기",
+                    textColor: .designSystem(.OffWhite)!
                 )
-            )
+                .padding(
+                    EdgeInsets(
+                        top: 0,
+                        leading: 0,
+                        bottom: Device.VPadding / 2,
+                        trailing: 0
+                    )
+                )
+            }
         }
     }
 }
