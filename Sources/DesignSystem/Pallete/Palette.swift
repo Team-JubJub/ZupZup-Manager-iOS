@@ -11,6 +11,7 @@ import Foundation
 enum Palette {
     case zupzupMain
     case zupzupWarmGray1
+    case zupzupWarmGray2
     case zupzupWarmGray3
     case zupzupWarmGray4
     case zupzupWarmGray5
@@ -28,6 +29,8 @@ enum Palette {
             return "zupzupMain"
         case .zupzupWarmGray1:
             return "zupzupWarmGray1"
+        case .zupzupWarmGray2:
+            return "zupzupWarmGray2"
         case .zupzupWarmGray3:
             return "zupzupWarmGray3"
         case .zupzupWarmGray4:

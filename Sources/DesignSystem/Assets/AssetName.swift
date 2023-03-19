@@ -18,4 +18,8 @@ enum AssetName: String {
     case clock
     case xCircle
     case ic_eye
+    case ic_home
+    case ic_gift
+    case ic_plus_orange
+    case mockImage
 }
