@@ -14,8 +14,17 @@ struct ManageView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            VSpacer(height: Device.Height * 47 / 844)
+            
+            HStack(spacing: 0) {
+                LargeTitleLabel(title: isEditable ? "관리" : "제품 관리")
+                    .padding(Device.HPadding)
+                Spacer()
+            }
+            
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
+                    
                     VSpacer(height: Device.Height * 55 / 844)
                     
                     SecondSubTitleLabel(title: "가게 관리")
@@ -37,7 +46,7 @@ struct ManageView: View {
                         Button {
                             withAnimation { self.isEditable = true }
                         } label: {
-                            OrangePlusButton()
+                            EditButton()
                         }
                     }
                     
@@ -55,8 +64,8 @@ struct ManageView: View {
                         }
                     }
                 }
+                .navigationTitle("")
             }
-            .navigationTitle("관리")
             
             if isEditable {
                 // TODO: 수정해야함

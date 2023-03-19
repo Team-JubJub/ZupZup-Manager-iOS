@@ -14,16 +14,23 @@ struct ReserveDetailView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
                     UnderTitleLabel()
+                    
                     VSpacer(height: Device.Height * 30 / 844)
+                    
                     SubTitleLabel(subtitle: "주문 정보")
+                    
                     VSpacer(height: Device.Height * 32 / 844)
+                    
                     ReserveInfoView(
                         customer: "김승창",
                         phoneNumber: "010-7777-7777",
                         arrivedTime: "19:00"
                     )
+                    
                     VSpacer(height: Device.Height * 48 / 844)
+                    
                     SubTitleLabel(subtitle: "주문 내역")
+                    
                     VSpacer(height: Device.Height * 21 / 844)
                     
                     VStack(spacing: 8) {
@@ -52,7 +59,7 @@ struct ReserveDetailView: View {
             )
             .padding(
                 EdgeInsets(
-                    top: 0,
+                    top: 0 ,
                     leading: 0,
                     bottom: Device.VPadding / 2,
                     trailing: 0

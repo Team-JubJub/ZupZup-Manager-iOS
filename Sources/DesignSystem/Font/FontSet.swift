@@ -26,6 +26,7 @@ enum FontSet {
         case _18 = 18
         case _20 = 20
         case _22 = 22
+        case _34 = 34
     }
     
     enum Weight: String { // 글자의 진함
