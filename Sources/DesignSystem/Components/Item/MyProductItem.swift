@@ -17,7 +17,6 @@ struct MyProductItem: View {
     let originalPrice: Int
     let salePrice: Int
     
-    
     var body: some View {
         ZStack {
             Rectangle()
