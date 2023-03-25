@@ -30,7 +30,7 @@ let project = Project(
             platform: .iOS,
             product: .app,
             bundleId: "com.ZupZupManager",
-            deploymentTarget: .iOS(targetVersion: "15.0", devices: .iphone),
+            deploymentTarget: .iOS(targetVersion: "16.0", devices: .iphone),
             infoPlist: .file(path: "SupportingFiles/ZupZupManager-Info.plist"),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
