@@ -13,7 +13,8 @@ let project = Project(
     ),
     packages: [
         .remote(url: "https://github.com/Alamofire/Alamofire.git", requirement: .upToNextMajor(from: "5.0.0")),
-        .remote(url: "https://github.com/onevcat/Kingfisher.git", requirement: .upToNextMajor(from: "7.5.0"))
+        .remote(url: "https://github.com/onevcat/Kingfisher.git", requirement: .upToNextMajor(from: "7.5.0")),
+        .remote(url: "https://github.com/pointfreeco/swift-composable-architecture.git", requirement: .upToNextMajor(from: "0.5.0"))
     ],
     settings: .settings(
         base: ["OTHER_LDFLAGS" : ["$(OTHER_LDFLAGS) -ObjC", "-all_load"]],
