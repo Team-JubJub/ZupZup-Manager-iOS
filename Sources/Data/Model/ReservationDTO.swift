@@ -8,16 +8,16 @@
 
 import Foundation
 
-struct Reservation: Codable, Equatable {
+struct ReservationDTO: Codable, Equatable, Hashable {
     var customerName: String
     var customerPhone: String
     var state: String
     var storeId: Int
     var visitTime: Int
     var reserveId: Int
-    var cartList: [Cart]
+    var cartList: [CartDTO]
     
-    struct Cart: Codable, Equatable {
+    struct CartDTO: Codable, Equatable, Hashable {
         var itemId: Int
         var storeId: Int
         var amount: Int
@@ -46,7 +46,7 @@ struct Reservation: Codable, Equatable {
          storeId: Int,
          visitTime: Int,
          reserveId: Int,
-         cartList: [Cart]
+         cartList: [CartDTO]
     ) {
         self.customerName = customerName
         self.customerPhone = customerPhone
@@ -58,4 +58,18 @@ struct Reservation: Codable, Equatable {
     }
 }
 
-typealias Reservations = [Reservation]
+// Entity로 변환하는 코드 DTO -> Entity
+extension ReservationDTO {
+    func toReservation() -> Reservation {
+        return Reservation(
+            customerName: self.customerName,
+            phoneNumber: self.customerPhone,
+            state: self.state.toReservationState,
+            storeId: self.storeId,
+            date: self.reserveId.dateFromMilliseconds(),
+            cartList: self.cartList,
+            orderedItemdName: self.makeItemString(),
+            orderedTime: self.visitTime.makeDiscountTime()
+        )
+    }
+}
