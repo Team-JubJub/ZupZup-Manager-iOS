@@ -9,6 +9,9 @@
 import SwiftUI
 
 struct ReservationView: View {
+    
+    @StateObject var reservationStore: ReservationStore
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             VSpacer(height: Device.VPadding)
