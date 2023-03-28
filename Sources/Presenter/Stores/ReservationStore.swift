@@ -12,14 +12,14 @@ class ReservationStore: ObservableObject, StoreProtocol {
     
     @Published var reservations = [Reservation]()
     
-    private let fetchReservationRepository: FetchReservationRepository
+    private let fetchReserveUseCase: FetchReserveUseCase
     
     init(
         reservations: [Reservation] = [Reservation](),
-        fetchReservationRepository: FetchReservationRepository = FetchReservationRepositoryImpl()
+        fetchReserveUseCase: FetchReserveUseCase = FetchReserveUseCaseImpl()
     ) {
         self.reservations = reservations
-        self.fetchReservationRepository = fetchReservationRepository
+        self.fetchReserveUseCase = fetchReserveUseCase
         self.reduce(action: .fetchReservation)
     }
     
@@ -44,7 +44,7 @@ extension ReservationStore {
     }
     
     private func fetchReservations(storeId: Int) {
-        fetchReservationRepository.fetchReservations(storeId: storeId) { result in
+        fetchReserveUseCase.fetchReserve(storeId: storeId) { result in
             switch result {
             case .success(let reservations):
                 self.reservations = reservations
