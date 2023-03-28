@@ -10,11 +10,11 @@ import SwiftUI
 
 struct ReservationItem: View {
     
-    private let date: String = "2022/12/31 00:00"
-    private let menu: String = "메뉴명"
-    private let time: String = "00:00"
-    private let customer: String = "신지우"
-    private let state: ReservationState = .complete
+    @State var date: String
+    @State var menu: String
+    @State var time: String
+    @State var customer: String
+    @State var state: ReservationState
     
     var body: some View {
         VStack(spacing: 0) {

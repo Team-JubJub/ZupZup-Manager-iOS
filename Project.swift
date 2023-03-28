@@ -14,7 +14,8 @@ let project = Project(
     packages: [
         .remote(url: "https://github.com/Alamofire/Alamofire.git", requirement: .upToNextMajor(from: "5.0.0")),
         .remote(url: "https://github.com/onevcat/Kingfisher.git", requirement: .upToNextMajor(from: "7.5.0")),
-        .remote(url: "https://github.com/pointfreeco/swift-composable-architecture.git", requirement: .upToNextMajor(from: "0.5.0"))
+        .remote(url: "https://github.com/pointfreeco/swift-composable-architecture.git", requirement: .upToNextMajor(from: "0.5.0")),
+        .remote(url: "https://github.com/firebase/firebase-ios-sdk", requirement: .upToNextMajor(from: "10.0.0"))
     ],
     settings: .settings(
         base: ["OTHER_LDFLAGS" : ["$(OTHER_LDFLAGS) -ObjC", "-all_load"]],
@@ -30,7 +31,7 @@ let project = Project(
             platform: .iOS,
             product: .app,
             bundleId: "com.ZupZupManager",
-            deploymentTarget: .iOS(targetVersion: "15.0", devices: .iphone),
+            deploymentTarget: .iOS(targetVersion: "16.0", devices: .iphone),
             infoPlist: .file(path: "SupportingFiles/ZupZupManager-Info.plist"),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
@@ -38,7 +39,10 @@ let project = Project(
             scripts: [.SwiftLintShell],
             dependencies: [
                 .package(product: "Alamofire"),
-                .package(product: "Kingfisher")
+                .package(product: "Kingfisher"),
+                .package(product: "ComposableArchitecture"),
+                .package(product: "FirebaseFirestore"),
+                .package(product: "FirebaseFirestoreSwift")
             ]
         ),
         Target(

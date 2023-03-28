@@ -9,15 +9,24 @@
 import SwiftUI
 
 struct ReservationView: View {
+    
+    @StateObject var reservationStore: ReservationStore
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             VSpacer(height: Device.VPadding)
             VStack(spacing: 8) {
-                ForEach(0..<8) { _ in
+                ForEach(reservationStore.reservations, id: \.self) { reservation in
                     NavigationLink {
                         ReserveDetailView()
                     } label: {
-                        ReservationItem()
+                        ReservationItem(
+                            date: reservation.date,
+                            menu: reservation.orderedItemdName,
+                            time: reservation.orderedTime,
+                            customer: reservation.customerName,
+                            state: reservation.state
+                        )
                     }
                 }
             }

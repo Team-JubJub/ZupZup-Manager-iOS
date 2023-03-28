@@ -22,7 +22,8 @@ struct ContentView: View {
                     ZStack {
                         switch selectedIndex {
                         case 0:
-                            ReservationView()
+                            let store = ReservationStore()
+                            ReservationView(reservationStore: store)
                         default:
                             ManageView()
                         }
