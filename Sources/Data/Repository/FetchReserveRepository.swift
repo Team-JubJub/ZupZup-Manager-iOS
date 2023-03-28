@@ -11,22 +11,22 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-protocol FetchReservationRepository {
-    func fetchReservations(
+protocol FetchReserveRepository {
+    func fetchReserve(
         storeId: Int,
-        completion: @escaping (Result<Reservations, Error>) -> Void
+        completion: @escaping (Result<[ReservationDTO], Error>) -> Void
     )
 }
 
-final class FetchReservationRepositoryImpl: FetchReservationRepository {
+final class FetchReserveRepositoryImpl: FetchReserveRepository {
     
     init() {}
     
     let database = Firestore.firestore()
     
-    func fetchReservations(
+    func fetchReserve(
         storeId: Int,
-        completion: @escaping (Result<Reservations, Error>) -> Void
+        completion: @escaping (Result<[ReservationDTO], Error>) -> Void
     ) {
         
         let reservationRef = database.collection("Reservation")
@@ -34,7 +34,7 @@ final class FetchReservationRepositoryImpl: FetchReservationRepository {
         reservationRef.whereField("storeId", isEqualTo: storeId)
             .addSnapshotListener { querySnapshot, err in
                 
-                var reservationArray = [Reservation]()
+                var reservationArray = [ReservationDTO]()
                 
                 if let err = err {
                     print(err.localizedDescription)
@@ -42,7 +42,7 @@ final class FetchReservationRepositoryImpl: FetchReservationRepository {
                 } else {
                     for document in querySnapshot!.documents {
                         do {
-                            let reservation = try document.data(as: Reservation.self)
+                            let reservation = try document.data(as: ReservationDTO.self)
                             reservationArray.append(reservation)
                         } catch {
                             print(error.localizedDescription)
