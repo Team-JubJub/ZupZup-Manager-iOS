@@ -48,7 +48,6 @@ extension ReservationStore {
             switch result {
             case .success(let reservations):
                 self.reservations = reservations
-                dump(reservations)
             case .failure(let error):
                 print(error.localizedDescription)
             }
