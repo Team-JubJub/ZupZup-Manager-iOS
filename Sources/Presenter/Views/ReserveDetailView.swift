@@ -10,14 +10,14 @@ import SwiftUI
 
 struct ReserveDetailView: View {
     
-    @State var isPresent: Bool = false
+    @StateObject var store: ReservationDetailStore
     
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 0) {
-                        UnderTitleLabel()
+                        UnderTitleLabel(timeString: store.reservation.date)
                         
                         VSpacer(height: Device.Height * 30 / 844)
                         
@@ -26,9 +26,9 @@ struct ReserveDetailView: View {
                         VSpacer(height: Device.Height * 32 / 844)
                         
                         ReserveInfoView(
-                            customer: "김승창",
-                            phoneNumber: "010-7777-7777",
-                            arrivedTime: "19:00"
+                            customer: store.reservation.customerName,
+                            phoneNumber: store.reservation.phoneNumber,
+                            arrivedTime: store.reservation.orderedTime
                         )
                         
                         VSpacer(height: Device.Height * 48 / 844)
@@ -38,11 +38,11 @@ struct ReserveDetailView: View {
                         VSpacer(height: Device.Height * 21 / 844)
                         
                         VStack(spacing: 8) {
-                            ForEach(0..<10) { _ in
+                            ForEach(store.reservation.cartList, id: \.self) { item in
                                 OrderItem(
-                                    itemName: "초코 크로와상",
-                                    price: "3000원",
-                                    count: 5
+                                    itemName: item.name,
+                                    price: "\(item.salesPrice)원",
+                                    count: item.amount
                                 )
                             }
                         }
@@ -53,9 +53,7 @@ struct ReserveDetailView: View {
                 
                 Button {
                     // TODO: Bottom sheet Tigger
-                    withAnimation(.linear(duration: 1.0)) {
-                        isPresent.toggle()
-                    }
+                    store.reduce(action: .tabCheckButton)
                     print("tabbed")
                 } label: {
                     BottomButton(
@@ -73,7 +71,7 @@ struct ReserveDetailView: View {
                     )
                 }
             }
-            .sheet(isPresented: $isPresent) {
+            .sheet(isPresented: $store.isChecked) {
                 ConfirmBottomSheet()
                     .presentationDetents([.medium])
             }
