@@ -75,12 +75,12 @@ struct ConfirmBottomSheet: View {
                         .frame(height: Device.Height * 65 / 844)
                         
                         VStack(alignment: .leading, spacing: 0) {
-                            Text("방문예정시간")
+                            Text("방문 예정 시간")
                                 .foregroundColor(.designSystem(.zupzupMain))
                                 .font(SystemFont(size: ._12, weight: .semibold))
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                             
-                            Text(store.reservation.orderedTime)
+                            Text(ReservationHelper.twentyMinutePlus(reservation: store.reservation))
                                 .foregroundColor(.designSystem(.Secondary))
                                 .font(SystemFont(size: ._17, weight: .regular))
                             Spacer()

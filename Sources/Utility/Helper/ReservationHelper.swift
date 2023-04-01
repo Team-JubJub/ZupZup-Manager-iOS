@@ -20,4 +20,15 @@ class ReservationHelper {
         
         return totalPrice
     }
+    
+    static func twentyMinutePlus(reservation: Reservation) -> String {
+        
+        let origin = reservation.orderedTime.filter { $0.isNumber }
+        
+        guard let originToInt = Int(origin) else { return "" }
+        
+        let originPlusTwenty = originToInt + 20
+        
+        return originToInt.makeDiscountTime() + " ~ " + originPlusTwenty.makeDiscountTime()
+    }
 }
