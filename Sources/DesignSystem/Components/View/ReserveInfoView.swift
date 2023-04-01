@@ -20,17 +20,13 @@ struct ReserveInfoView: View {
                 ZStack {
                     Rectangle()
                         .foregroundColor(.designSystem(.zupzupWarmGray3))
-                        .frame(
-                            height: 97
-                        )
+                        .frame(height: 97)
                     HStack(spacing: 0) {
                         VStack(spacing: 0) {
                             RectangleWithIcon(assetName: .ic_user)
                             Spacer()
                         }
-                        .padding(
-                            EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 8)
-                        )
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 8))
                         VStack(alignment: .leading, spacing: 0) {
                             Text("주문자")
                                 .font(SystemFont(size: ._12, weight: .semibold))

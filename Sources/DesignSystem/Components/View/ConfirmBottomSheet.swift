@@ -118,32 +118,13 @@ struct ConfirmBottomSheet: View {
                     
                     Spacer()
                     
-                    HStack(spacing: 0) {
-                        Spacer()
-                        Text("초코 크로와상")
-                            .foregroundColor(.designSystem(.Secondary))
-                            .font(SystemFont(size: ._15, weight: .regular))
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.VPadding))
-                        
-                        Text("6,000원")
-                            .foregroundColor(.designSystem(.zupzupWarmGray6))
-                            .font(SystemFont(size: ._15, weight: .regular))
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: 0) {
+                            ForEach(store.reservation.cartList, id: \.self) { item in
+                                ConfirmBottomSheetItem(itemName: item.name, price: item.salesPrice)
+                            }
+                        }
                     }
-                    
-                    Spacer()
-                    
-                    HStack(spacing: 0) {
-                        Spacer()
-                        Text("소금빵")
-                            .foregroundColor(.designSystem(.Secondary))
-                            .font(SystemFont(size: ._15, weight: .regular))
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 8))
-                        
-                        Text("1,400원")
-                            .foregroundColor(.designSystem(.zupzupWarmGray6))
-                            .font(SystemFont(size: ._15, weight: .regular))
-                    }
-                    Spacer()
                 }
                 .frame(width: Device.Width * 326 / 390, height: Device.Height * 112 / 844)
             }
