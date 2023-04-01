@@ -49,7 +49,7 @@ struct ReserveDetailView: View {
                     }
                     .frame(width: Device.Width * 358 / 390)
                 }
-                .navigationTitle("사이즈한도테스트테스트테스")
+                .navigationTitle(store.reservation.orderedItemdName)
                 
                 Button {
                     // TODO: Bottom sheet Tigger
