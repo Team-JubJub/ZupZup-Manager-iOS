@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct UnderTitleLabel: View {
-    private let timeString: String = "2022년 11월 22일 09:41 (예약한 시간)"
+    let timeString: String
     var body: some View {
         Text(timeString)
             .font(SystemFont(size: ._16, weight: .regular))

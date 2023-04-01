@@ -18,7 +18,10 @@ struct ReservationView: View {
             VStack(spacing: 8) {
                 ForEach(reservationStore.reservations, id: \.self) { reservation in
                     NavigationLink {
-                        ReserveDetailView()
+                        let store = ReservationDetailStore(reservation: reservation)
+                        ReserveDetailView(
+                            store: store
+                        )
                     } label: {
                         ReservationItem(
                             date: reservation.date,

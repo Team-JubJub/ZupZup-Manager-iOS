@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-class ReservationStore: ObservableObject, StoreProtocol {
+class ReservationStore: ObservableObject {
     
     @Published var reservations = [Reservation]()
     
@@ -22,7 +22,10 @@ class ReservationStore: ObservableObject, StoreProtocol {
         self.fetchReserveUseCase = fetchReserveUseCase
         self.reduce(action: .fetchReservation)
     }
-    
+}
+
+// MARK: Store Protocol 준수
+extension ReservationStore: StoreProtocol {
     enum Action {
         case tabNextButton
         case fetchReservation
@@ -31,16 +34,18 @@ class ReservationStore: ObservableObject, StoreProtocol {
     func reduce(action: Action) {
         switch action {
         case .tabNextButton:
-            print("tabbed")
+            // TODO:
+            break
         case .fetchReservation:
             self.fetchReservations(storeId: 1)
         }
     }
 }
 
+// MARK: 비즈니스 로직
 extension ReservationStore {
     private func tabNextButton() {
-        
+        // TODO: 비즈니스 로직 구현
     }
     
     private func fetchReservations(storeId: Int) {
@@ -53,9 +58,4 @@ extension ReservationStore {
             }
         }
     }
-}
-
-protocol StoreProtocol {
-    associatedtype Action
-    func reduce(action: Action)
 }

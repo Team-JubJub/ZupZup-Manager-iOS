@@ -14,10 +14,9 @@ extension ReservationDTO {
         case 0:
             return ""
         case 1:
-            return self.cartList[0].name + "\(self.cartList[0].amount)개"
+            return self.cartList[0].name
         default:
             return self.cartList[0].name
-            + " \(self.cartList[0].amount)개"
             + " 외 " + "\(cartList.count - 1)가지"
         }
     }
