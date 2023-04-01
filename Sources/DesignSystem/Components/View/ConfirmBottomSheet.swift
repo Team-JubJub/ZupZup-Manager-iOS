@@ -9,6 +9,9 @@
 import SwiftUI
 
 struct ConfirmBottomSheet: View {
+    
+    @StateObject var store: ReservationDetailStore
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
@@ -49,12 +52,12 @@ struct ConfirmBottomSheet: View {
                                     .font(SystemFont(size: ._12, weight: .semibold))
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                                 
-                                Text("닉네임")
+                                Text(store.reservation.customerName)
                                     .foregroundColor(.designSystem(.Secondary))
                                     .font(SystemFont(size: ._17, weight: .regular))
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                                 
-                                Text("010-4602-1620")
+                                Text(store.reservation.phoneNumber)
                                     .foregroundColor(.designSystem(.zupzupWarmGray6))
                                     .font(SystemFont(size: ._13, weight: .regular))
                                 Spacer()
@@ -72,12 +75,12 @@ struct ConfirmBottomSheet: View {
                         .frame(height: Device.Height * 65 / 844)
                         
                         VStack(alignment: .leading, spacing: 0) {
-                            Text("방문예정시간")
+                            Text("방문 예정 시간")
                                 .foregroundColor(.designSystem(.zupzupMain))
                                 .font(SystemFont(size: ._12, weight: .semibold))
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                             
-                            Text("19:00 ~ 19:20")
+                            Text(ReservationHelper.twentyMinutePlus(reservation: store.reservation))
                                 .foregroundColor(.designSystem(.Secondary))
                                 .font(SystemFont(size: ._17, weight: .regular))
                             Spacer()
@@ -103,7 +106,7 @@ struct ConfirmBottomSheet: View {
                             .font(SystemFont(size: ._15, weight: .regular))
                             .foregroundColor(.designSystem(.Secondary))
                         Spacer()
-                        Text("1,000,000원")
+                        Text("\(ReservationHelper.makeTotalPrice(reservation: store.reservation))원")
                             .font(SystemFont(size: ._20, weight: .semibold))
                             .foregroundColor(.designSystem(.zupzupMain))
                     }
@@ -115,32 +118,13 @@ struct ConfirmBottomSheet: View {
                     
                     Spacer()
                     
-                    HStack(spacing: 0) {
-                        Spacer()
-                        Text("초코 크로와상")
-                            .foregroundColor(.designSystem(.Secondary))
-                            .font(SystemFont(size: ._15, weight: .regular))
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.VPadding))
-                        
-                        Text("6,000원")
-                            .foregroundColor(.designSystem(.zupzupWarmGray6))
-                            .font(SystemFont(size: ._15, weight: .regular))
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: 0) {
+                            ForEach(store.reservation.cartList, id: \.self) { item in
+                                ConfirmBottomSheetItem(itemName: item.name, price: item.salesPrice)
+                            }
+                        }
                     }
-                    
-                    Spacer()
-                    
-                    HStack(spacing: 0) {
-                        Spacer()
-                        Text("소금빵")
-                            .foregroundColor(.designSystem(.Secondary))
-                            .font(SystemFont(size: ._15, weight: .regular))
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 8))
-                        
-                        Text("1,400원")
-                            .foregroundColor(.designSystem(.zupzupWarmGray6))
-                            .font(SystemFont(size: ._15, weight: .regular))
-                    }
-                    Spacer()
                 }
                 .frame(width: Device.Width * 326 / 390, height: Device.Height * 112 / 844)
             }
