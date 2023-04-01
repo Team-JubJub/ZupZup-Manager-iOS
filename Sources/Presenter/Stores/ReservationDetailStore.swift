@@ -20,9 +20,11 @@ class ReservationDetailStore: ObservableObject {
 
 extension ReservationDetailStore: StoreProtocol {
     enum Action {
-        case tabCheckButton
-        case tabPlusButton
-        case tabMinusButton
+        case tabCheckButton // 예약확인 버튼을 눌렀을 경우
+        case tabPlusButton // 제품의 더하기버튼을 눌렀을 경우
+        case tabMinusButton // 제품의 빼기버튼을 눌렀을 경우
+        case tabCancelButton // 반려 버튼을 눌렀을 경우
+        case tabConfirmButton // 확정 버튼을 눌렀을 경우
     }
     
     func reduce(action: Action) {
@@ -33,6 +35,12 @@ extension ReservationDetailStore: StoreProtocol {
             // TODO: 로직 구현
             break
         case .tabMinusButton:
+            // TODO: 로직 구현
+            break
+        case .tabCancelButton:
+            // TODO: 로직 구현
+            break
+        case .tabConfirmButton:
             // TODO: 로직 구현
             break
         }
