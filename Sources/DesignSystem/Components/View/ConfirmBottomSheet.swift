@@ -9,6 +9,9 @@
 import SwiftUI
 
 struct ConfirmBottomSheet: View {
+    
+    @StateObject var store: ReservationDetailStore
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
@@ -49,12 +52,12 @@ struct ConfirmBottomSheet: View {
                                     .font(SystemFont(size: ._12, weight: .semibold))
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                                 
-                                Text("닉네임")
+                                Text(store.reservation.customerName)
                                     .foregroundColor(.designSystem(.Secondary))
                                     .font(SystemFont(size: ._17, weight: .regular))
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                                 
-                                Text("010-4602-1620")
+                                Text(store.reservation.phoneNumber)
                                     .foregroundColor(.designSystem(.zupzupWarmGray6))
                                     .font(SystemFont(size: ._13, weight: .regular))
                                 Spacer()
@@ -77,7 +80,7 @@ struct ConfirmBottomSheet: View {
                                 .font(SystemFont(size: ._12, weight: .semibold))
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                             
-                            Text("19:00 ~ 19:20")
+                            Text(store.reservation.orderedTime)
                                 .foregroundColor(.designSystem(.Secondary))
                                 .font(SystemFont(size: ._17, weight: .regular))
                             Spacer()
@@ -103,7 +106,7 @@ struct ConfirmBottomSheet: View {
                             .font(SystemFont(size: ._15, weight: .regular))
                             .foregroundColor(.designSystem(.Secondary))
                         Spacer()
-                        Text("1,000,000원")
+                        Text("\(ReservationHelper.makeTotalPrice(reservation: store.reservation))원")
                             .font(SystemFont(size: ._20, weight: .semibold))
                             .foregroundColor(.designSystem(.zupzupMain))
                     }

@@ -72,7 +72,7 @@ struct ReserveDetailView: View {
                 }
             }
             .sheet(isPresented: $store.isChecked) {
-                ConfirmBottomSheet()
+                ConfirmBottomSheet(store: store)
                     .presentationDetents([.medium])
             }
         }
