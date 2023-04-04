@@ -15,9 +15,17 @@ struct ReserveDetailView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
+                
+                NavigationBarWithDismiss(label: "예약상황")
+                VSpacer(height: Device.Height * 2 / 844)
+                
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 0) {
-                        UnderTitleLabel(timeString: store.reservation.date)
+                        Group {
+                            LargeTitleLabel(title: store.reservation.orderedItemdName)
+                            VSpacer(height: 2)
+                            UnderTitleLabel(timeString: store.reservation.date)
+                        }
                         
                         VSpacer(height: Device.Height * 30 / 844)
                         
@@ -49,7 +57,8 @@ struct ReserveDetailView: View {
                     }
                     .frame(width: Device.Width * 358 / 390)
                 }
-                .navigationTitle(store.reservation.orderedItemdName)
+                .navigationTitle("")
+                .navigationBarHidden(true)
                 
                 Button {
                     // TODO: Bottom sheet Tigger
