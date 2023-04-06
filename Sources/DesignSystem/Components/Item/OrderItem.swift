@@ -13,6 +13,7 @@ struct OrderItem: View {
     let itemName: String
     let price: String
     @State var count: Int
+    @Binding var state: ReservationState
     
     var body: some View {
         ZStack {
@@ -34,49 +35,53 @@ struct OrderItem: View {
                         .foregroundColor(.designSystem(.zupzupMain))
                 }
                 Spacer()
-                HStack(spacing: 0) {
-                    Button {
-                        count -= 1
-                    } label: {
-                        ZStack {
-                            Circle()
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(.designSystem(.zupzupWarmGray4))
-                                .overlay {
-                                    Image(assetName: .ic_minus)
-                                        .resizable()
-                                        .frame(width: 12, height: 12)
+                    HStack(spacing: 0) {
+                        if state == .new {
+                            Button {
+                                count -= 1
+                            } label: {
+                                ZStack {
+                                    Circle()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(.designSystem(.zupzupWarmGray4))
+                                        .overlay {
+                                            Image(assetName: .ic_minus)
+                                                .resizable()
+                                                .frame(width: 12, height: 12)
+                                        }
                                 }
+                                .frame(width: 20, height: 40)
+                            }
                         }
-                        .frame(width: 20, height: 40)
-                    }
-                    
-                    Spacer()
-                    
-                    Text("\(count)")
-                        .font(SystemFont(size: ._17, weight: .regular))
-                        .foregroundColor(.designSystem(.Secondary))
-                    
-                    Spacer()
-                    
-                    Button {
-                        count += 1
-                    } label: {
-                        ZStack {
-                            Circle()
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(.designSystem(.zupzupWarmGray4))
-                                .overlay {
-                                    Image(assetName: .ic_plus)
-                                        .resizable()
-                                        .frame(width: 12, height: 12)
+                        
+                        Spacer()
+                        
+                        Text(state == .new ? "\(count)" : "\(count)개")
+                            .font(SystemFont(size: ._17, weight: .regular))
+                            .foregroundColor(.designSystem(.Secondary))
+                        
+                        Spacer()
+                        
+                        if state == .new {
+                            Button {
+                                count += 1
+                            } label: {
+                                ZStack {
+                                    Circle()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(.designSystem(.zupzupWarmGray4))
+                                        .overlay {
+                                            Image(assetName: .ic_plus)
+                                                .resizable()
+                                                .frame(width: 12, height: 12)
+                                        }
                                 }
+                                .frame(width: 20, height: 40)
+                            }
                         }
-                        .frame(width: 20, height: 40)
                     }
-                }
                 .frame(
-                    width: Device.Width * 88 / 390,
+                    width: Device.Width * 92 / 390,
                     height: 40
                 )
             }

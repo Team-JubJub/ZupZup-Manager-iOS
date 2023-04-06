@@ -11,7 +11,6 @@ import SwiftUI
 struct ReserveDetailView: View {
     
     @StateObject var store: ReservationDetailStore
-    @State var state: ReservationState = .confirm
     
     var body: some View {
         ZStack {
@@ -56,7 +55,8 @@ struct ReserveDetailView: View {
                                 OrderItem(
                                     itemName: item.name,
                                     price: "\(item.salesPrice)원",
-                                    count: item.amount
+                                    count: item.amount,
+                                    state: $store.reservation.state
                                 )
                             }
                         }
