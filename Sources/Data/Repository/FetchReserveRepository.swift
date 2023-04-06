@@ -34,7 +34,7 @@ final class FetchReserveRepositoryImpl: FetchReserveRepository {
         let reservationRef = database.collection("TestReservation")
         
         reservationRef.whereField("storeId", isEqualTo: storeId)
-            .addSnapshotListener { querySnapshot, err in
+            .getDocuments { querySnapshot, err in
                 
                 var reservationArray = [ReservationDTO]()
                 

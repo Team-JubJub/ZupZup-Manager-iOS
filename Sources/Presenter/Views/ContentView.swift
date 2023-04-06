@@ -24,6 +24,7 @@ struct ContentView: View {
                         case 0:
                             let store = ReservationStore()
                             ReservationView(reservationStore: store)
+                                .onAppear { store.reduce(action: .fetchReservation) }
                         default:
                             ManageView()
                         }
