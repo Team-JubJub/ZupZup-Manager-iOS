@@ -62,6 +62,7 @@ struct ReservationDTO: Codable, Equatable, Hashable {
 extension ReservationDTO {
     func toReservation() -> Reservation {
         return Reservation(
+            id: self.reserveId.toString(),
             customerName: self.customerName,
             phoneNumber: self.customerPhone,
             state: self.state.toReservationState,

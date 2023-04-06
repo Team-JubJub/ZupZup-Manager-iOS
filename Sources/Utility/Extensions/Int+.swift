@@ -41,4 +41,8 @@ extension Int {
         let startMinute = startString.suffix(2)
         return "\(startTime):\(startMinute)"
     }
+    
+    func toString() -> String {
+        return String(self)
+    }
 }
