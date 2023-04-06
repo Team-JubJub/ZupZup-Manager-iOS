@@ -23,6 +23,7 @@ enum Palette {
     case completeColor
     case confirmColor
     case OffWhite
+    case warning1
     
     var hexString: String {
         switch self {
@@ -54,6 +55,8 @@ enum Palette {
             return "confirmColor"
         case .OffWhite:
             return "OffWhite"
+        case .warning1:
+            return "warning1"
         }
     }
 }

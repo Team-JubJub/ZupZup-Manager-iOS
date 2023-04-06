@@ -32,23 +32,7 @@ struct ReservationItem: View {
                             .font(SystemFont(size: ._22, weight: .bold))
                     }
                     Spacer()
-                    ZStack {
-                        Capsule(style: .circular)
-                            .frame(
-                                width: 75,
-                                height: 36
-                            )
-                            .foregroundColor(
-                                getCapsuleColor(state: state)
-                            )
-                        Text(
-                            getCapsuleText(state: state)
-                        )
-                        .font(SystemFont(size: ._15, weight: .regular))
-                        .foregroundColor(
-                            getCapsuleTextColor(state: state)
-                        )
-                    }
+                    StateCapsule(state: $state)
                 }
                 .frame(width: Device.Width * 326 / 390)
             }
@@ -95,46 +79,5 @@ struct ReservationItem: View {
             )
         }
         .cornerRadius(Device.cornerRadious)
-    }
-}
-
-extension ReservationItem {
-    func getCapsuleColor(state: ReservationState) -> Color? {
-        switch state {
-        case .new:
-            return Color.designSystem(.BG_2)
-        case .confirm:
-            return Color.designSystem(.confirmColor)
-        case .complete:
-            return Color.designSystem(.completeColor)
-        case .cancel:
-            return Color.designSystem(.zupzupWarmGray5)
-        }
-    }
-    
-    func getCapsuleText(state: ReservationState) -> String {
-        switch state {
-        case .new:
-            return "신규"
-        case .confirm:
-            return "확정"
-        case .complete:
-            return "완료"
-        case .cancel:
-            return "취소"
-        }
-    }
-    
-    func getCapsuleTextColor(state: ReservationState) -> Color? {
-        switch state {
-        case .new:
-            return .designSystem(.Secondary)
-        case .confirm:
-            return .designSystem(.OffWhite)
-        case .complete:
-            return .designSystem(.zupzupCoolGray1)
-        case .cancel:
-            return .designSystem(.zupzupWarmGray3)
-        }
     }
 }

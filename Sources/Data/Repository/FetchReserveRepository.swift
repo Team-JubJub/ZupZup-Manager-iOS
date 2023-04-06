@@ -29,7 +29,10 @@ final class FetchReserveRepositoryImpl: FetchReserveRepository {
         completion: @escaping (Result<[ReservationDTO], Error>) -> Void
     ) {
         
-        let reservationRef = database.collection("Reservation")
+        // TODO: Fix TestReservation
+//        let reservationRef = database.collection("Reservation")
+        let reservationRef = database.collection("TestReservation")
+        
         
         reservationRef.whereField("storeId", isEqualTo: storeId)
             .addSnapshotListener { querySnapshot, err in

@@ -37,7 +37,7 @@ extension ReservationStore: StoreProtocol {
             // TODO:
             break
         case .fetchReservation:
-            self.fetchReservations(storeId: 1)
+            self.fetchReservations(storeId: 0)
         }
     }
 }

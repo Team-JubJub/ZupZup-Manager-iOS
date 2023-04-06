@@ -46,7 +46,7 @@ struct ConfirmBottomSheet: View {
                             .frame(height: Device.Height * 65 / 844)
                             
                             VStack(alignment: .leading, spacing: 0) {
-                    
+                                
                                 Text("주문자")
                                     .foregroundColor(.designSystem(.zupzupMain))
                                     .font(SystemFont(size: ._12, weight: .semibold))
@@ -66,7 +66,7 @@ struct ConfirmBottomSheet: View {
                         }
                         
                         Spacer()
-                                                
+                        
                         VStack(spacing: 0) {
                             RectangleWithIcon(assetName: .ic_clock)
                             Spacer()
@@ -130,38 +130,30 @@ struct ConfirmBottomSheet: View {
             }
             
             VSpacer(height: Device.VPadding)
-                
+            
             HStack(spacing: 0) {
                 Button {
-                    // TODO: 반려 액션 추가
-                    print("반려 버튼을 탭하셨습니다.")
+                    store.reduce(action: .tabCancelButton)
                 } label: {
-                    Rectangle()
-                        .foregroundColor(.designSystem(.zupzupWarmGray3))
-                        .cornerRadius(16)
-                        .overlay {
-                            Text("반려")
-                                .foregroundColor(.designSystem(.zupzupWarmGray6))
-                                .font(SystemFont(size: ._17, weight: .regular))
-                        }
-                        .padding(EdgeInsets(top: 0, leading: Device.HPadding, bottom: 0, trailing: 0))
+                    HalfSquareButton(
+                        backgroundColor: .zupzupWarmGray3,
+                        fontColor: .zupzupWarmGray6,
+                        title: "반려"
+                    )
+                    .padding(EdgeInsets(top: 0, leading: Device.HPadding, bottom: 0, trailing: 0))
                 }
                 
                 HSpacer(width: Device.HPadding)
                 
                 Button {
-                    // TODO: 확정 액션 추가
-                    print("확정 버튼을 탭하셨습니다.")
+                    store.reduce(action: .tabComfirmButton)
                 } label: {
-                    Rectangle()
-                        .foregroundColor(.designSystem(.confirmColor))
-                        .cornerRadius(16)
-                        .overlay {
-                            Text("확정")
-                                .foregroundColor(.designSystem(.OffWhite))
-                                .font(SystemFont(size: ._17, weight: .regular))
-                        }
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding))
+                    HalfSquareButton(
+                        backgroundColor: .confirmColor,
+                        fontColor: .OffWhite,
+                        title: "확정"
+                    )
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding))
                 }
             }
         }
