@@ -11,6 +11,7 @@ import SwiftUI
 struct ReserveDetailView: View {
     
     @StateObject var store: ReservationDetailStore
+    @State var state: ReservationState = .confirm
     
     var body: some View {
         ZStack {
@@ -22,7 +23,12 @@ struct ReserveDetailView: View {
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 0) {
                         Group {
-                            LargeTitleLabel(title: store.reservation.orderedItemdName)
+                            HStack(spacing: 0) {
+                                LargeTitleLabel(title: store.reservation.orderedItemdName)
+                                Spacer()
+                                StateCapsule(state: $store.reservation.state)
+                            }
+                            .frame(height: 43)
                             VSpacer(height: 2)
                             UnderTitleLabel(timeString: store.reservation.date)
                         }
@@ -60,24 +66,54 @@ struct ReserveDetailView: View {
                 .navigationTitle("")
                 .navigationBarHidden(true)
                 
-                Button {
-                    // TODO: Bottom sheet Tigger
-                    store.reduce(action: .tabCheckButton)
-                    print("tabbed")
-                } label: {
-                    BottomButton(
-                        height: 64,
-                        text: "예약 확인하기",
-                        textColor: .designSystem(.OffWhite)!
-                    )
-                    .padding(
-                        EdgeInsets(
-                            top: 0,
-                            leading: 0,
-                            bottom: Device.VPadding / 2,
-                            trailing: 0
+                switch store.reservation.state {
+                case .new:
+                    Button {
+                        store.reduce(action: .tabCheckButton)
+                    } label: {
+                        BottomButton(
+                            height: 64,
+                            text: "예약 확인하기",
+                            textColor: .designSystem(.OffWhite)!
                         )
-                    )
+                        .padding(
+                            EdgeInsets(
+                                top: 0,
+                                leading: 0,
+                                bottom: Device.VPadding / 2,
+                                trailing: 0
+                            )
+                        )
+                    }
+                case .confirm:
+                    HStack(spacing: Device.HPadding) {
+                        Button {
+                            store.reduce(action: .tabCancelButton)
+                        } label: {
+                            HalfSquareButton(
+                                backgroundColor: .warning1,
+                                fontColor: .OffWhite,
+                                title: "취소"
+                            )
+                            .frame(height: 64)
+                            .padding(EdgeInsets(top: 0, leading: Device.HPadding, bottom: 0, trailing: 0))
+                        }
+                        
+                        Button {
+                            store.reduce(action: .tabCompleteButton)
+                        } label: {
+                            HalfSquareButton(
+                                backgroundColor: .completeColor,
+                                fontColor: .SecondaryText,
+                                title: "완료"
+                            )
+                            .frame(height: 64)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding))
+                        }
+                    }
+                    .frame(height: 96)
+                default:
+                    EmptyView()
                 }
             }
             .sheet(isPresented: $store.isChecked) {

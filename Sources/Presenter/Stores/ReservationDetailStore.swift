@@ -23,8 +23,10 @@ extension ReservationDetailStore: StoreProtocol {
         case tabCheckButton // 예약확인 버튼을 눌렀을 경우
         case tabPlusButton // 제품의 더하기버튼을 눌렀을 경우
         case tabMinusButton // 제품의 빼기버튼을 눌렀을 경우
-        case tabCancelButton // 반려 버튼을 눌렀을 경우
-        case tabConfirmButton // 확정 버튼을 눌렀을 경우
+        case tabCancelButton // 취소 버튼을 눌렀을 경우
+        case tabRejectButton // 반려 버튼을 눌렀을 경우
+        case tabCompleteButton // 완료 버튼을 눌렀을 경우
+        case tabComfirmButton // 확정 버튼을 눌렀을 경우
     }
     
     func reduce(action: Action) {
@@ -38,11 +40,31 @@ extension ReservationDetailStore: StoreProtocol {
             // TODO: 로직 구현
             break
         case .tabCancelButton:
-            // TODO: 로직 구현
-            break
-        case .tabConfirmButton:
-            // TODO: 로직 구현
-            break
+            self.tabCancelButton()
+        case .tabCompleteButton:
+            self.tabCompleteButton()
+        case .tabRejectButton:
+            self.tabRejectButton()
+        case .tabComfirmButton:
+            self.tabConfirmButton()
         }
+    }
+}
+
+extension ReservationDetailStore {
+    func tabCancelButton() {
+        self.reservation.state = .cancel
+    }
+    
+    func tabCompleteButton() {
+        self.reservation.state = .complete
+    }
+    
+    func tabConfirmButton() {
+        self.reservation.state = .confirm
+    }
+    
+    func tabRejectButton() {
+        self.reservation.state = .cancel
     }
 }
