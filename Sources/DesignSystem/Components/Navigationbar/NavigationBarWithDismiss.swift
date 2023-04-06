@@ -29,6 +29,7 @@ struct NavigationBarWithDismiss: View {
                 Text(label)
                     .font(SystemFont(size: ._17, weight: .regular))
                     .foregroundColor(.designSystem(.zupzupMain))
+                    .lineLimit(1)
             }
             Spacer()
         }

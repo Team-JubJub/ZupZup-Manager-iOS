@@ -32,7 +32,7 @@ struct ReservationItem: View {
                             .font(SystemFont(size: ._22, weight: .bold))
                     }
                     Spacer()
-                    StateCapsule(state: state)
+                    StateCapsule(state: $state)
                 }
                 .frame(width: Device.Width * 326 / 390)
             }
