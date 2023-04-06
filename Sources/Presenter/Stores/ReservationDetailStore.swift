@@ -13,8 +13,14 @@ class ReservationDetailStore: ObservableObject {
     @Published var reservation: Reservation
     @Published var isChecked: Bool = false
     
-    init(reservation: Reservation) {
+    private let changeStateUseCase: ChangeStateUseCase
+    
+    init(
+        reservation: Reservation,
+        changeStateUseCase: ChangeStateUseCase = ChangeStateUseCaseImpl()
+    ) {
         self.reservation = reservation
+        self.changeStateUseCase = changeStateUseCase
     }
 }
 
@@ -53,18 +59,50 @@ extension ReservationDetailStore: StoreProtocol {
 
 extension ReservationDetailStore {
     func tabCancelButton() {
-        self.reservation.state = .cancel
+        changeStateUseCase.changeState(
+            documentID: reservation.id,
+            state: .cancel
+        ) { result in
+                switch result {
+                case .success: self.reservation.state = .cancel
+                case .failure: break
+            }
+        }
     }
     
     func tabCompleteButton() {
-        self.reservation.state = .complete
+        changeStateUseCase.changeState(
+            documentID: reservation.id,
+            state: .complete
+        ) { result in
+                switch result {
+                case .success: self.reservation.state = .complete
+                case .failure: break
+            }
+        }
     }
     
     func tabConfirmButton() {
-        self.reservation.state = .confirm
+        changeStateUseCase.changeState(
+            documentID: reservation.id,
+            state: .confirm
+        ) { result in
+                switch result {
+                case .success: self.reservation.state = .confirm
+                case .failure: break
+            }
+        }
     }
     
     func tabRejectButton() {
-        self.reservation.state = .cancel
+        changeStateUseCase.changeState(
+            documentID: reservation.id,
+            state: .cancel
+        ) { result in
+                switch result {
+                case .success: self.reservation.state = .cancel
+                case .failure: break
+            }
+        }
     }
 }
