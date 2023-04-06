@@ -20,7 +20,6 @@ class ReservationStore: ObservableObject {
     ) {
         self.reservations = reservations
         self.fetchReserveUseCase = fetchReserveUseCase
-        self.reduce(action: .fetchReservation)
     }
 }
 

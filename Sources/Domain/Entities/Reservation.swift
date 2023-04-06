@@ -9,6 +9,7 @@
 import Foundation
 
 struct Reservation: Hashable {
+    var id: String
     var customerName: String
     var phoneNumber: String
     var state: ReservationState

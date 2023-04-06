@@ -13,4 +13,17 @@ enum ReservationState {
     case confirm
     case complete
     case cancel
+    
+    var rawString: String {
+        switch self {
+        case .new:
+            return "NEW"
+        case .cancel:
+            return "CANCEL"
+        case .confirm:
+            return "CONFIRM"
+        case .complete:
+            return "COMPLETE"
+        }
+    }
 }
