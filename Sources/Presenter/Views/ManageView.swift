@@ -10,14 +10,14 @@ import SwiftUI
 
 struct ManageView: View {
     
-    @State var isEditable: Bool = false
+    @StateObject var store: ManageStore
     
     var body: some View {
         VStack(spacing: 0) {
             VSpacer(height: Device.Height * 47 / 844)
             
             HStack(spacing: 0) {
-                LargeTitleLabel(title: isEditable ? "관리" : "제품 관리")
+                LargeTitleLabel(title: store.isEditable ? "관리" : "제품 관리")
                     .padding(Device.HPadding)
                 Spacer()
             }
@@ -42,9 +42,8 @@ struct ManageView: View {
                         
                         Spacer()
                         
-                        // TODO: TCA 적용해야함
                         Button {
-                            withAnimation { self.isEditable = true }
+                            store.reduce(action: .tabEditButton)
                         } label: {
                             EditButton()
                         }
@@ -55,7 +54,7 @@ struct ManageView: View {
                     VStack(spacing: 8) {
                         ForEach(0..<8) { _ in
                             MyProductItem(
-                                isEditable: $isEditable,
+                                isEditable: $store.isEditable,
                                 count: 8,
                                 title: "제품명",
                                 originalPrice: 3000,
@@ -67,10 +66,9 @@ struct ManageView: View {
                 .navigationTitle("")
             }
             
-            if isEditable {
-                // TODO: 수정해야함
+            if store.isEditable {
                 Button {
-                    withAnimation { self.isEditable = false }
+                    store.reduce(action: .tabEditBottom)
                 } label: {
                     BottomButton(
                         height: 67,

@@ -26,7 +26,8 @@ struct ContentView: View {
                             ReservationView(reservationStore: store)
                                 .onAppear { store.reduce(action: .fetchReservation) }
                         default:
-                            ManageView()
+                            let store = ManageStore()
+                            ManageView(store: store)
                         }
                     }
                     Spacer()
