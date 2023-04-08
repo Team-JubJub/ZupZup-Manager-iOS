@@ -39,9 +39,7 @@ struct ManageView: View {
                     
                     HStack(spacing: 0) {
                         SecondSubTitleLabel(title: "제품 관리")
-                        
                         Spacer()
-                        
                         Button {
                             store.reduce(action: .tabEditButton)
                         } label: {
@@ -53,13 +51,17 @@ struct ManageView: View {
                     
                     VStack(spacing: 8) {
                         ForEach(0..<8) { _ in
-                            MyProductItem(
-                                isEditable: $store.isEditable,
-                                count: 8,
-                                title: "제품명",
-                                originalPrice: 3000,
-                                salePrice: 2400
-                            )
+                            NavigationLink {
+                                ItemView()
+                            } label: {
+                                MyProductItem(
+                                    isEditable: $store.isEditable,
+                                    count: 8,
+                                    title: "제품명",
+                                    originalPrice: 3000,
+                                    salePrice: 2400
+                                )
+                            }
                         }
                     }
                 }

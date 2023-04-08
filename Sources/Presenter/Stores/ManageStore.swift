@@ -33,6 +33,8 @@ extension ManageStore: StoreProtocol {
         case .tabMinusButton:
             // TODO: 비즈니스 로직 구현
             break
+        case .tabItem:
+            break
         }
     }
     
@@ -42,6 +44,7 @@ extension ManageStore: StoreProtocol {
         case tabEditBottom // 하단 수정하기 버튼을 눌렀을 경우
         case tabPlusButton // 제품 개수 더하기 버튼을 눌렀을 경우
         case tabMinusButton // 제품 개수 빼기 버튼을 눌렀을 경우
+        case tabItem // 제품을 눌렀을 경우
     }
 }
 

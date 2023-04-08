@@ -21,5 +21,7 @@ enum AssetName: String {
     case ic_home
     case ic_gift
     case ic_plus_orange
+    case ic_trashTong
+    case ic_edit
     case mockImage
 }
