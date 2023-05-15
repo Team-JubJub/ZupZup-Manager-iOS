@@ -43,7 +43,8 @@ struct ContentView: View {
                     .frame(height: Device.Height * 84 / 844)
                 }
             } else {
-                LoginView(isLogin: $isLogin)
+                let store = LoginStore()
+                LoginView(store: store, isLogin: $isLogin)
             }
         }
     }

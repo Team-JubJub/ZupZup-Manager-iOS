@@ -10,10 +10,8 @@ import SwiftUI
 
 struct LoginView: View {
     
+    @StateObject var store: LoginStore
     @Binding var isLogin: Bool
-    
-    @State var idString: String = ""
-    @State var password: String = ""
     
     var body: some View {
         VStack(spacing: 0) {
@@ -21,9 +19,9 @@ struct LoginView: View {
             BoxImage()
             Spacer()
             
-            IdTextField(idString: $idString)
+            IdTextField(idString: $store.id)
             VSpacer(height: 20)
-            PasswordTextField(password: $password)
+            PasswordTextField(password: $store.password)
             Spacer()
             
             Button {
