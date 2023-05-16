@@ -12,12 +12,14 @@ import Kingfisher
 struct MyProductItem: View {
     
     @Binding var isEditable: Bool
-    @State var count: Int
+    @Binding var count: Int
+    @Binding var url: String
+    @Binding var title: String
+    @Binding var originalPrice: Int
+    @Binding var salePrice: Int
     
-    let url: String
-    let title: String
-    let originalPrice: Int
-    let salePrice: Int
+    let minusAction: () -> Void
+    let plusAction: () -> Void
     
     var body: some View {
         ZStack {
@@ -65,8 +67,7 @@ struct MyProductItem: View {
                 
                 if isEditable {
                     Button {
-                        print("minus Button tapped")
-                        self.count -= 1
+                        minusAction()
                     } label: {
                         Circle()
                             .foregroundColor(.designSystem(.zupzupWarmGray4))
@@ -105,8 +106,7 @@ struct MyProductItem: View {
                         )
                 } else {
                     Button {
-                        print("plus Button tapped")
-                        self.count += 1
+                        plusAction()
                     } label: {
                         Circle()
                             .foregroundColor(.designSystem(.zupzupWarmGray4))

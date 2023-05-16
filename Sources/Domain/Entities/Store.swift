@@ -9,9 +9,9 @@
 import Foundation
 
 struct Store {
-    let name: String
-    let time: String
-    let event: String
-    let discountTime: String
-    let item: [Item]
+    var name: String = ""
+    var time: String = ""
+    var event: String = ""
+    var discountTime: String = ""
+    var items: [Item] = []
 }

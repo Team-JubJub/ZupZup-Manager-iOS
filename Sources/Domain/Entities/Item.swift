@@ -9,9 +9,25 @@
 import Foundation
 
 struct Item: Hashable {
+    var itemId: Int
     var name: String
     var priceOrigin: Int
     var priceDiscount: Int
     var amount: Int
     var imageUrl: String
+    var storeId: Int
+}
+
+extension Item {
+    func toMerchandiseDTO() -> StoreDTO.Merchandise {
+        return StoreDTO.Merchandise(
+            discounted: self.priceDiscount,
+            imgUrl: self.imageUrl,
+            itemId: self.itemId,
+            itemName: self.name,
+            price: self.priceOrigin,
+            stock: self.amount,
+            storeId: self.storeId
+        )
+    }
 }

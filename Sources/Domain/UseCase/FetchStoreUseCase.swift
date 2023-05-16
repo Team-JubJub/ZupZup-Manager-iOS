@@ -24,7 +24,6 @@ final class FetchStoreUseCaseImpl: FetchStoreUseCase {
         storeId: Int,
         completion: @escaping (Result<Store, Error>) -> Void
     ) {
-        print("useCase")
         self.fetchStoreRepository.fetchStore(storeId: storeId) { result in
             switch result {
             case .success(let storeDTO):

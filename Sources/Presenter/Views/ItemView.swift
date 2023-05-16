@@ -9,10 +9,13 @@
 import SwiftUI
 
 struct ItemView: View {
+    
+    @StateObject var itemStore: ItemStore
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
-                LargeTitleLabel(title: "초코 크로와상")
+                LargeTitleLabel(title: itemStore.item.name)
                 Spacer()
                 TrashTongButton {
                     // TODO: 비즈니스 로직 : 삭제 버튼 눌렀을 경우
@@ -53,12 +56,12 @@ struct ItemView: View {
                         }
                     }
                     
-                    RectangleWithTwoLabel(leftText: "메뉴", rightText: "초코 크로와상")
+                    RectangleWithTwoLabel(leftText: "메뉴", rightText: itemStore.item.name)
                     
-                    RectangleWithTwoLabel(leftText: "판매가격", rightText: "3,000원")
+                    RectangleWithTwoLabel(leftText: "판매가격", rightText: "\(itemStore.item.priceOrigin)원")
                     
-                    RectangleWithTwoLabel(leftText: "할인가격", rightText: "1,500원")
-                    
+                    RectangleWithTwoLabel(leftText: "할인가격", rightText: "\(itemStore.item.priceDiscount)원")
+        
                     RectangleWithTwoButton(
                         text: "수량",
                         minusButtonAction: {
