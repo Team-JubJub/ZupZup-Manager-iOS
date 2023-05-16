@@ -38,11 +38,13 @@ public struct StoreDTO: Codable {
 extension StoreDTO.Merchandise {
     func toItem() -> Item {
         return Item(
+            itemId: self.itemId,
             name: self.itemName,
             priceOrigin: self.price,
             priceDiscount: self.discounted,
             amount: self.stock,
-            imageUrl: self.imgUrl
+            imageUrl: self.imgUrl,
+            storeId: self.storeId
         )
     }
 }
@@ -54,7 +56,7 @@ extension StoreDTO {
             time: self.openTime,
             event: self.eventList[0],
             discountTime: self.saleTimeStart.toString(),
-            item: self.merchandiseList.map { $0.toItem() }
+            items: self.merchandiseList.map { $0.toItem() }
         )
     }
 }
