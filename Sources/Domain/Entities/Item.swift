@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Item {
+struct Item: Hashable {
     var name: String
     var priceOrigin: Int
     var priceDiscount: Int

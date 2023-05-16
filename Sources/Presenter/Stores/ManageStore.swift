@@ -10,10 +10,16 @@ import SwiftUI
 
 class ManageStore: ObservableObject {
     
+    private let fetchStoreUseCase: FetchStoreUseCase
+    
+    @Published var store: Store?
+    
     @Published var isEditable: Bool = false
     @Published var isAddable: Bool = false
     
-    init() {}
+    init(fetchStoreUseCase: FetchStoreUseCase = FetchStoreUseCaseImpl()) {
+        self.fetchStoreUseCase = fetchStoreUseCase
+    }
 }
 
 // MARK: 상태 & 액션 정의 : StoreProtocol
@@ -21,8 +27,7 @@ extension ManageStore: StoreProtocol {
     func reduce(action: Action) {
         switch action {
         case .fetchStore:
-            // TODO: 가게 정보 불러오기
-            break
+            self.fetchStore(storeId: 1)
         case .tabEditButton:
             self.tabEditButton()
         case .tabEditBottom:
@@ -50,6 +55,19 @@ extension ManageStore: StoreProtocol {
 
 // MARK: 비즈니스 로직 구현
 extension ManageStore {
+    
+    private func fetchStore(storeId: Int) {
+        self.fetchStoreUseCase.fetchStore(storeId: storeId) { result in
+            switch result {
+            case .success(let store):
+                dump(store)
+                self.store = store
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     private func tabEditButton() {
         withAnimation { self.isEditable = true }
     }

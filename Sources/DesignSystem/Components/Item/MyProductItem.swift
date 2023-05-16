@@ -7,12 +7,14 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MyProductItem: View {
     
     @Binding var isEditable: Bool
     @State var count: Int
     
+    let url: String
     let title: String
     let originalPrice: Int
     let salePrice: Int
@@ -24,7 +26,7 @@ struct MyProductItem: View {
                 .frame(width: Device.Width * 358 / 390, height: 73)
             
             HStack(spacing: 0) {
-                Image(assetName: .mockImage)
+                KFImage(URL(string: url))
                     .resizable()
                     .frame(width: Device.Width * 84 / 390, height: 73)
                 
