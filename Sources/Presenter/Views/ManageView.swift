@@ -10,14 +10,14 @@ import SwiftUI
 
 struct ManageView: View {
     
-    @StateObject var store: ManageStore
+    @StateObject var manageStore: ManageStore
     
     var body: some View {
         VStack(spacing: 0) {
             VSpacer(height: Device.Height * 47 / 844)
             
             HStack(spacing: 0) {
-                LargeTitleLabel(title: store.isEditable ? "관리" : "제품 관리")
+                LargeTitleLabel(title: manageStore.isEditable ? "관리" : "제품 관리")
                     .padding(Device.HPadding)
                 Spacer()
             }
@@ -30,9 +30,9 @@ struct ManageView: View {
                     SecondSubTitleLabel(title: "가게 관리")
                     
                     StoreInfoView(
-                        store: "맥도날드",
-                        event: "현금결제시 500원 할인",
-                        time: "19:00 ~ 19:20"
+                        store: manageStore.store?.name ?? "",
+                        event: manageStore.store?.event ?? "",
+                        time: manageStore.store?.time ?? ""
                     )
                     
                     VSpacer(height: Device.Height * 62 / 844)
@@ -41,7 +41,7 @@ struct ManageView: View {
                         SecondSubTitleLabel(title: "제품 관리")
                         Spacer()
                         Button {
-                            store.reduce(action: .tabEditButton)
+                            manageStore.reduce(action: .tabEditButton)
                         } label: {
                             EditButton()
                         }
@@ -50,16 +50,17 @@ struct ManageView: View {
                     VSpacer(height: Device.Height * 24 / 844)
                     
                     VStack(spacing: 8) {
-                        ForEach(0..<8) { _ in
+                        ForEach(manageStore.store?.item ?? [], id: \.self) { item in
                             NavigationLink {
                                 ItemView()
                             } label: {
                                 MyProductItem(
-                                    isEditable: $store.isEditable,
-                                    count: 8,
-                                    title: "제품명",
-                                    originalPrice: 3000,
-                                    salePrice: 2400
+                                    isEditable: $manageStore.isEditable,
+                                    count: item.amount,
+                                    url: item.imageUrl,
+                                    title: item.name,
+                                    originalPrice: item.priceOrigin,
+                                    salePrice: item.priceDiscount
                                 )
                             }
                         }
@@ -68,9 +69,9 @@ struct ManageView: View {
                 .navigationTitle("")
             }
             
-            if store.isEditable {
+            if manageStore.isEditable {
                 Button {
-                    store.reduce(action: .tabEditBottom)
+                    manageStore.reduce(action: .tabEditBottom)
                 } label: {
                     BottomButton(
                         height: 67,
