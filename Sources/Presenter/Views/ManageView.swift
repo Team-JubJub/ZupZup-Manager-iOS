@@ -30,9 +30,9 @@ struct ManageView: View {
                     SecondSubTitleLabel(title: "가게 관리")
                     
                     StoreInfoView(
-                        store: manageStore.store?.name ?? "",
-                        event: manageStore.store?.event ?? "",
-                        time: manageStore.store?.time ?? ""
+                        store: manageStore.store.name,
+                        event: manageStore.store.event,
+                        time: manageStore.store.time
                     )
                     
                     VSpacer(height: Device.Height * 62 / 844)
@@ -50,17 +50,20 @@ struct ManageView: View {
                     VSpacer(height: Device.Height * 24 / 844)
                     
                     VStack(spacing: 8) {
-                        ForEach(manageStore.store?.item ?? [], id: \.self) { item in
+                        ForEach(manageStore.store.items.indices, id: \.self) { idx in
                             NavigationLink {
-                                ItemView()
+                                let itemStore = ItemStore(item: manageStore.store.items[idx])
+                                ItemView(itemStore: itemStore)
                             } label: {
                                 MyProductItem(
                                     isEditable: $manageStore.isEditable,
-                                    count: item.amount,
-                                    url: item.imageUrl,
-                                    title: item.name,
-                                    originalPrice: item.priceOrigin,
-                                    salePrice: item.priceDiscount
+                                    count: $manageStore.store.items[idx].amount,
+                                    url: $manageStore.store.items[idx].imageUrl,
+                                    title: $manageStore.store.items[idx].name,
+                                    originalPrice: $manageStore.store.items[idx].priceOrigin,
+                                    salePrice: $manageStore.store.items[idx].priceDiscount,
+                                    minusAction: { manageStore.reduce(action: .tabMinusButton, idx: idx) },
+                                    plusAction: { manageStore.reduce(action: .tabPlusButton, idx: idx) }
                                 )
                             }
                         }
@@ -71,7 +74,7 @@ struct ManageView: View {
             
             if manageStore.isEditable {
                 Button {
-                    manageStore.reduce(action: .tabEditBottom)
+                    manageStore.reduce(action: .tabEditBottomButton)
                 } label: {
                     BottomButton(
                         height: 67,

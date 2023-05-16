@@ -11,14 +11,20 @@ import SwiftUI
 class ManageStore: ObservableObject {
     
     private let fetchStoreUseCase: FetchStoreUseCase
+    private let updateItemCountUseCase: UpdateItemCountUseCase
     
-    @Published var store: Store?
+    @Published var store = Store()
     
     @Published var isEditable: Bool = false
     @Published var isAddable: Bool = false
     
-    init(fetchStoreUseCase: FetchStoreUseCase = FetchStoreUseCaseImpl()) {
+    init(
+        fetchStoreUseCase: FetchStoreUseCase = FetchStoreUseCaseImpl(),
+        updateItemCountUseCase: UpdateItemCountUseCase = UpdateItemCountUseCaseImpl()
+    ) {
         self.fetchStoreUseCase = fetchStoreUseCase
+        self.updateItemCountUseCase = updateItemCountUseCase
+        self.reduce(action: .fetchStore)
     }
 }
 
@@ -27,18 +33,25 @@ extension ManageStore: StoreProtocol {
     func reduce(action: Action) {
         switch action {
         case .fetchStore:
-            self.fetchStore(storeId: 1)
+            self.fetchStore(storeId: 9)
         case .tabEditButton:
             self.tabEditButton()
-        case .tabEditBottom:
-            self.tabEditBottom()
-        case .tabPlusButton:
-            // TODO: 비즈니스 로직 구현
-            break
-        case .tabMinusButton:
-            // TODO: 비즈니스 로직 구현
-            break
+        case .tabEditBottomButton:
+            self.tabEditBottomButton()
         case .tabItem:
+            break
+        default:
+            break
+        }
+    }
+    
+    func reduce(action: Action, idx: Int) {
+        switch action {
+        case .tabPlusButton:
+            self.tabPlusButton(idx: idx)
+        case .tabMinusButton:
+            self.tabMinusButton(idx: idx)
+        default:
             break
         }
     }
@@ -46,7 +59,7 @@ extension ManageStore: StoreProtocol {
     enum Action {
         case fetchStore
         case tabEditButton // 수정하기 버튼을 눌렀을 경우
-        case tabEditBottom // 하단 수정하기 버튼을 눌렀을 경우
+        case tabEditBottomButton // 하단 수정하기 버튼을 눌렀을 경우
         case tabPlusButton // 제품 개수 더하기 버튼을 눌렀을 경우
         case tabMinusButton // 제품 개수 빼기 버튼을 눌렀을 경우
         case tabItem // 제품을 눌렀을 경우
@@ -60,7 +73,6 @@ extension ManageStore {
         self.fetchStoreUseCase.fetchStore(storeId: storeId) { result in
             switch result {
             case .success(let store):
-                dump(store)
                 self.store = store
             case .failure(let error):
                 print(error.localizedDescription)
@@ -72,7 +84,24 @@ extension ManageStore {
         withAnimation { self.isEditable = true }
     }
     
-    private func tabEditBottom() {
+    private func tabEditBottomButton() {
+        self.updateItemCountUseCase.updateItemCount(id: 9, self.store.items) { result in
+            switch result {
+            case .success:
+                print("success")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
         withAnimation { self.isEditable = false }
+    }
+    
+    private func tabPlusButton(idx: Int) {
+        self.store.items[idx].amount += 1
+        dump(self.store.items[idx])
+    }
+    
+    private func tabMinusButton(idx: Int) {
+        self.store.items[idx].amount -= 1
     }
 }
