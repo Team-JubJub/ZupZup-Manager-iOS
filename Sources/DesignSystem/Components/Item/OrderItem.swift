@@ -10,10 +10,13 @@ import SwiftUI
 
 struct OrderItem: View {
     
-    let itemName: String
-    let price: String
-    @State var count: Int
+    @Binding var itemName: String
+    @Binding var price: Int
+    @Binding var count: Int
     @Binding var state: ReservationState
+    
+    let minusAction: () -> Void
+    let plusAction: () -> Void
     
     var body: some View {
         ZStack {
@@ -30,7 +33,7 @@ struct OrderItem: View {
                     Text(itemName)
                         .font(SystemFont(size: ._17, weight: .semibold))
                         .foregroundColor(.designSystem(.Secondary))
-                    Text(price)
+                    Text("\(price)원")
                         .font(SystemFont(size: ._13, weight: .semibold))
                         .foregroundColor(.designSystem(.zupzupMain))
                 }
@@ -38,7 +41,7 @@ struct OrderItem: View {
                     HStack(spacing: 0) {
                         if state == .new {
                             Button {
-                                count -= 1
+                                minusAction()
                             } label: {
                                 ZStack {
                                     Circle()
@@ -64,7 +67,7 @@ struct OrderItem: View {
                         
                         if state == .new {
                             Button {
-                                count += 1
+                                plusAction()
                             } label: {
                                 ZStack {
                                     Circle()

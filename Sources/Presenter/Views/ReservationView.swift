@@ -19,11 +19,10 @@ struct ReservationView: View {
                 ForEach(reservationStore.reservations, id: \.self) { reservation in
                     NavigationLink {
                         let store = ReservationDetailStore(
-                            reservation: reservation
+                            reservation: reservation,
+                            store: reservationStore.store
                         )
-                        ReserveDetailView(
-                            store: store
-                        )
+                        ReserveDetailView(store: store)
                     } label: {
                         ReservationItem(
                             date: reservation.date,

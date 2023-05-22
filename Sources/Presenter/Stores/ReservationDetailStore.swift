@@ -11,16 +11,22 @@ import Foundation
 class ReservationDetailStore: ObservableObject {
     
     @Published var reservation: Reservation
+    @Published var store: Store
     @Published var isChecked: Bool = false
     
     private let changeStateUseCase: ChangeStateUseCase
+    private let updateItemCountUseCase: UpdateItemCountUseCase
     
     init(
         reservation: Reservation,
-        changeStateUseCase: ChangeStateUseCase = ChangeStateUseCaseImpl()
+        store: Store,
+        changeStateUseCase: ChangeStateUseCase = ChangeStateUseCaseImpl(),
+        updateItemCountUseCase: UpdateItemCountUseCase = UpdateItemCountUseCaseImpl()
     ) {
         self.reservation = reservation
+        self.store = store
         self.changeStateUseCase = changeStateUseCase
+        self.updateItemCountUseCase = updateItemCountUseCase
     }
 }
 
@@ -39,12 +45,6 @@ extension ReservationDetailStore: StoreProtocol {
         switch action {
         case .tabCheckButton:
             self.isChecked = true
-        case .tabPlusButton:
-            // TODO: 로직 구현
-            break
-        case .tabMinusButton:
-            // TODO: 로직 구현
-            break
         case .tabCancelButton:
             self.tabCancelButton()
         case .tabCompleteButton:
@@ -53,55 +53,93 @@ extension ReservationDetailStore: StoreProtocol {
             self.tabRejectButton()
         case .tabComfirmButton:
             self.tabConfirmButton()
+        default:
+            break
+        }
+    }
+    
+    func reduce(action: Action, idx: Int) {
+        switch action {
+        case .tabMinusButton:
+            self.tabMinusButton(idx: idx)
+        case.tabPlusButton:
+            self.tabPlusButton(idx: idx)
+        default:
+            break
         }
     }
 }
 
 extension ReservationDetailStore {
-    func tabCancelButton() {
+    
+    private func tabPlusButton(idx: Int) {
+        self.reservation.cartList[idx].amount += 1
+    }
+    
+    private func tabMinusButton(idx: Int) {
+        self.reservation.cartList[idx].amount -= 1
+    }
+    
+    private func tabCancelButton() {
         changeStateUseCase.changeState(
             documentID: reservation.id,
             state: .cancel
         ) { result in
-                switch result {
-                case .success: self.reservation.state = .cancel
-                case .failure: break
+            switch result {
+            case .success: self.reservation.state = .cancel
+            case .failure: break
             }
         }
     }
     
-    func tabCompleteButton() {
+    private func tabCompleteButton() {
         changeStateUseCase.changeState(
             documentID: reservation.id,
             state: .complete
         ) { result in
-                switch result {
-                case .success: self.reservation.state = .complete
-                case .failure: break
+            switch result {
+            case .success: self.reservation.state = .complete
+            case .failure: break
             }
         }
     }
     
-    func tabConfirmButton() {
-        changeStateUseCase.changeState(
-            documentID: reservation.id,
-            state: .confirm
-        ) { result in
-                switch result {
-                case .success: self.reservation.state = .confirm
-                case .failure: break
+    private func tabConfirmButton() {
+        
+        for cart in reservation.cartList {
+            if let index = store.items.firstIndex(where: { $0.itemId == cart.itemId }) {
+                var item = store.items[index]
+                item.amount -= cart.amount
+                store.items[index] = item
+            }
+        }
+        
+        updateItemCountUseCase.updateItemCount(id: 9, store.items) { result in
+            switch result {
+            case .success:
+                self.changeStateUseCase.changeState(
+                    documentID: self.reservation.id,
+                    state: .confirm
+                ) { result in
+                    switch result {
+                    case .success: self.reservation.state = .confirm
+                    case .failure: break
+                    }
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
     
-    func tabRejectButton() {
+    private func tabRejectButton() {
         changeStateUseCase.changeState(
             documentID: reservation.id,
             state: .cancel
         ) { result in
-                switch result {
-                case .success: self.reservation.state = .cancel
-                case .failure: break
+            switch result {
+            case .success: self.reservation.state = .cancel
+            case .failure: break
             }
         }
     }

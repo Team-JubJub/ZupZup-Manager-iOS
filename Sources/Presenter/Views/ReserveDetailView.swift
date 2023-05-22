@@ -51,12 +51,14 @@ struct ReserveDetailView: View {
                         VSpacer(height: Device.Height * 21 / 844)
                         
                         VStack(spacing: 8) {
-                            ForEach(store.reservation.cartList, id: \.self) { item in
+                            ForEach(store.reservation.cartList.indices, id: \.self) { idx in
                                 OrderItem(
-                                    itemName: item.name,
-                                    price: "\(item.salesPrice)원",
-                                    count: item.amount,
-                                    state: $store.reservation.state
+                                    itemName: $store.reservation.cartList[idx].name,
+                                    price: $store.reservation.cartList[idx].salesPrice,
+                                    count: $store.reservation.cartList[idx].amount,
+                                    state: $store.reservation.state,
+                                    minusAction: { store.reduce(action: .tabMinusButton, idx: idx) },
+                                    plusAction: { store.reduce(action: .tabPlusButton, idx: idx) }
                                 )
                             }
                         }

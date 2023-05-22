@@ -98,7 +98,6 @@ extension ManageStore {
     
     private func tabPlusButton(idx: Int) {
         self.store.items[idx].amount += 1
-        dump(self.store.items[idx])
     }
     
     private func tabMinusButton(idx: Int) {
