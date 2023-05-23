@@ -18,8 +18,7 @@ struct ItemView: View {
                 LargeTitleLabel(title: itemStore.item.name)
                 Spacer()
                 TrashTongButton {
-                    // TODO: 비즈니스 로직 : 삭제 버튼 눌렀을 경우
-                    print("tab TrashTong")
+                    itemStore.reduce(action: .tabTrashTong)
                 }
             }
             .frame(width: Device.Width * 358 / 390)
@@ -36,7 +35,7 @@ struct ItemView: View {
                 VStack(spacing: Device.VPadding) {
                     ZStack {
                         // TODO: 이미지 피커로 교체
-                        Image(assetName: .mockImage)
+                        Image(uiImage: (itemStore.selectedImage ?? UIImage(named: "mockImage"))!)
                             .resizable()
                             .frame(
                                 width: Device.WidthWithPadding,
@@ -46,13 +45,15 @@ struct ItemView: View {
                         
                         GeometryReader { geometry in
                             ImagePickerButton {
-                                // TODO: 비즈니스로직 - 이미지 피커 눌렀을 경우
-                                print("tab ImagePickerButton")
+                                itemStore.reduce(action: .tabImagePickerButton)
                             }
                             .offset(
                                 x: geometry.size.width - 88,
                                 y: geometry.size.height - 72
                             )
+                            .sheet(isPresented: $itemStore.isShowingImagePicker) {
+                                ImagePicker(selectedImage: $itemStore.selectedImage)
+                            }
                         }
                     }
                     
@@ -65,12 +66,10 @@ struct ItemView: View {
                     RectangleWithTwoButton(
                         text: "수량",
                         minusButtonAction: {
-                            // TODO: 비즈니스 로직 - 마이너스 버튼을 탭한 경우
-                            print("tab minusButtonAction")
+                            itemStore.reduce(action: .tabMinusButton)
                         },
                         plusButtonAction: {
-                            // TODO: 비즈니스 로직 - 플러스 버튼을 탭한 경우
-                            print("tab plusButtonAction")
+                            itemStore.reduce(action: .tabPlusButton)
                         }
                     )
                 }
@@ -83,6 +82,5 @@ struct ItemView: View {
                 textColor: .designSystem(.OffWhite)!
             )
         }
-        
     }
 }
