@@ -26,6 +26,21 @@ struct ItemView: View {
                 TrashTongButton {
                     itemStore.reduce(action: .tabTrashTong)
                 }
+                .alert(
+                    "제품 관리",
+                    isPresented: $itemStore.isShowingAlert,
+                    actions: {
+                        Button("삭제", role: .destructive) {
+                            itemStore.reduce(action: .tabAlertDelete)
+                        }
+                        Button("아니오", role: .cancel) {
+                            itemStore.reduce(action: .tabAlertCancel)
+                        }
+                    },
+                    message: {
+                        Text("제품을 리스트에서 삭제합니다.")
+                    }
+                )
             }
             .frame(width: Device.Width * 358 / 390)
             .padding(
@@ -95,7 +110,7 @@ struct ItemView: View {
                     RectangleWithTwoLabel(leftText: "판매가격", rightText: $itemStore.priceString, textType: .number)
                     
                     RectangleWithTwoLabel(leftText: "할인가격", rightText: $itemStore.discountString, textType: .number)
-        
+                    
                     RectangleWithTwoButton(
                         text: "수량",
                         count: $itemStore.item.amount,

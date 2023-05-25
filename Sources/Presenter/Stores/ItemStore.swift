@@ -14,6 +14,7 @@ class ItemStore: ObservableObject {
     
     @Published var item: Item
     @Published var isShowingImagePicker: Bool = false
+    @Published var isShowingAlert: Bool = false
     @Published var selectedImage: UIImage?
     
     @Published var priceString: String
@@ -34,6 +35,8 @@ extension ItemStore: StoreProtocol {
         case tabMinusButton
         case tabPlusButton
         case tabBottomButton
+        case tabAlertDelete
+        case tabAlertCancel
     }
     
     func reduce(action: Action) {
@@ -48,6 +51,10 @@ extension ItemStore: StoreProtocol {
             self.tabPlusButton()
         case .tabBottomButton:
             self.tabBottomButton()
+        case .tabAlertDelete:
+            self.tabAlertDelete()
+        case .tabAlertCancel:
+            self.tabAlertCancel()
         }
     }
 }
@@ -58,7 +65,15 @@ extension ItemStore {
     }
     
     func tabTrashTong() {
+        self.isShowingAlert = true
+    }
+    
+    func tabAlertDelete() {
         manageStore?.deleteItem(itemId: self.item.itemId)
+    }
+    
+    func tabAlertCancel() {
+        self.isShowingAlert = false
     }
     
     func tabMinusButton() {
