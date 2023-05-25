@@ -7,13 +7,19 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ItemView: View {
+    
+    @Environment(\.dismiss) private var dismiss
     
     @StateObject var itemStore: ItemStore
     
     var body: some View {
         VStack(spacing: 0) {
+            NavigationBarWithDismiss(label: "제품 관리")
+            VSpacer(height: Device.Height * 2 / 844)
+            
             HStack(spacing: 0) {
                 LargeTitleLabel(title: itemStore.item.name)
                 Spacer()
@@ -34,14 +40,41 @@ struct ItemView: View {
             ScrollView {
                 VStack(spacing: Device.VPadding) {
                     ZStack {
-                        // TODO: 이미지 피커로 교체
-                        Image(uiImage: (itemStore.selectedImage ?? UIImage(named: "mockImage"))!)
-                            .resizable()
-                            .frame(
-                                width: Device.WidthWithPadding,
-                                height: Device.WidthWithPadding
-                            )
-                            .cornerRadius(Device.cornerRadious)
+                        ZStack {
+                            if itemStore.selectedImage == nil {
+                                KFImage(URL(string: itemStore.item.imageUrl))
+                                    .placeholder {
+                                        Image(assetName: .mockImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(
+                                                width: Device.WidthWithPadding,
+                                                height: Device.WidthWithPadding
+                                            )
+                                            .cornerRadius(Device.cornerRadious)
+                                            .clipped()
+                                    }
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(
+                                        width: Device.WidthWithPadding,
+                                        height: Device.WidthWithPadding
+                                    )
+                                    .cornerRadius(Device.cornerRadious)
+                                    .clipped()
+                            } else {
+                                Image(uiImage: (itemStore.selectedImage ?? UIImage(named: "mockImage"))!)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(
+                                        width: Device.WidthWithPadding,
+                                        height: Device.WidthWithPadding
+                                    )
+                                    .cornerRadius(Device.cornerRadious)
+                                    .clipped()
+                            }
+                            
+                        }
                         
                         GeometryReader { geometry in
                             ImagePickerButton {
@@ -57,14 +90,15 @@ struct ItemView: View {
                         }
                     }
                     
-                    RectangleWithTwoLabel(leftText: "메뉴", rightText: itemStore.item.name)
+                    RectangleWithTwoLabel(leftText: "메뉴", rightText: $itemStore.item.name, textType: .text)
                     
-                    RectangleWithTwoLabel(leftText: "판매가격", rightText: "\(itemStore.item.priceOrigin)원")
+                    RectangleWithTwoLabel(leftText: "판매가격", rightText: $itemStore.priceString, textType: .number)
                     
-                    RectangleWithTwoLabel(leftText: "할인가격", rightText: "\(itemStore.item.priceDiscount)원")
+                    RectangleWithTwoLabel(leftText: "할인가격", rightText: $itemStore.discountString, textType: .number)
         
                     RectangleWithTwoButton(
                         text: "수량",
+                        count: $itemStore.item.amount,
                         minusButtonAction: {
                             itemStore.reduce(action: .tabMinusButton)
                         },
@@ -73,6 +107,9 @@ struct ItemView: View {
                         }
                     )
                 }
+                .onTapGesture {
+                    itemStore.hideKeyboard()
+                }
             }
             .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
             
@@ -80,7 +117,12 @@ struct ItemView: View {
                 height: Device.Height * 64 / 844,
                 text: "수정하기",
                 textColor: .designSystem(.OffWhite)!
-            )
+            ) {
+                itemStore.reduce(action: .tabBottomButton)
+                dismiss()
+            }
         }
+        .navigationTitle("")
+        .navigationBarHidden(true)
     }
 }

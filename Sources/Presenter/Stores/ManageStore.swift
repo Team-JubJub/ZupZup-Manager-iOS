@@ -17,6 +17,7 @@ class ManageStore: ObservableObject {
     
     @Published var isEditable: Bool = false
     @Published var isAddable: Bool = false
+    @Published var isLoading: Bool = false
     
     init(
         fetchStoreUseCase: FetchStoreUseCase = FetchStoreUseCaseImpl(),
@@ -70,10 +71,12 @@ extension ManageStore: StoreProtocol {
 extension ManageStore {
     
     private func fetchStore(storeId: Int) {
+        self.isLoading = true
         self.fetchStoreUseCase.fetchStore(storeId: storeId) { result in
             switch result {
             case .success(let store):
                 self.store = store
+                self.isLoading = false
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -102,5 +105,21 @@ extension ManageStore {
     
     private func tabMinusButton(idx: Int) {
         self.store.items[idx].amount -= 1
+    }
+    
+    func updateItem(newItem: Item) {
+        if let index = store.items.firstIndex(where: { $0.itemId == newItem.itemId }) {
+            store.items[index] = newItem
+        }
+    }
+    
+    func appendItem(item: Item) {
+        self.store.items.append(item)
+    }
+    
+    func deleteItem(itemId: Int) {
+        if let index = store.items.firstIndex(where: { $0.itemId == itemId }) {
+            self.store.items.remove(at: index)
+        }
     }
 }

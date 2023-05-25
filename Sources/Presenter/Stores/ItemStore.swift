@@ -10,12 +10,20 @@ import SwiftUI
 
 class ItemStore: ObservableObject {
     
+    weak var manageStore: ManageStore?
+    
     @Published var item: Item
     @Published var isShowingImagePicker: Bool = false
     @Published var selectedImage: UIImage?
     
-    init(item: Item) {
+    @Published var priceString: String
+    @Published var discountString: String
+    
+    init(item: Item, manageStore: ManageStore) {
         self.item = item
+        self.priceString = item.priceOrigin.toString()
+        self.discountString = item.priceDiscount.toString()
+        self.manageStore = manageStore
     }
 }
 
@@ -25,6 +33,7 @@ extension ItemStore: StoreProtocol {
         case tabTrashTong
         case tabMinusButton
         case tabPlusButton
+        case tabBottomButton
     }
     
     func reduce(action: Action) {
@@ -37,6 +46,8 @@ extension ItemStore: StoreProtocol {
             self.tabMinusButton()
         case .tabPlusButton:
             self.tabPlusButton()
+        case .tabBottomButton:
+            self.tabBottomButton()
         }
     }
 }
@@ -47,14 +58,27 @@ extension ItemStore {
     }
     
     func tabTrashTong() {
-        
+        manageStore?.deleteItem(itemId: self.item.itemId)
     }
     
     func tabMinusButton() {
-        
+        self.item.amount -= 1
     }
     
     func tabPlusButton() {
+        self.item.amount += 1
+    }
+    
+    func tabBottomButton() {
+        guard let priceOrigin = Int(priceString) else { return }
+        guard let priceDiscount = Int(discountString) else { return }
+        self.item.priceOrigin = priceOrigin
+        self.item.priceDiscount = priceDiscount
         
+        manageStore?.updateItem(newItem: self.item)
+    }
+    
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
