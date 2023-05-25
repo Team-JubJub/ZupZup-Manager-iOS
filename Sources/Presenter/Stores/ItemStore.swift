@@ -13,8 +13,11 @@ class ItemStore: ObservableObject {
     weak var manageStore: ManageStore?
     
     @Published var item: Item
+    
     @Published var isShowingImagePicker: Bool = false
     @Published var isShowingAlert: Bool = false
+    @Published var isShowingEmptyAlert: Bool = false
+    
     @Published var selectedImage: UIImage?
     
     @Published var priceString: String
@@ -37,6 +40,7 @@ extension ItemStore: StoreProtocol {
         case tabBottomButton
         case tabAlertDelete
         case tabAlertCancel
+        case checkTextfieldEmpty
     }
     
     func reduce(action: Action) {
@@ -55,6 +59,8 @@ extension ItemStore: StoreProtocol {
             self.tabAlertDelete()
         case .tabAlertCancel:
             self.tabAlertCancel()
+        case .checkTextfieldEmpty:
+            self.checkTextfieldEmpty()
         }
     }
 }
@@ -77,7 +83,7 @@ extension ItemStore {
     }
     
     func tabMinusButton() {
-        self.item.amount -= 1
+        if self.item.amount > 0 { self.item.amount -= 1 }
     }
     
     func tabPlusButton() {
@@ -91,6 +97,14 @@ extension ItemStore {
         self.item.priceDiscount = priceDiscount
         
         manageStore?.updateItem(newItem: self.item)
+    }
+    
+    func checkTextfieldEmpty() {
+        if item.name.isEmpty {
+            self.isShowingEmptyAlert = true
+        } else {
+            self.isShowingEmptyAlert = false
+        }
     }
     
     func hideKeyboard() {

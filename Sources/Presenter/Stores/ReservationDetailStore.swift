@@ -77,7 +77,7 @@ extension ReservationDetailStore {
     }
     
     private func tabMinusButton(idx: Int) {
-        self.reservation.cartList[idx].amount -= 1
+        if self.reservation.cartList[idx].amount > 0 { self.reservation.cartList[idx].amount -= 1 }
     }
     
     private func tabCancelButton() {

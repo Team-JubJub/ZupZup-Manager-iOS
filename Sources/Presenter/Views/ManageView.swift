@@ -27,7 +27,7 @@ struct ManageView: View {
                     Spacer()
                     if manageStore.isEditable {
                         NavigationLink {
-                            AddItemView(addItemStore: AddItemStore(itemId: manageStore.store.items.count, manageStore: manageStore))
+                            AddItemView(addItemStore: AddItemStore(itemId: manageStore.getNewItemId(), manageStore: manageStore))
                         } label: {
                             Image(assetName: .ic_plus_orange)
                                 .resizable()

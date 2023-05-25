@@ -104,7 +104,7 @@ extension ManageStore {
     }
     
     private func tabMinusButton(idx: Int) {
-        self.store.items[idx].amount -= 1
+        if self.store.items[idx].amount > 0 { self.store.items[idx].amount -= 1 }
     }
     
     func updateItem(newItem: Item) {
@@ -121,5 +121,14 @@ extension ManageStore {
         if let index = store.items.firstIndex(where: { $0.itemId == itemId }) {
             self.store.items.remove(at: index)
         }
+    }
+    
+    func getNewItemId() -> Int {
+        guard let maxItemId = store.items.max(
+            by: { $0.itemId < $1.itemId }
+        )?.itemId else {
+            return 0
+        }
+        return maxItemId + 1
     }
 }

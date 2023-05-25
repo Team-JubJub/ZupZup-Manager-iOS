@@ -13,12 +13,13 @@ class AddItemStore: ObservableObject {
     weak var manageStore: ManageStore?
     
     private let itemId: Int
-    @Published var name: String = ""
+    @Published var count: Int = 0
     @Published var selectedImage: UIImage?
+    @Published var name: String = ""
     @Published var priceString: String = "0"
     @Published var discountString: String = "0"
     @Published var isShowingImagePicker: Bool = false
-    @Published var count: Int = 0
+    @Published var isShowingAlert: Bool = false
     
     init(itemId: Int, manageStore: ManageStore) {
         self.itemId = itemId
@@ -32,6 +33,8 @@ extension AddItemStore: StoreProtocol {
         case tabMinusButton
         case tabPlusButton
         case tabBottomButton
+        case alertOkButton
+        case alertCancelButton
     }
     
     func reduce(action: Action) {
@@ -44,6 +47,10 @@ extension AddItemStore: StoreProtocol {
             self.tabPlusButton()
         case .tabBottomButton:
             self.tabBottomButton()
+        case .alertOkButton:
+            self.tabAlertOkButton()
+        case .alertCancelButton:
+            self.tabAlertCancelButton()
         }
     }
 }
@@ -54,7 +61,7 @@ extension AddItemStore {
     }
     
     func tabMinusButton() {
-        self.count -= 1
+       if self.count >= 1 { self.count -= 1 }
     }
     
     func tabPlusButton() {
@@ -62,9 +69,14 @@ extension AddItemStore {
     }
     
     func tabBottomButton() {
+        self.isShowingAlert = true
+    }
+    
+    func tabAlertOkButton() {
         guard let priceOrigin = Int(priceString) else { return }
         guard let priceDiscount = Int(discountString) else { return }
         
+        // TODO: 스토어 아이디 수정
         let item = Item(
             itemId: self.itemId,
             name: self.name,
@@ -76,7 +88,10 @@ extension AddItemStore {
         )
         
         manageStore?.appendItem(item: item)
-        
+    }
+    
+    func tabAlertCancelButton() {
+        self.isShowingAlert = false
     }
     
     func hideKeyboard() {
