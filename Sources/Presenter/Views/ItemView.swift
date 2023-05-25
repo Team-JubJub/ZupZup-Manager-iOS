@@ -32,6 +32,7 @@ struct ItemView: View {
                     actions: {
                         Button("삭제", role: .destructive) {
                             itemStore.reduce(action: .tabAlertDelete)
+                            dismiss()
                         }
                         Button("아니오", role: .cancel) {
                             itemStore.reduce(action: .tabAlertCancel)
@@ -39,6 +40,17 @@ struct ItemView: View {
                     },
                     message: {
                         Text("제품을 리스트에서 삭제합니다.")
+                    }
+                )
+                .alert(
+                    "앗!",
+                    isPresented: $itemStore.isShowingEmptyAlert,
+                    actions: {
+                        Button("확인", role: .cancel) {
+                        }
+                    },
+                    message: {
+                        Text("제품의 이름을 추가해주세요.")
                     }
                 )
             }
@@ -134,7 +146,7 @@ struct ItemView: View {
                 textColor: .designSystem(.OffWhite)!
             ) {
                 itemStore.reduce(action: .tabBottomButton)
-                dismiss()
+                itemStore.reduce(action: .checkTextfieldEmpty)
             }
         }
         .navigationTitle("")

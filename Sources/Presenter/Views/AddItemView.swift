@@ -94,10 +94,25 @@ struct AddItemView: View {
                 textColor: .designSystem(.OffWhite)!
             ) {
                 addItemStore.reduce(action: .tabBottomButton)
-                dismiss()
             }
         }
         .navigationTitle("")
         .navigationBarHidden(true)
+        .alert(
+            "제품 추가",
+            isPresented: $addItemStore.isShowingAlert,
+            actions: {
+                Button("아니오", role: .destructive) {
+                    addItemStore.reduce(action: .alertCancelButton)
+                }
+                Button("네", role: .cancel) {
+                    addItemStore.reduce(action: .alertOkButton)
+                    dismiss()
+                }
+            },
+            message: {
+                Text("제품을 추가하시겠습니까?")
+            }
+        )
     }
 }
