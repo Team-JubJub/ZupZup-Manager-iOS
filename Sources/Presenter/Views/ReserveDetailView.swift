@@ -70,23 +70,21 @@ struct ReserveDetailView: View {
                 
                 switch store.reservation.state {
                 case .new:
-                    Button {
+                    BottomButton(
+                        height: 64,
+                        text: "예약 확인하기",
+                        textColor: .designSystem(.OffWhite)!
+                    ) {
                         store.reduce(action: .tabCheckButton)
-                    } label: {
-                        BottomButton(
-                            height: 64,
-                            text: "예약 확인하기",
-                            textColor: .designSystem(.OffWhite)!
-                        )
-                        .padding(
-                            EdgeInsets(
-                                top: 0,
-                                leading: 0,
-                                bottom: Device.VPadding / 2,
-                                trailing: 0
-                            )
-                        )
                     }
+                    .padding(
+                        EdgeInsets(
+                            top: 0,
+                            leading: 0,
+                            bottom: Device.VPadding / 2,
+                            trailing: 0
+                        )
+                    )
                 case .confirm:
                     HStack(spacing: Device.HPadding) {
                         Button {

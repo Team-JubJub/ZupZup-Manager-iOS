@@ -13,24 +13,29 @@ struct BottomButton: View {
     let height: CGFloat
     let text: String
     let textColor: Color
+    let action: () -> Void
     
     var body: some View {
-        ZStack {
-            Rectangle()
-                .cornerRadius(14)
-                .foregroundColor(.designSystem(.zupzupMain))
-                .frame(height: height)
-                .padding(
-                    EdgeInsets(
-                        top: 0,
-                        leading: Device.HPadding,
-                        bottom: 0,
-                        trailing: Device.HPadding
+        Button {
+            action()
+        } label: {
+            ZStack {
+                Rectangle()
+                    .cornerRadius(14)
+                    .foregroundColor(.designSystem(.zupzupMain))
+                    .frame(height: height)
+                    .padding(
+                        EdgeInsets(
+                            top: 0,
+                            leading: Device.HPadding,
+                            bottom: 0,
+                            trailing: Device.HPadding
+                        )
                     )
-                )
-            Text(text)
-                .font(SystemFont(size: ._17, weight: .bold))
-                .foregroundColor(textColor)
+                Text(text)
+                    .font(SystemFont(size: ._17, weight: .bold))
+                    .foregroundColor(textColor)
+            }
         }
     }
 }
