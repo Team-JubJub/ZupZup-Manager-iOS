@@ -36,6 +36,7 @@ struct MyProductItem: View {
                     Text(title)
                         .foregroundColor(.designSystem(.Secondary))
                         .font(SystemFont(size: ._17, weight: .semibold))
+                        .lineLimit(1)
                     
                     HStack(spacing: 0) {
                         Text("\(salePrice)원")
