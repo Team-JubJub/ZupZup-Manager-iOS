@@ -14,23 +14,29 @@ struct ReservationView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            VSpacer(height: Device.VPadding)
-            VStack(spacing: 8) {
-                ForEach(reservationStore.reservations, id: \.self) { reservation in
-                    NavigationLink {
-                        let store = ReservationDetailStore(
-                            reservation: reservation,
-                            store: reservationStore.store
-                        )
-                        ReserveDetailView(store: store)
-                    } label: {
-                        ReservationItem(
-                            date: reservation.date,
-                            menu: reservation.orderedItemdName,
-                            time: reservation.orderedTime,
-                            customer: reservation.customerName,
-                            state: reservation.state
-                        )
+            if reservationStore.isLoading {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .padding()
+            } else {
+                VSpacer(height: Device.VPadding)
+                VStack(spacing: 8) {
+                    ForEach(reservationStore.reservations, id: \.self) { reservation in
+                        NavigationLink {
+                            let store = ReservationDetailStore(
+                                reservation: reservation,
+                                store: reservationStore.store
+                            )
+                            ReserveDetailView(store: store)
+                        } label: {
+                            ReservationItem(
+                                date: reservation.date,
+                                menu: reservation.orderedItemdName,
+                                time: reservation.orderedTime,
+                                customer: reservation.customerName,
+                                state: reservation.state
+                            )
+                        }
                     }
                 }
             }

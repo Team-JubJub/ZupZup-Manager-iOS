@@ -13,6 +13,8 @@ class ReservationStore: ObservableObject {
     @Published var reservations = [Reservation]()
     @Published var store = Store()
     
+    @Published var isLoading: Bool = false
+    
     private let fetchReserveUseCase: FetchReserveUseCase
     private let fetchStoreUseCase: FetchStoreUseCase
     
@@ -54,10 +56,12 @@ extension ReservationStore {
     }
     
     private func fetchReservations(storeId: Int) {
+        self.isLoading = true
         fetchReserveUseCase.fetchReserve(storeId: storeId) { result in
             switch result {
             case .success(let reservations):
                 self.reservations = reservations
+                self.isLoading = false
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -65,10 +69,12 @@ extension ReservationStore {
     }
     
     private func fetchStore(storeId: Int) {
+        self.isLoading = true
         fetchStoreUseCase.fetchStore(storeId: storeId) { result in
             switch result {
             case .success(let store):
                 self.store = store
+                self.isLoading = false
             case .failure(let error):
                 print(error.localizedDescription)
             }

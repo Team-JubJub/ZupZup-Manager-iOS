@@ -10,8 +10,15 @@ import SwiftUI
 
 struct RectangleWithTwoLabel: View {
     
+    enum TextType {
+        case text
+        case number
+    }
+    
     let leftText: String
-    let rightText: String
+    @Binding var rightText: String
+    
+    let textType: TextType
     
     var body: some View {
         Rectangle()
@@ -27,10 +34,25 @@ struct RectangleWithTwoLabel: View {
                     
                     Spacer()
                     
-                    Text(rightText)
-                        .font(SystemFont(size: ._17, weight: .regular))
-                        .foregroundColor(.designSystem(.Secondary))
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding))
+                    switch textType {
+                    case .text:
+                        TextField(leftText, text: $rightText)
+                            .multilineTextAlignment(.trailing)
+                            .font(SystemFont(size: ._17, weight: .regular))
+                            .foregroundColor(.designSystem(.Secondary))
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding))
+                    case .number:
+                        TextField(leftText, text: $rightText)
+                            .keyboardType(.numberPad)
+                            .multilineTextAlignment(.trailing)
+                            .font(SystemFont(size: ._17, weight: .regular))
+                            .foregroundColor(.designSystem(.Secondary))
+                        Text("원")
+                            .font(SystemFont(size: ._17, weight: .regular))
+                            .foregroundColor(.designSystem(.Secondary))
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding))
+                        
+                    }
                 }
             }
     }

@@ -77,7 +77,7 @@ extension ReservationDetailStore {
     }
     
     private func tabMinusButton(idx: Int) {
-        self.reservation.cartList[idx].amount -= 1
+        if self.reservation.cartList[idx].amount > 0 { self.reservation.cartList[idx].amount -= 1 }
     }
     
     private func tabCancelButton() {
@@ -86,7 +86,9 @@ extension ReservationDetailStore {
             state: .cancel
         ) { result in
             switch result {
-            case .success: self.reservation.state = .cancel
+            case .success:
+                self.reservation.state = .cancel
+                self.isChecked = false
             case .failure: break
             }
         }
@@ -98,7 +100,9 @@ extension ReservationDetailStore {
             state: .complete
         ) { result in
             switch result {
-            case .success: self.reservation.state = .complete
+            case .success:
+                self.reservation.state = .complete
+                self.isChecked = false
             case .failure: break
             }
         }
@@ -122,7 +126,9 @@ extension ReservationDetailStore {
                     state: .confirm
                 ) { result in
                     switch result {
-                    case .success: self.reservation.state = .confirm
+                    case .success:
+                        self.reservation.state = .confirm
+                        self.isChecked = false
                     case .failure: break
                     }
                 }
@@ -138,7 +144,9 @@ extension ReservationDetailStore {
             state: .cancel
         ) { result in
             switch result {
-            case .success: self.reservation.state = .cancel
+            case .success:
+                self.reservation.state = .cancel
+                self.isChecked = false
             case .failure: break
             }
         }

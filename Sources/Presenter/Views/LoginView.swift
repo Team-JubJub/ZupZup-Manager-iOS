@@ -24,25 +24,21 @@ struct LoginView: View {
             PasswordTextField(password: $store.password)
             Spacer()
             
-            Button {
-                print("button tabbed")
-                // TODO: fix
+            BottomButton(
+                height: 57,
+                text: "로그인",
+                textColor: .designSystem(.Secondary)!
+            ) {
                 self.isLogin.toggle()
-            } label: {
-                BottomButton(
-                    height: 57,
-                    text: "로그인",
-                    textColor: .designSystem(.Secondary)!
-                )
-                .padding(
-                    EdgeInsets(
-                        top: Device.VPadding,
-                        leading: 0,
-                        bottom: Device.VPadding,
-                        trailing: 0
-                    )
-                )
             }
+            .padding(
+                EdgeInsets(
+                    top: Device.VPadding,
+                    leading: 0,
+                    bottom: Device.VPadding,
+                    trailing: 0
+                )
+            )
         }
     }
 }

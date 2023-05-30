@@ -11,6 +11,7 @@ import SwiftUI
 struct RectangleWithTwoButton: View {
     
     let text: String
+    @Binding var count: Int
     
     let minusButtonAction: () -> Void
     let plusButtonAction: () -> Void
@@ -33,7 +34,7 @@ struct RectangleWithTwoButton: View {
                             minusButtonAction()
                         }
 
-                        Text("1")
+                        Text(count.toString())
                             .foregroundColor(.designSystem(.Secondary))
                             .font(SystemFont(size: ._17, weight: .regular))
                         PlusButton(palette: .zupzupWarmGray6) {

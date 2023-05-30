@@ -7,20 +7,52 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ItemView: View {
+    
+    @Environment(\.dismiss) private var dismiss
     
     @StateObject var itemStore: ItemStore
     
     var body: some View {
         VStack(spacing: 0) {
+            NavigationBarWithDismiss(label: "제품 관리")
+            VSpacer(height: Device.Height * 2 / 844)
+            
             HStack(spacing: 0) {
                 LargeTitleLabel(title: itemStore.item.name)
                 Spacer()
                 TrashTongButton {
-                    // TODO: 비즈니스 로직 : 삭제 버튼 눌렀을 경우
-                    print("tab TrashTong")
+                    itemStore.reduce(action: .tabTrashTong)
                 }
+                .alert(
+                    "제품 관리",
+                    isPresented: $itemStore.isShowingAlert,
+                    actions: {
+                        Button("삭제", role: .destructive) {
+                            itemStore.reduce(action: .tabAlertDelete)
+                            dismiss()
+                        }
+                        Button("아니오", role: .cancel) {
+                            itemStore.reduce(action: .tabAlertCancel)
+                        }
+                    },
+                    message: {
+                        Text("제품을 리스트에서 삭제합니다.")
+                    }
+                )
+                .alert(
+                    "앗!",
+                    isPresented: $itemStore.isShowingEmptyAlert,
+                    actions: {
+                        Button("확인", role: .cancel) {
+                        }
+                    },
+                    message: {
+                        Text("제품의 이름을 추가해주세요.")
+                    }
+                )
             }
             .frame(width: Device.Width * 358 / 390)
             .padding(
@@ -35,44 +67,75 @@ struct ItemView: View {
             ScrollView {
                 VStack(spacing: Device.VPadding) {
                     ZStack {
-                        // TODO: 이미지 피커로 교체
-                        Image(assetName: .mockImage)
-                            .resizable()
-                            .frame(
-                                width: Device.WidthWithPadding,
-                                height: Device.WidthWithPadding
-                            )
-                            .cornerRadius(Device.cornerRadious)
+                        ZStack {
+                            if itemStore.selectedImage == nil {
+                                KFImage(URL(string: itemStore.item.imageUrl))
+                                    .placeholder {
+                                        Image(assetName: .mockImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(
+                                                width: Device.WidthWithPadding,
+                                                height: Device.WidthWithPadding
+                                            )
+                                            .cornerRadius(Device.cornerRadious)
+                                            .clipped()
+                                    }
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(
+                                        width: Device.WidthWithPadding,
+                                        height: Device.WidthWithPadding
+                                    )
+                                    .cornerRadius(Device.cornerRadious)
+                                    .clipped()
+                            } else {
+                                Image(uiImage: (itemStore.selectedImage ?? UIImage(named: "mockImage"))!)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(
+                                        width: Device.WidthWithPadding,
+                                        height: Device.WidthWithPadding
+                                    )
+                                    .cornerRadius(Device.cornerRadious)
+                                    .clipped()
+                            }
+                            
+                        }
                         
                         GeometryReader { geometry in
                             ImagePickerButton {
-                                // TODO: 비즈니스로직 - 이미지 피커 눌렀을 경우
-                                print("tab ImagePickerButton")
+                                itemStore.reduce(action: .tabImagePickerButton)
                             }
                             .offset(
                                 x: geometry.size.width - 88,
                                 y: geometry.size.height - 72
                             )
+                            .sheet(isPresented: $itemStore.isShowingImagePicker) {
+                                ImagePicker(selectedImage: $itemStore.selectedImage)
+                            }
                         }
                     }
                     
-                    RectangleWithTwoLabel(leftText: "메뉴", rightText: itemStore.item.name)
+                    RectangleWithTwoLabel(leftText: "메뉴", rightText: $itemStore.item.name, textType: .text)
                     
-                    RectangleWithTwoLabel(leftText: "판매가격", rightText: "\(itemStore.item.priceOrigin)원")
+                    RectangleWithTwoLabel(leftText: "판매가격", rightText: $itemStore.priceString, textType: .number)
                     
-                    RectangleWithTwoLabel(leftText: "할인가격", rightText: "\(itemStore.item.priceDiscount)원")
-        
+                    RectangleWithTwoLabel(leftText: "할인가격", rightText: $itemStore.discountString, textType: .number)
+                    
                     RectangleWithTwoButton(
                         text: "수량",
+                        count: $itemStore.item.amount,
                         minusButtonAction: {
-                            // TODO: 비즈니스 로직 - 마이너스 버튼을 탭한 경우
-                            print("tab minusButtonAction")
+                            itemStore.reduce(action: .tabMinusButton)
                         },
                         plusButtonAction: {
-                            // TODO: 비즈니스 로직 - 플러스 버튼을 탭한 경우
-                            print("tab plusButtonAction")
+                            itemStore.reduce(action: .tabPlusButton)
                         }
                     )
+                }
+                .onTapGesture {
+                    itemStore.hideKeyboard()
                 }
             }
             .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
@@ -81,8 +144,12 @@ struct ItemView: View {
                 height: Device.Height * 64 / 844,
                 text: "수정하기",
                 textColor: .designSystem(.OffWhite)!
-            )
+            ) {
+                itemStore.reduce(action: .tabBottomButton)
+                itemStore.reduce(action: .checkTextfieldEmpty)
+            }
         }
-        
+        .navigationTitle("")
+        .navigationBarHidden(true)
     }
 }
