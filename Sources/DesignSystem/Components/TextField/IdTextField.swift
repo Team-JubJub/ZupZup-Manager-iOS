@@ -14,33 +14,29 @@ struct IdTextField: View {
     
     var body: some View {
         ZStack {
-            Rectangle()
-                .cornerRadius(14)
-                .foregroundColor(.designSystem(.zupzupWarmGray1))
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.designSystem(.zupzupIvoryGray500)!, lineWidth: 1)
+                .foregroundColor(.designSystem(.OffWhite))
                 .frame(height: 56)
                 .padding(
                     EdgeInsets(
                         top: 0,
-                        leading: 24,
+                        leading: 16,
                         bottom: 0,
-                        trailing: 24
+                        trailing: 16
                     )
                 )
-            HStack {
-                TextField("아이디", text: $idString)
-                Image(assetName: .xCircle)
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .onTapGesture {
-                        idString = ""
-                    }
-            }
+            TextField(
+                "아이디",
+                text: $idString,
+                prompt: Text("아이디").foregroundColor(.designSystem(.zupzupIvoryGray500))
+            )
             .padding(
                 EdgeInsets(
                     top: 0,
-                    leading: 42,
+                    leading: 32,
                     bottom: 0,
-                    trailing: 36
+                    trailing: 32
                 )
             )
         }
