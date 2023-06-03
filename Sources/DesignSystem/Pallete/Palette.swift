@@ -17,6 +17,7 @@ enum Palette {
     case zupzupWarmGray5
     case zupzupWarmGray6
     case zupzupCoolGray1
+    case zupzupIvoryGray500
     case Secondary
     case SecondaryText
     case BG_2
@@ -41,6 +42,8 @@ enum Palette {
             return "zupzupWarmGray5"
         case .zupzupWarmGray6:
             return "zupzupWarmGray6"
+        case .zupzupIvoryGray500:
+            return "zupzupIvoryGray500"
         case .zupzupCoolGray1:
             return "zupzupCoolGray1"
         case .Secondary:

@@ -22,7 +22,20 @@ extension LoginStore: StoreProtocol {
     func reduce(action: Action) {
         switch action {
         case .tapLoginButton:
-            break
+            self.tabLoginButton()
         }
+    }
+}
+
+// Business Logic
+extension LoginStore {
+    func tabLoginButton() {
+        // TODO: 로그인 연결
+        print("id : \(id)")
+        print("password : \(password)")
+    }
+    
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

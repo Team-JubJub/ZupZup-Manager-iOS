@@ -15,30 +15,26 @@ struct LoginView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Spacer()
-            BoxImage()
-            Spacer()
+            InfiniteSpacer()
+            
+            BoxHighlighted()
+            
+            InfiniteSpacer()
             
             IdTextField(idString: $store.id)
-            VSpacer(height: 20)
-            PasswordTextField(password: $store.password)
-            Spacer()
             
-            BottomButton(
-                height: 57,
-                text: "로그인",
-                textColor: .designSystem(.Secondary)!
-            ) {
-                self.isLogin.toggle()
-            }
-            .padding(
-                EdgeInsets(
-                    top: Device.VPadding,
-                    leading: 0,
-                    bottom: Device.VPadding,
-                    trailing: 0
-                )
+            VSpacer(height: 20)
+            
+            PasswordTextField(
+                action: { store.reduce(action: .tapLoginButton) },
+                password: $store.password
             )
+            
+            VSpacer(height: Device.Height * 128 / 844)
+        }
+        .background(Color.designSystem(.OffWhite))
+        .onTapGesture {
+            store.hideKeyboard()
         }
     }
 }
