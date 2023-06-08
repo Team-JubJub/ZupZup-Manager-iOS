@@ -26,7 +26,10 @@ struct LoginView: View {
             VSpacer(height: 20)
             
             PasswordTextField(
-                action: { store.reduce(action: .tapLoginButton) },
+                action: {
+                    store.reduce(action: .tapLoginButton)
+                    self.isLogin.toggle()
+                },
                 password: $store.password
             )
             

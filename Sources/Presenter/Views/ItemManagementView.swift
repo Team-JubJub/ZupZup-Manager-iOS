@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct ManageView: View {
+struct ItemManagementView: View {
     
     @StateObject var manageStore: ManageStore
     
