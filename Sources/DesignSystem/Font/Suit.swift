@@ -8,6 +8,12 @@
 
 import SwiftUI
 
+/// 줍줍에서 사용되는 SUIT 폰트
+/// FontSet의 열거형을 참고할 것
+/// - Parameters:
+///   - weight: 글자의 굴기
+///   - size: 글자의 크기
+/// - Returns: 사용하고자하는 Font 구조체를 반환합니다.
 func Suit(weight: FontSet.Weight, size: FontSet.Size) -> Font {
     switch weight {
     case .thin:

@@ -9,8 +9,10 @@
 import Foundation
 import SwiftUI
 
+/// 폰트를 관리하는 열거형
+/// 폰트 / 사이즈 / 굴기 관리
 enum FontSet {
-    enum Name: String { // 글자의 종류
+    enum Name: String {
         case system
         case suite = "SUITE"
         case suit = "SUIT"
@@ -86,7 +88,9 @@ enum FontSet {
 }
 
 extension FontSet {
-    // 커스텀 폰트를 추가하고 싶을 경우, 아래의 배열에 추가해주면 됨
+    /// 줍줍 사장님 앱에서 사용되는 폰트.
+    /// Suite, Suit이 있습니다.
+    /// 커스텀 폰트를 추가하고 싶을 경우, 아래의 배열에 추가해주면 됩니다.
     static var fonts: [CustomFont] {
         [
             CustomFont(_name: .suit, _weight: .thin),
@@ -107,8 +111,9 @@ extension FontSet {
             CustomFont(_name: .suite, _weight: .heavy)
         ]
     }
-    // MARK: 모든 Font 파일을 등록합니다.
-    // 앱 실행시, 최초 한번만 실행됩니다.
+    
+    /// 폰트를 등록하는 함수
+    /// 앱 실행시, 최초 한번만 실행됩니다.
     static func registerFonts() {
         fonts.forEach { font in
             FontSet.registerFont(fontName: font.name, fontExtension: font.extension)
