@@ -24,5 +24,10 @@ enum AssetName: String {
     case ic_trashTong
     case ic_edit
     case ic_boxHighlighted
+    case ic_settings_default
+    case ic_zupzupbag_default
+    case ic_box_default
+    case ic_settings_selected
+    case ic_zupzupbag_selected
     case mockImage
 }

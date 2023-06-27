@@ -10,7 +10,8 @@ import SwiftUI
 
 struct TabbarItem: View {
     
-    let symbolName: String
+    let defaultAsset: AssetName
+    let selectedAsset: AssetName
     @Binding var selectedIndex: Int
     let num: Int
     
@@ -20,7 +21,9 @@ struct TabbarItem: View {
                 .frame(height: 4)
                 .foregroundColor(selectedIndex == num ? Color.designSystem(.zupzupMain) : Color.designSystem(.zupzupWarmGray5))
             Spacer()
-            Image(systemName: symbolName)
+            Image(assetName: selectedIndex == num ? selectedAsset : defaultAsset)
+                .resizable()
+                .frame(width: 17, height: 17)
                 .font(.system(size: 17, weight: .light))
                 .foregroundColor(selectedIndex == num ? Color.designSystem(.zupzupMain) : Color.designSystem(.zupzupWarmGray5))
             Spacer()
