@@ -17,7 +17,11 @@ enum Palette {
     case zupzupWarmGray5
     case zupzupWarmGray6
     case zupzupCoolGray1
+    
+    case zupzupIvoryGray100
+    case zupzupIvoryGray200
     case zupzupIvoryGray500
+    
     case Secondary
     case SecondaryText
     case BG_2
@@ -60,6 +64,10 @@ enum Palette {
             return "OffWhite"
         case .warning1:
             return "warning1"
+        case .zupzupIvoryGray100:
+            return "zupzupIvoryGray100"
+        case .zupzupIvoryGray200:
+            return "zupzupIvoryGray200"
         }
     }
 }
