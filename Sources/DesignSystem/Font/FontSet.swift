@@ -30,6 +30,7 @@ enum FontSet {
         case _18 = 18
         case _20 = 20
         case _22 = 22
+        case _28 = 28
         case _34 = 34
     }
     
