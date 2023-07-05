@@ -31,11 +31,14 @@ struct StoreManagementView: View {
                     IvoryRoundedRectangle(width: Device.Width * 358 / 390, height: 76)
                     
                     HStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_day, color: .designSystem(.ivoryGray400)!)
+                        switch store.isToggleOn {
+                        case true: RectangleWithIcon(assetName: .ic_day, color: .designSystem(.ivoryGray400)!)
+                        case false: RectangleWithIcon(assetName: .ic_night, color: .designSystem(.ivoryGray400)!)
+                        }
                         
                         VStack(alignment: .leading, spacing: 4) {
                             SystemLabel(text: "가게 영업", typo: .captionSmall, color: .designSystem(.orange400))
-                            SystemLabel( text: "지금 영업 중이에요!", typo: .subhead)
+                            SystemLabel(text: store.isToggleOn ? "지금 영업 중이에요!" : "지금은 문을 닫았어요", typo: .subhead)
                         }
                         .padding(8)
                         
@@ -99,7 +102,7 @@ struct StoreManagementView: View {
                     IvoryRoundedRectangle(width: Device.Width * 358 / 390, height: 76)
                     
                     HStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_day, color: .designSystem(.ivoryGray400)!)
+                        RectangleWithIcon(assetName: .ic_date, color: .designSystem(.ivoryGray400)!)
                         
                         VStack(alignment: .leading, spacing: 4) {
                             SystemLabel(text: "가게 소개", typo: .captionSmall, color: .designSystem(.orange400))
@@ -133,6 +136,11 @@ struct StoreManagementView: View {
                     StoreManageViewItem(title: "가게 위치 이전") {
                         // TODO: 가게 위치 이전 화면 전환
                         print("가게 위치 이전 화면 전환")
+                    }
+                    
+                    StoreManageViewItem(title: "로그아웃") {
+                        // TODO: 가게 위치 이전 화면 전환
+                        print("로그아웃 버튼")
                     }
                 }
             }
