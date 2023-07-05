@@ -31,7 +31,10 @@ struct StoreManagementView: View {
                     IvoryRoundedRectangle(width: Device.Width * 358 / 390, height: 76)
                     
                     HStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_day, color: .designSystem(.ivoryGray400)!)
+                        switch store.isToggleOn {
+                        case true: RectangleWithIcon(assetName: .ic_day, color: .designSystem(.ivoryGray400)!)
+                        case false: RectangleWithIcon(assetName: .ic_night, color: .designSystem(.ivoryGray400)!)
+                        }
                         
                         VStack(alignment: .leading, spacing: 4) {
                             SystemLabel(text: "가게 영업", typo: .captionSmall, color: .designSystem(.orange400))
