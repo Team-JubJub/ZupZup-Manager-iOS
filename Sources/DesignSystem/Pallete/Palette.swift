@@ -21,11 +21,15 @@ enum Palette {
     // Orange
     case orange400
     
-    // Ivory
-    case zupzupIvoryGray100
-    case zupzupIvoryGray200
-    case zupzupIvoryGray400
-    case zupzupIvoryGray500
+    // IvoryGray
+    case ivoryGray100
+    case ivoryGray200
+    case ivoryGray300
+    case ivoryGray400
+    case ivoryGray500
+    case ivoryGray600
+    case ivoryGray700
+    case ivoryGray800
     
     // Tangerine
     case Tangerine300
@@ -73,15 +77,24 @@ enum Palette {
         // Orange
         case .orange400:
             return "orange400"
-        // Ivory
-        case .zupzupIvoryGray100:
-            return "zupzupIvoryGray100"
-        case .zupzupIvoryGray200:
-            return "zupzupIvoryGray200"
-        case .zupzupIvoryGray400:
-            return "zupzupIvoryGray400"
-        case .zupzupIvoryGray500:
-            return "zupzupIvoryGray500"
+            
+        // Ivory Gray
+        case .ivoryGray100:
+            return "ivoryGray100"
+        case .ivoryGray200:
+            return "ivoryGray200"
+        case .ivoryGray300:
+            return "ivoryGray300"
+        case .ivoryGray400:
+            return "ivoryGray400"
+        case .ivoryGray500:
+            return "ivoryGray500"
+        case .ivoryGray600:
+            return "ivoryGray600"
+        case .ivoryGray700:
+            return "ivoryGray700"
+        case .ivoryGray800:
+            return "ivoryGray800"
         
         // Tangerine
         case .Tangerine300:
