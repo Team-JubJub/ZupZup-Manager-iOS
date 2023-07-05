@@ -18,9 +18,17 @@ enum Palette {
     case zupzupWarmGray6
     case zupzupCoolGray1
     
+    // Orange
+    case orange400
+    
+    // Ivory
     case zupzupIvoryGray100
     case zupzupIvoryGray200
+    case zupzupIvoryGray400
     case zupzupIvoryGray500
+    
+    // Tangerine
+    case Tangerine300
     
     case Secondary
     case SecondaryText
@@ -46,8 +54,6 @@ enum Palette {
             return "zupzupWarmGray5"
         case .zupzupWarmGray6:
             return "zupzupWarmGray6"
-        case .zupzupIvoryGray500:
-            return "zupzupIvoryGray500"
         case .zupzupCoolGray1:
             return "zupzupCoolGray1"
         case .Secondary:
@@ -64,10 +70,22 @@ enum Palette {
             return "OffWhite"
         case .warning1:
             return "warning1"
+        // Orange
+        case .orange400:
+            return "orange400"
+        // Ivory
         case .zupzupIvoryGray100:
             return "zupzupIvoryGray100"
         case .zupzupIvoryGray200:
             return "zupzupIvoryGray200"
+        case .zupzupIvoryGray400:
+            return "zupzupIvoryGray400"
+        case .zupzupIvoryGray500:
+            return "zupzupIvoryGray500"
+        
+        // Tangerine
+        case .Tangerine300:
+            return "Tangerine300"
         }
     }
 }

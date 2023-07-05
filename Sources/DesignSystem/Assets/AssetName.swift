@@ -34,4 +34,5 @@ enum AssetName: String {
     // StoreManagement
     case ic_day
     case ic_store
+    case ic_direction
 }
