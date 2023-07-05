@@ -137,6 +137,11 @@ struct StoreManagementView: View {
                         // TODO: 가게 위치 이전 화면 전환
                         print("가게 위치 이전 화면 전환")
                     }
+                    
+                    StoreManageViewItem(title: "로그아웃") {
+                        // TODO: 가게 위치 이전 화면 전환
+                        print("로그아웃 버튼")
+                    }
                 }
             }
             .navigationTitle("")
