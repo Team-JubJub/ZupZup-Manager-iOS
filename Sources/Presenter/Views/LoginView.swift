@@ -35,7 +35,7 @@ struct LoginView: View {
             
             VSpacer(height: Device.Height * 128 / 844)
         }
-        .background(Color.designSystem(.OffWhite))
+        .background(Color.designSystem(.pureWhite))
         .onTapGesture {
             store.hideKeyboard()
         }

@@ -37,13 +37,13 @@ extension StateCapsule {
     func getCapsuleColor(state: ReservationState) -> Color? {
         switch state {
         case .new:
-            return Color.designSystem(.BG_2)
+            return Color.designSystem(.orange400)
         case .confirm:
-            return Color.designSystem(.confirmColor)
+            return Color.designSystem(.Tangerine300)
         case .complete:
-            return Color.designSystem(.completeColor)
+            return Color.designSystem(.green300)
         case .cancel:
-            return Color.designSystem(.zupzupWarmGray5)
+            return Color.designSystem(.warmGray5)
         }
     }
     
@@ -65,11 +65,11 @@ extension StateCapsule {
         case .new:
             return .designSystem(.Secondary)
         case .confirm:
-            return .designSystem(.OffWhite)
+            return .designSystem(.pureBlack)
         case .complete:
-            return .designSystem(.zupzupCoolGray1)
+            return .designSystem(.pureBlack)
         case .cancel:
-            return .designSystem(.zupzupWarmGray3)
+            return .designSystem(.warmGray3)
         }
     }
 }

@@ -91,7 +91,7 @@ struct AddItemView: View {
             BottomButton(
                 height: Device.Height * 64 / 844,
                 text: "등록하기",
-                textColor: .designSystem(.OffWhite)!
+                textColor: .designSystem(.pureWhite)!
             ) {
                 addItemStore.reduce(action: .tabBottomButton)
             }

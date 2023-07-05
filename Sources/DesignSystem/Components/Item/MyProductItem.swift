@@ -24,7 +24,7 @@ struct MyProductItem: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .foregroundColor(.designSystem(.zupzupWarmGray1))
+                .foregroundColor(.designSystem(.ivoryGray100))
                 .frame(width: Device.Width * 358 / 390, height: 73)
             
             HStack(spacing: 0) {
@@ -41,7 +41,7 @@ struct MyProductItem: View {
                     HStack(spacing: 0) {
                         Text("\(salePrice)원")
                             .font(SystemFont(size: ._13, weight: .semibold))
-                            .foregroundColor(.designSystem(.zupzupMain))
+                            .foregroundColor(.designSystem(.Tangerine300))
                             .padding(
                                 EdgeInsets(
                                     top: 0,
@@ -54,11 +54,11 @@ struct MyProductItem: View {
                         ZStack {
                             Text("\(originalPrice)원")
                                 .font(SystemFont(size: ._13, weight: .semibold))
-                                .foregroundColor(.designSystem(.zupzupWarmGray5))
+                                .foregroundColor(.designSystem(.pureBlack))
                             
                             Rectangle()
                                 .frame(width: 40, height: 1)
-                                .foregroundColor(.designSystem(.zupzupWarmGray5))
+                                .foregroundColor(.designSystem(.pureBlack))
                         }
                     }
                 }
@@ -71,7 +71,7 @@ struct MyProductItem: View {
                         minusAction()
                     } label: {
                         Circle()
-                            .foregroundColor(.designSystem(.zupzupWarmGray4))
+                            .foregroundColor(.designSystem(.warmGray4))
                             .overlay {
                                 Image(assetName: .ic_minus)
                                     .resizable()
@@ -91,12 +91,12 @@ struct MyProductItem: View {
                 
                 Text("\(count)")
                     .font(SystemFont(size: ._17, weight: .regular))
-                    .foregroundColor(.designSystem(.zupzupMain))
+                    .foregroundColor(.designSystem(.Tangerine300))
                 
                 if !isEditable {
                     Text("EA")
                         .font(SystemFont(size: ._17, weight: .regular))
-                        .foregroundColor(.designSystem(.zupzupWarmGray5))
+                        .foregroundColor(.designSystem(.warmGray5))
                         .padding(
                             EdgeInsets(
                                 top: 0,
@@ -110,7 +110,7 @@ struct MyProductItem: View {
                         plusAction()
                     } label: {
                         Circle()
-                            .foregroundColor(.designSystem(.zupzupWarmGray4))
+                            .foregroundColor(.designSystem(.warmGray4))
                             .overlay {
                                 Image(assetName: .ic_plus)
                                     .resizable()

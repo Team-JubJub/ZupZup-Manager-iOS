@@ -73,7 +73,7 @@ struct ReserveDetailView: View {
                     BottomButton(
                         height: 64,
                         text: "예약 확인하기",
-                        textColor: .designSystem(.OffWhite)!
+                        textColor: .designSystem(.pureWhite)!
                     ) {
                         store.reduce(action: .tabCheckButton)
                     }
@@ -91,8 +91,8 @@ struct ReserveDetailView: View {
                             store.reduce(action: .tabCancelButton)
                         } label: {
                             HalfSquareButton(
-                                backgroundColor: .warning1,
-                                fontColor: .OffWhite,
+                                backgroundColor: .neutralGray150,
+                                fontColor: .neutralGray400,
                                 title: "취소"
                             )
                             .frame(height: 64)
@@ -103,8 +103,8 @@ struct ReserveDetailView: View {
                             store.reduce(action: .tabCompleteButton)
                         } label: {
                             HalfSquareButton(
-                                backgroundColor: .completeColor,
-                                fontColor: .SecondaryText,
+                                backgroundColor: .Tangerine300,
+                                fontColor: .pureBlack,
                                 title: "완료"
                             )
                             .frame(height: 64)

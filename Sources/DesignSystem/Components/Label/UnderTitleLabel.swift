@@ -13,6 +13,6 @@ struct UnderTitleLabel: View {
     var body: some View {
         Text(timeString)
             .font(SystemFont(size: ._16, weight: .regular))
-            .foregroundColor(.designSystem(.zupzupWarmGray5))
+            .foregroundColor(.designSystem(.warmGray5))
     }
 }

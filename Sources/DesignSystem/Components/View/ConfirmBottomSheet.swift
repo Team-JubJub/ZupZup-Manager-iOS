@@ -39,7 +39,7 @@ struct ConfirmBottomSheet: View {
                     HStack(spacing: 0) {
                         HStack(spacing: 0) {
                             VStack(spacing: 0) {
-                                RectangleWithIcon(assetName: .ic_user, color: .designSystem(.zupzupWarmGray5)!)
+                                RectangleWithIcon(assetName: .ic_user, color: .designSystem(.warmGray5)!)
                                 Spacer()
                             }
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding / 2))
@@ -48,7 +48,7 @@ struct ConfirmBottomSheet: View {
                             VStack(alignment: .leading, spacing: 0) {
                                 
                                 Text("주문자")
-                                    .foregroundColor(.designSystem(.zupzupMain))
+                                    .foregroundColor(.designSystem(.Tangerine300))
                                     .font(SystemFont(size: ._12, weight: .semibold))
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                                 
@@ -58,7 +58,7 @@ struct ConfirmBottomSheet: View {
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                                 
                                 Text(store.reservation.phoneNumber)
-                                    .foregroundColor(.designSystem(.zupzupWarmGray6))
+                                    .foregroundColor(.designSystem(.warmGray6))
                                     .font(SystemFont(size: ._13, weight: .regular))
                                 Spacer()
                             }
@@ -68,7 +68,7 @@ struct ConfirmBottomSheet: View {
                         Spacer()
                         
                         VStack(spacing: 0) {
-                            RectangleWithIcon(assetName: .ic_clock, color: .designSystem(.zupzupWarmGray5)!)
+                            RectangleWithIcon(assetName: .ic_clock, color: .designSystem(.warmGray5)!)
                             Spacer()
                         }
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding / 2))
@@ -76,7 +76,7 @@ struct ConfirmBottomSheet: View {
                         
                         VStack(alignment: .leading, spacing: 0) {
                             Text("방문 예정 시간")
-                                .foregroundColor(.designSystem(.zupzupMain))
+                                .foregroundColor(.designSystem(.Tangerine300))
                                 .font(SystemFont(size: ._12, weight: .semibold))
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                             
@@ -108,13 +108,13 @@ struct ConfirmBottomSheet: View {
                         Spacer()
                         Text("\(ReservationHelper.makeTotalPrice(reservation: store.reservation))원")
                             .font(SystemFont(size: ._20, weight: .semibold))
-                            .foregroundColor(.designSystem(.zupzupMain))
+                            .foregroundColor(.designSystem(.Tangerine300))
                     }
                     Spacer()
                     
                     Rectangle()
                         .frame(height: 1)
-                        .foregroundColor(.designSystem(.zupzupWarmGray3))
+                        .foregroundColor(.designSystem(.warmGray3))
                     
                     Spacer()
                     
@@ -136,8 +136,8 @@ struct ConfirmBottomSheet: View {
                     store.reduce(action: .tabCancelButton)
                 } label: {
                     HalfSquareButton(
-                        backgroundColor: .zupzupWarmGray3,
-                        fontColor: .zupzupWarmGray6,
+                        backgroundColor: .warmGray3,
+                        fontColor: .warmGray6,
                         title: "반려"
                     )
                     .padding(EdgeInsets(top: 0, leading: Device.HPadding, bottom: 0, trailing: 0))
@@ -149,8 +149,8 @@ struct ConfirmBottomSheet: View {
                     store.reduce(action: .tabComfirmButton)
                 } label: {
                     HalfSquareButton(
-                        backgroundColor: .confirmColor,
-                        fontColor: .OffWhite,
+                        backgroundColor: .Tangerine300,
+                        fontColor: .pureBlack,
                         title: "확정"
                     )
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding))

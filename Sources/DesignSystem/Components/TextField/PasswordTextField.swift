@@ -16,8 +16,8 @@ struct PasswordTextField: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.designSystem(.zupzupIvoryGray500)!, lineWidth: 1)
-                .foregroundColor(.designSystem(.OffWhite))
+                .stroke(Color.designSystem(.ivoryGray500)!, lineWidth: 1)
+                .foregroundColor(.designSystem(.pureWhite))
                 .frame(height: 56)
                 .padding(
                     EdgeInsets(
@@ -31,7 +31,7 @@ struct PasswordTextField: View {
             TextField(
                 "비밀번호",
                 text: $password,
-                prompt: Text("비밀번호").foregroundColor(.designSystem(.zupzupIvoryGray500))
+                prompt: Text("비밀번호").foregroundColor(.designSystem(.ivoryGray500))
             )
             .submitLabel(.done)
             .onSubmit {

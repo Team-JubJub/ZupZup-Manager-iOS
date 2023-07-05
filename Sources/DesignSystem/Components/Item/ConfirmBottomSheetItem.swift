@@ -17,12 +17,12 @@ struct ConfirmBottomSheetItem: View {
         HStack(spacing: 0) {
             Spacer()
             Text(itemName)
-                .foregroundColor(.designSystem(.Secondary))
+                .foregroundColor(.designSystem(.pureBlack))
                 .font(SystemFont(size: ._15, weight: .regular))
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.VPadding))
 
             Text("\(price)원")
-                .foregroundColor(.designSystem(.zupzupWarmGray6))
+                .foregroundColor(.designSystem(.pureWhite))
                 .font(SystemFont(size: ._15, weight: .regular))
         }
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 5, trailing: 0))

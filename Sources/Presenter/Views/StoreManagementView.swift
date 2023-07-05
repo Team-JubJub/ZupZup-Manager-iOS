@@ -31,7 +31,7 @@ struct StoreManagementView: View {
                     IvoryRoundedRectangle(width: Device.Width * 358 / 390, height: 76)
                     
                     HStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_day, color: .designSystem(.zupzupIvoryGray400)!)
+                        RectangleWithIcon(assetName: .ic_day, color: .designSystem(.ivoryGray400)!)
                         
                         VStack(alignment: .leading, spacing: 4) {
                             SystemLabel(text: "가게 영업", typo: .captionSmall, color: .designSystem(.orange400))
@@ -54,7 +54,7 @@ struct StoreManagementView: View {
                     IvoryRoundedRectangle(width: Device.Width * 358 / 390, height: 192)
                     VStack {
                         HStack(spacing: 0) {
-                            RectangleWithIcon(assetName: .ic_store, color: .designSystem(.zupzupIvoryGray400)!)
+                            RectangleWithIcon(assetName: .ic_store, color: .designSystem(.ivoryGray400)!)
                             InfiniteSpacer()
                             RightChevronButton {
                                 // TODO: 가게 상세 정보 수정 화면 전환
@@ -75,7 +75,7 @@ struct StoreManagementView: View {
                             VStack(alignment: .leading, spacing: 0) {
                                 SystemLabel(text: "영업 시간", typo: .captionSmall, color: .designSystem(.orange400))
                                 SuiteLabel(text: "09:00 ~ 21:00", typo: .headline)
-                                SystemLabel(text: "영업 시간", typo: .captionSmall, color: .designSystem(.zupzupIvoryGray400))
+                                SystemLabel(text: "영업 시간", typo: .captionSmall, color: .designSystem(.ivoryGray400))
                                 InfiniteSpacer()
                             }
                             .frame(width: Device.Width * 159 / 390, height: 55, alignment: .leading)
@@ -99,7 +99,7 @@ struct StoreManagementView: View {
                     IvoryRoundedRectangle(width: Device.Width * 358 / 390, height: 76)
                     
                     HStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_day, color: .designSystem(.zupzupIvoryGray400)!)
+                        RectangleWithIcon(assetName: .ic_day, color: .designSystem(.ivoryGray400)!)
                         
                         VStack(alignment: .leading, spacing: 4) {
                             SystemLabel(text: "가게 소개", typo: .captionSmall, color: .designSystem(.orange400))

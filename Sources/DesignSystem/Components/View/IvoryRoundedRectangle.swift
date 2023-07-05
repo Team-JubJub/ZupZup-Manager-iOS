@@ -15,8 +15,8 @@ struct IvoryRoundedRectangle: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 16)
-            .stroke(Color.designSystem(.zupzupIvoryGray200)!, lineWidth: 1)
-            .background(Color.designSystem(.zupzupIvoryGray100))
+            .stroke(Color.designSystem(.ivoryGray200)!, lineWidth: 1)
+            .background(Color.designSystem(.ivoryGray100))
             .frame(
                 width: width,
                 height: height

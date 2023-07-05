@@ -19,18 +19,18 @@ struct ReserveInfoView: View {
             VStack(spacing: 1) {
                 ZStack {
                     Rectangle()
-                        .foregroundColor(.designSystem(.zupzupWarmGray3))
+                        .foregroundColor(.designSystem(.warmGray3))
                         .frame(height: 97)
                     HStack(spacing: 0) {
                         VStack(spacing: 0) {
-                            RectangleWithIcon(assetName: .ic_user, color: .designSystem(.zupzupWarmGray5)!)
+                            RectangleWithIcon(assetName: .ic_user, color: .designSystem(.warmGray5)!)
                             Spacer()
                         }
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 8))
                         VStack(alignment: .leading, spacing: 0) {
                             Text("주문자")
                                 .font(SystemFont(size: ._12, weight: .semibold))
-                                .foregroundColor(.designSystem(.zupzupMain))
+                                .foregroundColor(.designSystem(.Tangerine300))
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 5, trailing: 0))
                             Text(customer)
                                 .font(SystemFont(size: ._17, weight: .regular))
@@ -38,7 +38,7 @@ struct ReserveInfoView: View {
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 5, trailing: 0))
                             Text(phoneNumber)
                                 .font(SystemFont(size: ._13, weight: .regular))
-                                .foregroundColor(.designSystem(.zupzupWarmGray6))
+                                .foregroundColor(.designSystem(.warmGray3))
                             Spacer()
                         }
                         .frame(height: 65)
@@ -51,10 +51,10 @@ struct ReserveInfoView: View {
                 }
                 ZStack {
                     Rectangle()
-                        .foregroundColor(.designSystem(.zupzupWarmGray3))
+                        .foregroundColor(.designSystem(.warmGray3))
                     HStack(spacing: 0) {
                         VStack(spacing: 0) {
-                            RectangleWithIcon(assetName: .ic_clock, color: .designSystem(.zupzupWarmGray5)!)
+                            RectangleWithIcon(assetName: .ic_clock, color: .designSystem(.warmGray5)!)
                             Spacer()
                         }
                         .padding(
@@ -63,7 +63,7 @@ struct ReserveInfoView: View {
                         VStack(alignment: .leading, spacing: 0) {
                             Text("방문 예정 시간")
                                 .font(SystemFont(size: ._12, weight: .semibold))
-                                .foregroundColor(.designSystem(.zupzupMain))
+                                .foregroundColor(.designSystem(.Tangerine300))
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 5, trailing: 0))
                             Text(arrivedTime)
                                 .font(SystemFont(size: ._17, weight: .regular))

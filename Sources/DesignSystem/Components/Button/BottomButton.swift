@@ -22,7 +22,7 @@ struct BottomButton: View {
             ZStack {
                 Rectangle()
                     .cornerRadius(14)
-                    .foregroundColor(.designSystem(.zupzupMain))
+                    .foregroundColor(.designSystem(.Tangerine300))
                     .frame(height: height)
                     .padding(
                         EdgeInsets(
