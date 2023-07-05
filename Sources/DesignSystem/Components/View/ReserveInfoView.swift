@@ -23,7 +23,7 @@ struct ReserveInfoView: View {
                         .frame(height: 97)
                     HStack(spacing: 0) {
                         VStack(spacing: 0) {
-                            RectangleWithIcon(assetName: .ic_user)
+                            RectangleWithIcon(assetName: .ic_user, color: .designSystem(.zupzupWarmGray5)!)
                             Spacer()
                         }
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 8))
@@ -54,7 +54,7 @@ struct ReserveInfoView: View {
                         .foregroundColor(.designSystem(.zupzupWarmGray3))
                     HStack(spacing: 0) {
                         VStack(spacing: 0) {
-                            RectangleWithIcon(assetName: .ic_clock)
+                            RectangleWithIcon(assetName: .ic_clock, color: .designSystem(.zupzupWarmGray5)!)
                             Spacer()
                         }
                         .padding(

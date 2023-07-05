@@ -25,7 +25,7 @@ struct StoreInfoView: View {
                     )
                 HStack(spacing: 0) {
                     VStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_home)
+                        RectangleWithIcon(assetName: .ic_home, color: .designSystem(.zupzupWarmGray5)!)
                         Spacer()
                     }
                     HSpacer(width: Device.HPadding / 2)
@@ -77,7 +77,7 @@ struct StoreInfoView: View {
                     )
                 HStack(spacing: 0) {
                     VStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_gift)
+                        RectangleWithIcon(assetName: .ic_gift, color: .designSystem(.zupzupWarmGray5)!)
                         Spacer()
                     }
                     
@@ -121,7 +121,7 @@ struct StoreInfoView: View {
                     )
                 HStack(spacing: 0) {
                     VStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_clock)
+                        RectangleWithIcon(assetName: .ic_clock, color: .designSystem(.zupzupWarmGray5)!)
                         Spacer()
                     }
                     
