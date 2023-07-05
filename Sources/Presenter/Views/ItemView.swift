@@ -143,7 +143,7 @@ struct ItemView: View {
             BottomButton(
                 height: Device.Height * 64 / 844,
                 text: "수정하기",
-                textColor: .designSystem(.OffWhite)!
+                textColor: .designSystem(.pureWhite)!
             ) {
                 itemStore.reduce(action: .tabBottomButton)
                 itemStore.reduce(action: .checkTextfieldEmpty)

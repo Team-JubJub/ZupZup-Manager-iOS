@@ -17,7 +17,7 @@ struct ImagePickerButton: View {
             action()
         } label: {
             Circle()
-                .foregroundColor(.designSystem(.zupzupMain))
+                .foregroundColor(.designSystem(.Tangerine300))
                 .frame(width: 56, height: 56)
                 .overlay {
                     Image(assetName: .ic_edit)

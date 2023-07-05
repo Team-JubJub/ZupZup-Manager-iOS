@@ -23,12 +23,12 @@ struct NavigationBarWithDismiss: View {
                 Image(systemName: "chevron.left")
                     .resizable()
                     .frame(width: 11, height: 19)
-                    .foregroundColor(.designSystem(.zupzupMain))
+                    .foregroundColor(.designSystem(.Tangerine300))
                     .aspectRatio(contentMode: .fit)
                 
                 Text(label)
                     .font(SystemFont(size: ._17, weight: .regular))
-                    .foregroundColor(.designSystem(.zupzupMain))
+                    .foregroundColor(.designSystem(.Tangerine300))
                     .lineLimit(1)
             }
             Spacer()

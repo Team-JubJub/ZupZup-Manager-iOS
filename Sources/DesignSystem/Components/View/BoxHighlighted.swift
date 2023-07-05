@@ -16,4 +16,3 @@ struct BoxHighlighted: View {
             .scaledToFit()
     }
 }
-

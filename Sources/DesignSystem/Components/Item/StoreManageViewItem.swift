@@ -23,6 +23,6 @@ struct StoreManageViewItem: View {
         
         Rectangle()
             .frame(height: 1)
-            .foregroundColor(.designSystem(.zupzupIvoryGray200))
+            .foregroundColor(.designSystem(.ivoryGray200))
     }
 }

@@ -14,8 +14,8 @@ struct StoreStateToggle: ToggleStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         RoundedRectangle(cornerRadius: 24)
-            .stroke(configuration.isOn ? Color.clear : Color.designSystem(.zupzupIvoryGray400)!, lineWidth: 4)
-            .background(configuration.isOn ? Color.designSystem(.Tangerine300) : Color.designSystem(.zupzupIvoryGray200))
+            .stroke(configuration.isOn ? Color.clear : Color.designSystem(.ivoryGray400)!, lineWidth: 4)
+            .background(configuration.isOn ? Color.designSystem(.Tangerine300) : Color.designSystem(.ivoryGray200))
             .overlay(
                 GeometryReader(content: { geometry in
                     
@@ -27,7 +27,7 @@ struct StoreStateToggle: ToggleStyle {
                     
                     ZStack {
                         Circle()
-                            .foregroundColor(configuration.isOn ? .designSystem(.zupzupIvoryGray100) : .designSystem(.zupzupIvoryGray400))
+                            .foregroundColor(configuration.isOn ? .designSystem(.ivoryGray100) : .designSystem(.ivoryGray400))
                             .frame(width: circleHeight)
                     }
                     .offset(

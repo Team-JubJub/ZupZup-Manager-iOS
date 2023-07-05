@@ -20,15 +20,15 @@ struct ReservationItem: View {
         VStack(spacing: 0) {
             ZStack(alignment: .center) {
                 Rectangle()
-                    .foregroundColor(Color.designSystem(.zupzupWarmGray3))
+                    .foregroundColor(Color.designSystem(.warmGray3))
                 HStack(spacing: 0) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(date)
-                            .foregroundColor(.designSystem(.zupzupCoolGray1))
+                            .foregroundColor(.designSystem(.pureBlack))
                             .font(SystemFont(size: ._15, weight: .regular))
                         Text(menu)
                             .lineLimit(1)
-                            .foregroundColor(.designSystem(.Secondary))
+                            .foregroundColor(.designSystem(.pureBlack))
                             .font(SystemFont(size: ._22, weight: .bold))
                     }
                     Spacer()
@@ -42,7 +42,7 @@ struct ReservationItem: View {
             )
             ZStack {
                 Rectangle()
-                    .foregroundColor(.designSystem(.zupzupWarmGray4))
+                    .foregroundColor(.designSystem(.warmGray3))
                 HStack(spacing: 0) {
                     Image(assetName: .clock)
                         .resizable()

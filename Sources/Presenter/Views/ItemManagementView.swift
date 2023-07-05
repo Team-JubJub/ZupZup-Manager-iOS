@@ -112,7 +112,7 @@ struct ItemManagementView: View {
                 }
                 
                 if manageStore.isEditable {
-                    BottomButton(height: 67, text: "수정완료", textColor: .designSystem(.OffWhite)!) {
+                    BottomButton(height: 67, text: "수정완료", textColor: .designSystem(.pureWhite)!) {
                         manageStore.reduce(action: .tabEditBottomButton)
                     }
                     .padding(

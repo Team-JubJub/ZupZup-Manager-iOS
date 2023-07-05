@@ -17,7 +17,7 @@ struct EditButton: View {
             action()
         } label: {
             Text("수정하기")
-                .foregroundColor(.designSystem(.zupzupMain))
+                .foregroundColor(.designSystem(.Tangerine300))
                 .font(SystemFont(size: ._20, weight: .semibold))
                 .padding(
                     EdgeInsets(

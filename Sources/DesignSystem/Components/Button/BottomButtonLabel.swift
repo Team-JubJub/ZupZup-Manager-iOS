@@ -19,11 +19,11 @@ struct BottomButtonLabel: View {
                     width: Device.Width * 358 / 390,
                     height: Device.Height * 64 / 844
                 )
-                .foregroundColor(.designSystem(.zupzupMain))
+                .foregroundColor(.designSystem(.Tangerine300))
                 .cornerRadius(Device.cornerRadious)
             Text(buttonTitle)
                 .font(SystemFont(size: ._17, weight: .semibold))
-                .foregroundColor(.designSystem(.OffWhite))
+                .foregroundColor(.designSystem(.pureWhite))
         }
     }
 }

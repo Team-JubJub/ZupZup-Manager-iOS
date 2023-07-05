@@ -10,6 +10,6 @@ import SwiftUI
 
 extension Color {
     static func designSystem(_ color: Palette) -> Color? {
-        Color(color.hexString)
+        Color(color.real)
     }
 }

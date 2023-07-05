@@ -18,20 +18,20 @@ struct StoreInfoView: View {
         VStack(spacing: 1) {
             ZStack(alignment: .center) {
                 Rectangle()
-                    .foregroundColor(.designSystem(.zupzupWarmGray1))
+                    .foregroundColor(.designSystem(.ivoryGray100))
                     .frame(
                         width: Device.Width * 358 / 390,
                         height: 97
                     )
                 HStack(spacing: 0) {
                     VStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_home, color: .designSystem(.zupzupWarmGray5)!)
+                        RectangleWithIcon(assetName: .ic_home, color: .designSystem(.warmGray5)!)
                         Spacer()
                     }
                     HSpacer(width: Device.HPadding / 2)
                     VStack(alignment: .leading, spacing: 0) {
                         Text("우리 가게")
-                            .foregroundColor(.designSystem(.zupzupMain))
+                            .foregroundColor(.designSystem(.Tangerine300))
                             .font((SystemFont(size: ._12, weight: .semibold)))
                             .padding(
                                 EdgeInsets(
@@ -56,7 +56,7 @@ struct StoreInfoView: View {
                         
                         Text(time)
                             .font(SystemFont(size: ._13, weight: .regular))
-                            .foregroundColor(.designSystem(.zupzupWarmGray6))
+                            .foregroundColor(.designSystem(.warmGray4))
                         Spacer()
                     }
                     .frame(height: 65)
@@ -70,14 +70,14 @@ struct StoreInfoView: View {
             
             ZStack(alignment: .center) {
                 Rectangle()
-                    .foregroundColor(.designSystem(.zupzupWarmGray1))
+                    .foregroundColor(.designSystem(.warmGray3))
                     .frame(
                         width: Device.Width * 358 / 390,
                         height: 73
                     )
                 HStack(spacing: 0) {
                     VStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_gift, color: .designSystem(.zupzupWarmGray5)!)
+                        RectangleWithIcon(assetName: .ic_gift, color: .designSystem(.warmGray4)!)
                         Spacer()
                     }
                     
@@ -85,7 +85,7 @@ struct StoreInfoView: View {
                     
                     VStack(alignment: .leading, spacing: 0) {
                         Text("이벤트")
-                            .foregroundColor(.designSystem(.zupzupMain))
+                            .foregroundColor(.designSystem(.Tangerine300))
                             .font((SystemFont(size: ._12, weight: .semibold)))
                             .padding(
                                 EdgeInsets(
@@ -114,14 +114,14 @@ struct StoreInfoView: View {
             
             ZStack(alignment: .center) {
                 Rectangle()
-                    .foregroundColor(.designSystem(.zupzupWarmGray1))
+                    .foregroundColor(.designSystem(.warmGray3))
                     .frame(
                         width: Device.Width * 358 / 390,
                         height: 73
                     )
                 HStack(spacing: 0) {
                     VStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_clock, color: .designSystem(.zupzupWarmGray5)!)
+                        RectangleWithIcon(assetName: .ic_clock, color: .designSystem(.warmGray5)!)
                         Spacer()
                     }
                     
@@ -129,7 +129,7 @@ struct StoreInfoView: View {
                     
                     VStack(alignment: .leading, spacing: 0) {
                         Text("오늘 할인 시간")
-                            .foregroundColor(.designSystem(.zupzupMain))
+                            .foregroundColor(.designSystem(.Tangerine300))
                             .font((SystemFont(size: ._12, weight: .semibold)))
                             .padding(
                                 EdgeInsets(

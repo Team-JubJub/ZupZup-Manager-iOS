@@ -26,7 +26,7 @@ struct OrderItem: View {
                     height: 73
                 )
                 .cornerRadius(Device.cornerRadious)
-                .foregroundColor(.designSystem(.zupzupWarmGray1))
+                .foregroundColor(.designSystem(.pureWhite))
             
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -35,7 +35,7 @@ struct OrderItem: View {
                         .foregroundColor(.designSystem(.Secondary))
                     Text("\(price)원")
                         .font(SystemFont(size: ._13, weight: .semibold))
-                        .foregroundColor(.designSystem(.zupzupMain))
+                        .foregroundColor(.designSystem(.Tangerine300))
                 }
                 Spacer()
                     HStack(spacing: 0) {
@@ -46,7 +46,7 @@ struct OrderItem: View {
                                 ZStack {
                                     Circle()
                                         .frame(width: 20, height: 20)
-                                        .foregroundColor(.designSystem(.zupzupWarmGray4))
+                                        .foregroundColor(.designSystem(.warmGray4))
                                         .overlay {
                                             Image(assetName: .ic_minus)
                                                 .resizable()
@@ -72,7 +72,7 @@ struct OrderItem: View {
                                 ZStack {
                                     Circle()
                                         .frame(width: 20, height: 20)
-                                        .foregroundColor(.designSystem(.zupzupWarmGray4))
+                                        .foregroundColor(.designSystem(.warmGray4))
                                         .overlay {
                                             Image(assetName: .ic_plus)
                                                 .resizable()

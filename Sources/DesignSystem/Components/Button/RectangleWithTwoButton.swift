@@ -20,7 +20,7 @@ struct RectangleWithTwoButton: View {
         Rectangle()
             .frame(width: Device.WidthWithPadding, height: 53)
             .cornerRadius(14)
-            .foregroundColor(.designSystem(.zupzupWarmGray3))
+            .foregroundColor(.designSystem(.warmGray3))
             .overlay {
                 HStack(spacing: 0) {
                     Text(text)
@@ -30,14 +30,14 @@ struct RectangleWithTwoButton: View {
                     Spacer()
                     
                     HStack(spacing: Device.HPadding) {
-                        MinusButton(palette: .zupzupWarmGray6) {
+                        MinusButton(palette: .ivoryGray300) {
                             minusButtonAction()
                         }
 
                         Text(count.toString())
                             .foregroundColor(.designSystem(.Secondary))
                             .font(SystemFont(size: ._17, weight: .regular))
-                        PlusButton(palette: .zupzupWarmGray6) {
+                        PlusButton(palette: .ivoryGray300) {
                             plusButtonAction()
                         }
                     }

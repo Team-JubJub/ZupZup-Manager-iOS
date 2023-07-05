@@ -15,8 +15,8 @@ struct IdTextField: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.designSystem(.zupzupIvoryGray500)!, lineWidth: 1)
-                .foregroundColor(.designSystem(.OffWhite))
+                .stroke(Color.designSystem(.ivoryGray500)!, lineWidth: 1)
+                .foregroundColor(.designSystem(.pureWhite))
                 .frame(height: 56)
                 .padding(
                     EdgeInsets(
@@ -29,7 +29,7 @@ struct IdTextField: View {
             TextField(
                 "아이디",
                 text: $idString,
-                prompt: Text("아이디").foregroundColor(.designSystem(.zupzupIvoryGray500))
+                prompt: Text("아이디").foregroundColor(.designSystem(.ivoryGray500))
             )
             .padding(
                 EdgeInsets(
