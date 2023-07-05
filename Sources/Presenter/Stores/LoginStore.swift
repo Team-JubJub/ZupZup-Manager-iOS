@@ -31,8 +31,6 @@ extension LoginStore: StoreProtocol {
 extension LoginStore {
     func tabLoginButton() {
         // TODO: 로그인 연결
-        print("id : \(id)")
-        print("password : \(password)")
     }
     
     func hideKeyboard() {

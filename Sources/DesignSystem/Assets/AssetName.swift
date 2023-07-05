@@ -30,4 +30,9 @@ enum AssetName: String {
     case ic_settings_selected
     case ic_zupzupbag_selected
     case mockImage
+    
+    // StoreManagement
+    case ic_day
+    case ic_store
+    case ic_direction
 }
