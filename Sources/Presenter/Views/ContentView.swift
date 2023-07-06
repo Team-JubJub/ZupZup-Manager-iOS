@@ -53,7 +53,7 @@ struct ContentView: View {
                             )
                         }
                     }
-                    .frame(height: Device.Height * 84 / 844)
+                    .frame(height: Device.Height * 50 / 844)
                 }
             } else { // MARK: 로그인이 되지 않은 상태
                 // 로그인 화면 호출
