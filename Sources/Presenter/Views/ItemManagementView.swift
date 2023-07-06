@@ -20,7 +20,7 @@ struct ItemManagementView: View {
                 VSpacer(height: Device.Height * 47 / 844)
                 
                 HStack(spacing: 0) {
-                    LargeTitleLabel(title: manageStore.isEditable ? "관리" : "제품 관리")
+                    LargeNavigationTitle(title: manageStore.isEditable ? "관리" : "제품 관리")
                         .padding(Device.HPadding)
                     Spacer()
                     if manageStore.isEditable {

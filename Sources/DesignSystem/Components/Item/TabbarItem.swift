@@ -18,13 +18,13 @@ struct TabbarItem: View {
     var body: some View {
         VStack(spacing: 0) {
             Rectangle()
-                .frame(height: 4)
+                .frame(height: 3)
                 .foregroundColor(selectedIndex == num ? Color.designSystem(.Tangerine300) : Color.designSystem(.neutralGray300))
             Spacer()
             Image(assetName: selectedIndex == num ? selectedAsset : defaultAsset)
                 .resizable()
-                .frame(width: 17, height: 17)
-                .font(.system(size: 17, weight: .light))
+                .frame(width: 24, height: 24)
+                .font(.system(size: 24, weight: .light))
                 .foregroundColor(selectedIndex == num ? Color.designSystem(.Tangerine300) : Color.designSystem(.neutralGray300))
             Spacer()
         }

@@ -18,12 +18,18 @@ struct ReservationView: View {
         } else {
             VSpacer(height: Device.VPadding)
             VStack(spacing: 8) {
-                HStack(spacing: 0) {
-                    SuiteLabel(text: "예약 상황", typo: .hero)
-                    InfiniteSpacer()
-                }
-                .padding(EdgeInsets(top: Device.Height * 46 / 844, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
+                // 네비게이션 타이틀
+                LargeNavigationTitle(title: "예약 상황")
+                .padding(
+                    EdgeInsets(
+                        top: Device.Height * 46 / 844,
+                        leading: Device.HPadding,
+                        bottom: Device.Height * 20 / 844,
+                        trailing: Device.HPadding
+                    )
+                )
                 
+                // 탭바 구현 부분
                 HStack(spacing: 0) {
                     ForEach(reservationStore.tabBarNames.indices, id: \.self) { num in
                         ReservationStateTabbarItem(
@@ -37,6 +43,7 @@ struct ReservationView: View {
                 .frame(width: Device.WidthWithPadding, height: Device.Height * 44 / 844)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
                 
+                // 예약 상황 아이템 리스트 부분
                 ScrollView(showsIndicators: false) {
                     ForEach(reservationStore.filteredReservations, id: \.self) { reservation in
                         NavigationLink {

@@ -23,7 +23,7 @@ struct ReserveDetailView: View {
                     VStack(alignment: .leading, spacing: 0) {
                         Group {
                             HStack(spacing: 0) {
-                                LargeTitleLabel(title: store.reservation.orderedItemdName)
+                                LargeNavigationTitle(title: store.reservation.orderedItemdName)
                                 Spacer()
                                 StateCapsule(state: $store.reservation.state)
                             }
