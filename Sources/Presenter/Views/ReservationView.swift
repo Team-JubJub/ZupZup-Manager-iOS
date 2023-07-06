@@ -14,9 +14,7 @@ struct ReservationView: View {
     
     var body: some View {
         if reservationStore.isLoading {
-            ProgressView()
-                .progressViewStyle(.circular)
-                .padding()
+            RoundCircleProgress()
         } else {
             VSpacer(height: Device.VPadding)
             VStack(spacing: 8) {

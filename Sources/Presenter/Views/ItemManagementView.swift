@@ -15,9 +15,7 @@ struct ItemManagementView: View {
     var body: some View {
         VStack(spacing: 0) {
             if manageStore.isLoading {
-                ProgressView()
-                    .progressViewStyle(.circular)
-                    .padding()
+                RoundCircleProgress()
             } else {
                 VSpacer(height: Device.Height * 47 / 844)
                 
