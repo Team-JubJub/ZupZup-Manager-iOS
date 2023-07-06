@@ -21,7 +21,7 @@ struct ItemView: View {
             VSpacer(height: Device.Height * 2 / 844)
             
             HStack(spacing: 0) {
-                LargeTitleLabel(title: itemStore.item.name)
+                LargeNavigationTitle(title: itemStore.item.name)
                 Spacer()
                 TrashTongButton {
                     itemStore.reduce(action: .tabTrashTong)

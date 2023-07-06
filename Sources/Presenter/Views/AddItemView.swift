@@ -21,7 +21,7 @@ struct AddItemView: View {
             VSpacer(height: Device.Height * 2 / 844)
             
             HStack(spacing: 0) {
-                LargeTitleLabel(title: "제품 등록")
+                LargeNavigationTitle(title: "제품 등록")
                 Spacer()
             }
             .frame(width: Device.Width * 358 / 390)

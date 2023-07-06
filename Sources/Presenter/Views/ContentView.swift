@@ -15,9 +15,9 @@ struct ContentView: View {
     // 탭바 아이템의 인덱스 번호
     @State private var selectedIndex = 0
     // 탭바 아이콘의 정보를 담고 있는 배열
-    let tabBarImangeNames: [AssetName] = [ .ic_box_default, .ic_zupzupbag_default, .ic_settings_default]
+    let tabBarImangeNames: [AssetName] = [ .tab_zero_off, .tab_one_off, .tab_two_off]
     // 탭바 아이콘의 이미지를 담고 있는 배열
-    let seletedImage: [AssetName] = [.ic_box, .ic_zupzupbag_selected, .ic_settings_selected]
+    let seletedImage: [AssetName] = [.tab_zero_on, .tab_one_on, .tab_two_on]
     
     var body: some View {
         NavigationView {
@@ -53,7 +53,7 @@ struct ContentView: View {
                             )
                         }
                     }
-                    .frame(height: Device.Height * 84 / 844)
+                    .frame(height: 50)
                 }
             } else { // MARK: 로그인이 되지 않은 상태
                 // 로그인 화면 호출

@@ -15,14 +15,12 @@ struct ItemManagementView: View {
     var body: some View {
         VStack(spacing: 0) {
             if manageStore.isLoading {
-                ProgressView()
-                    .progressViewStyle(.circular)
-                    .padding()
+                RoundCircleProgress()
             } else {
                 VSpacer(height: Device.Height * 47 / 844)
                 
                 HStack(spacing: 0) {
-                    LargeTitleLabel(title: manageStore.isEditable ? "관리" : "제품 관리")
+                    LargeNavigationTitle(title: manageStore.isEditable ? "관리" : "제품 관리")
                         .padding(Device.HPadding)
                     Spacer()
                     if manageStore.isEditable {

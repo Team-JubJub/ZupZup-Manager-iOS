@@ -8,13 +8,14 @@
 
 import SwiftUI
 
-struct LargeTitleLabel: View {
+struct LargeNavigationTitle: View {
     
     let title: String
     
     var body: some View {
-        Text(title)
-            .foregroundColor(.designSystem(.Secondary))
-            .font(SystemFont(size: ._34, weight: .semibold))
+        HStack(spacing: 0) {
+            SuiteLabel(text: title, typo: .hero)
+            InfiniteSpacer()
+        }
     }
 }

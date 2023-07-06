@@ -20,19 +20,14 @@ struct ReservationItem: View {
         VStack(spacing: 0) {
             ZStack(alignment: .center) {
                 Rectangle()
-                    .foregroundColor(Color.designSystem(.warmGray3))
+                    .foregroundColor(Color.designSystem(.ivoryGray150))
                 HStack(spacing: 0) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(date)
-                            .foregroundColor(.designSystem(.pureBlack))
-                            .font(SystemFont(size: ._15, weight: .regular))
-                        Text(menu)
+                        SuitLabel(text: date, typo: .subhead, color: state.dateTextColor)
+                        SuiteLabel(text: menu, typo: .h2, color: state.itemTextColor)
                             .lineLimit(1)
-                            .foregroundColor(.designSystem(.pureBlack))
-                            .font(SystemFont(size: ._22, weight: .bold))
                     }
                     Spacer()
-                    StateCapsule(state: $state)
                 }
                 .frame(width: Device.Width * 326 / 390)
             }
@@ -42,9 +37,9 @@ struct ReservationItem: View {
             )
             ZStack {
                 Rectangle()
-                    .foregroundColor(.designSystem(.warmGray3))
-                HStack(spacing: 0) {
-                    Image(assetName: .clock)
+                    .foregroundColor(state.stateColor)
+                HStack(alignment: .center, spacing: 0) {
+                    Image(assetName: state == .cancel ? .ic_clock_white : .ic_clock_black)
                         .resizable()
                         .frame(width: 20, height: 20)
                         .padding(
@@ -55,14 +50,11 @@ struct ReservationItem: View {
                                 trailing: Device.Width * 6.5 / 390
                             )
                         )
-                    Text(time)
-                        .foregroundColor(.designSystem(.Secondary))
-                        .font(SystemFont(size: ._17, weight: .regular))
+                    SuitLabel(text: time, typo: .body, color: state.bottomTextColor)
                     Spacer()
-                    Text(customer)
+                    
+                    SuitLabel(text: customer, typo: .body, color: state.bottomTextColor)
                         .lineLimit(1)
-                        .foregroundColor(.designSystem(.Secondary))
-                        .font(SystemFont(size: ._17, weight: .regular))
                         .padding(
                             EdgeInsets(
                                 top: 0,

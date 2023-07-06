@@ -11,9 +11,12 @@ import SwiftUI
 class ReservationStore: ObservableObject {
     
     @Published var reservations = [Reservation]()
+    @Published var filteredReservations = [Reservation]()
     @Published var store = Store()
-    
+    @Published var selectedIndex = 0
     @Published var isLoading: Bool = false
+    
+    let tabBarNames = ["신규", "확정", "완료 및 취소"]
     
     private let fetchReserveUseCase: FetchReserveUseCase
     private let fetchStoreUseCase: FetchStoreUseCase
@@ -32,35 +35,51 @@ class ReservationStore: ObservableObject {
 // MARK: Store Protocol 준수
 extension ReservationStore: StoreProtocol {
     enum Action {
-        case tabNextButton
-        case fetchReservation
-        case fetchStore
+        case fetchReservation // 예약 불러오기
+        case fetchStore // 가게 불러오기
+        case tapTabbarItem // 상단 탭바 눌렀을 경우, Action
     }
     
     func reduce(action: Action) {
         switch action {
-        case .tabNextButton:
-            self.tabNextButton()
         case .fetchReservation:
             self.fetchReservations(storeId: 9)
         case .fetchStore:
             self.fetchStore(storeId: 9)
+        default:
+            break
+        }
+    }
+    
+    func reduce(action: Action, num: Int) {
+        switch action {
+        case .tapTabbarItem:
+            self.tapTabbarItem(num: num)
+        default:
+            break
         }
     }
 }
 
 // MARK: 비즈니스 로직
 extension ReservationStore {
-    private func tabNextButton() {
-        print("tabNextButton")
-    }
-    
     private func fetchReservations(storeId: Int) {
         self.isLoading = true
         fetchReserveUseCase.fetchReserve(storeId: storeId) { result in
             switch result {
             case .success(let reservations):
                 self.reservations = reservations
+                
+                switch self.selectedIndex {
+                case 0:
+                    self.filteredReservations = reservations.filter { $0.state == .new }
+                case 1:
+                    self.filteredReservations = reservations.filter { $0.state == .confirm }
+                case 2:
+                    self.filteredReservations = reservations.filter { $0.state == .complete || $0.state == .cancel }
+                default: break
+                }
+                
                 self.isLoading = false
             case .failure(let error):
                 print(error.localizedDescription)
@@ -78,6 +97,18 @@ extension ReservationStore {
             case .failure(let error):
                 print(error.localizedDescription)
             }
+        }
+    }
+    
+    private func tapTabbarItem(num: Int) {
+        switch num {
+        case 0:
+            self.filteredReservations = reservations.filter { $0.state == .new }
+        case 1:
+            self.filteredReservations = reservations.filter { $0.state == .confirm }
+        case 2:
+            self.filteredReservations = reservations.filter { $0.state == .complete || $0.state == .cancel }
+        default: break
         }
     }
 }
