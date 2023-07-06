@@ -11,11 +11,10 @@ import Foundation
 enum AssetName: String {
     case box
     case ic_box
-    case ic_clock
     case ic_user
     case ic_plus
     case ic_minus
-    case clock
+    
     case xCircle
     case ic_eye
     case ic_home
@@ -30,6 +29,10 @@ enum AssetName: String {
     case ic_settings_selected
     case ic_zupzupbag_selected
     case mockImage
+    
+    // Reservation
+    case ic_clock_black
+    case ic_clock_white
     
     // StoreManagement
     case ic_day
