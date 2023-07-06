@@ -17,7 +17,7 @@ extension Int {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .none
-        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm"
+        dateFormatter.dateFormat = "yyyy년 MM월 dd일 HH:mm"
         
         let formattedDate = dateFormatter.string(from: date)
         

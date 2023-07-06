@@ -76,7 +76,17 @@ extension ReservationStore {
             switch result {
             case .success(let reservations):
                 self.reservations = reservations
-                self.filteredReservations = reservations.filter { $0.state == .new }
+                
+                switch self.selectedIndex {
+                case 0:
+                    self.filteredReservations = reservations.filter { $0.state == .new }
+                case 1:
+                    self.filteredReservations = reservations.filter { $0.state == .confirm }
+                case 2:
+                    self.filteredReservations = reservations.filter { $0.state == .complete || $0.state == .cancel }
+                default: break
+                }
+//                self.filteredReservations = reservations.filter { $0.state == .new }
                 self.isLoading = false
             case .failure(let error):
                 print(error.localizedDescription)

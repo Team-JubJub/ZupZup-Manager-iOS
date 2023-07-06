@@ -121,7 +121,7 @@ struct StoreInfoView: View {
                     )
                 HStack(spacing: 0) {
                     VStack(spacing: 0) {
-                        RectangleWithIcon(assetName: .ic_clock, color: .designSystem(.warmGray5)!)
+                        RectangleWithIcon(assetName: .ic_clock_black, color: .designSystem(.warmGray5)!)
                         Spacer()
                     }
                     

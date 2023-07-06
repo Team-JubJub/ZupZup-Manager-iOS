@@ -36,18 +36,36 @@ enum ReservationState {
         case .complete:
             return Color.designSystem(.green300)
         case .cancel:
-            return Color.designSystem(.ivoryGray300)
+            return Color.designSystem(.ivoryGray400)
         }
     }
     
-    var textColor: Color? {
+    var itemTextColor: Color? {
         switch self {
         case .new, .confirm:
             return .designSystem(.pureBlack)
         case .complete:
             return .designSystem(.coolGray600)
         case .cancel:
+            return .designSystem(.ivoryGray300)
+        }
+    }
+    
+    var dateTextColor: Color? {
+        switch self {
+        case .cancel:
+            return .designSystem(.ivoryGray300)
+        default:
+            return .designSystem(.coolGray600)
+        }
+    }
+    
+    var bottomTextColor: Color? {
+        switch self {
+        case .cancel:
             return .designSystem(.ivoryGray150)
+        default:
+            return .designSystem(.pureBlack)
         }
     }
 }

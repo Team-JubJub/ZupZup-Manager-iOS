@@ -68,7 +68,7 @@ struct ConfirmBottomSheet: View {
                         Spacer()
                         
                         VStack(spacing: 0) {
-                            RectangleWithIcon(assetName: .ic_clock, color: .designSystem(.warmGray5)!)
+                            RectangleWithIcon(assetName: .ic_clock_black, color: .designSystem(.warmGray5)!)
                             Spacer()
                         }
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding / 2))
