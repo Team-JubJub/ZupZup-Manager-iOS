@@ -28,7 +28,7 @@ struct TabbarItem: View {
                 .foregroundColor(selectedIndex == num ? Color.designSystem(.Tangerine300) : Color.designSystem(.neutralGray300))
             Spacer()
         }
-        .frame(height: Device.Height * 50 / 844)
+        .frame(height: 50)
         .gesture(
             TapGesture()
                 .onEnded { _ in
