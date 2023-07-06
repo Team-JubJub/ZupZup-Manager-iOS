@@ -20,11 +20,11 @@ struct ReservationItem: View {
         VStack(spacing: 0) {
             ZStack(alignment: .center) {
                 Rectangle()
-                    .foregroundColor(Color.designSystem(.warmGray3))
+                    .foregroundColor(Color.designSystem(.ivoryGray150))
                 HStack(spacing: 0) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(date)
-                            .foregroundColor(.designSystem(.pureBlack))
+                            .foregroundColor(.designSystem(.coolGray600))
                             .font(SystemFont(size: ._15, weight: .regular))
                         Text(menu)
                             .lineLimit(1)
@@ -32,7 +32,6 @@ struct ReservationItem: View {
                             .font(SystemFont(size: ._22, weight: .bold))
                     }
                     Spacer()
-                    StateCapsule(state: $state)
                 }
                 .frame(width: Device.Width * 326 / 390)
             }
@@ -42,7 +41,7 @@ struct ReservationItem: View {
             )
             ZStack {
                 Rectangle()
-                    .foregroundColor(.designSystem(.warmGray3))
+                    .foregroundColor(state.stateColor)
                 HStack(spacing: 0) {
                     Image(assetName: .clock)
                         .resizable()
@@ -56,12 +55,12 @@ struct ReservationItem: View {
                             )
                         )
                     Text(time)
-                        .foregroundColor(.designSystem(.Secondary))
+                        .foregroundColor(.designSystem(.pureBlack))
                         .font(SystemFont(size: ._17, weight: .regular))
                     Spacer()
                     Text(customer)
                         .lineLimit(1)
-                        .foregroundColor(.designSystem(.Secondary))
+                        .foregroundColor(.designSystem(.pureBlack))
                         .font(SystemFont(size: ._17, weight: .regular))
                         .padding(
                             EdgeInsets(

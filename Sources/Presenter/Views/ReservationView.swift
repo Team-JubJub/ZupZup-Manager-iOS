@@ -21,26 +21,28 @@ struct ReservationView: View {
             VSpacer(height: Device.VPadding)
             VStack(spacing: 8) {
                 HStack(spacing: 0) {
-                    SuiteLabel(text: "예약 상황", typo: .hero, color: .designSystem(.Secondary))
+                    SuiteLabel(text: "예약 상황", typo: .hero)
                     InfiniteSpacer()
                 }
                 .padding(EdgeInsets(top: Device.Height * 46 / 844, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
                 
-                ForEach(reservationStore.reservations, id: \.self) { reservation in
-                    NavigationLink {
-                        let store = ReservationDetailStore(
-                            reservation: reservation,
-                            store: reservationStore.store
-                        )
-                        ReserveDetailView(store: store)
-                    } label: {
-                        ReservationItem(
-                            date: reservation.date,
-                            menu: reservation.orderedItemdName,
-                            time: reservation.orderedTime,
-                            customer: reservation.customerName,
-                            state: reservation.state
-                        )
+                ScrollView(showsIndicators: false) {
+                    ForEach(reservationStore.reservations, id: \.self) { reservation in
+                        NavigationLink {
+                            let store = ReservationDetailStore(
+                                reservation: reservation,
+                                store: reservationStore.store
+                            )
+                            ReserveDetailView(store: store)
+                        } label: {
+                            ReservationItem(
+                                date: reservation.date,
+                                menu: reservation.orderedItemdName,
+                                time: reservation.orderedTime,
+                                customer: reservation.customerName,
+                                state: reservation.state
+                            )
+                        }
                     }
                 }
             }.navigationTitle("")

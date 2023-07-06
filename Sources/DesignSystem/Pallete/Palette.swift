@@ -11,6 +11,7 @@ import Foundation
 enum Palette {
     // Ivory Gray
     case ivoryGray100
+    case ivoryGray150
     case ivoryGray200
     case ivoryGray300
     case ivoryGray400
