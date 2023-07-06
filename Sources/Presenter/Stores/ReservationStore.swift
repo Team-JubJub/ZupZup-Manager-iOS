@@ -11,9 +11,12 @@ import SwiftUI
 class ReservationStore: ObservableObject {
     
     @Published var reservations = [Reservation]()
+    @Published var filteredReservations = [Reservation]()
     @Published var store = Store()
-    
+    @Published var selectedIndex = 0
     @Published var isLoading: Bool = false
+    
+    let tabBarNames = ["신규", "확정", "완료 및 취소"]
     
     private let fetchReserveUseCase: FetchReserveUseCase
     private let fetchStoreUseCase: FetchStoreUseCase
@@ -35,6 +38,7 @@ extension ReservationStore: StoreProtocol {
         case tabNextButton
         case fetchReservation
         case fetchStore
+        case tapTabbarItem
     }
     
     func reduce(action: Action) {
@@ -45,6 +49,17 @@ extension ReservationStore: StoreProtocol {
             self.fetchReservations(storeId: 9)
         case .fetchStore:
             self.fetchStore(storeId: 9)
+        default:
+            break
+        }
+    }
+    
+    func reduce(action: Action, num: Int) {
+        switch action {
+        case .tapTabbarItem:
+            self.tapTabbarItem(num: num)
+        default:
+            break
         }
     }
 }
@@ -61,6 +76,7 @@ extension ReservationStore {
             switch result {
             case .success(let reservations):
                 self.reservations = reservations
+                self.filteredReservations = reservations.filter { $0.state == .new }
                 self.isLoading = false
             case .failure(let error):
                 print(error.localizedDescription)
@@ -78,6 +94,18 @@ extension ReservationStore {
             case .failure(let error):
                 print(error.localizedDescription)
             }
+        }
+    }
+    
+    private func tapTabbarItem(num: Int) {
+        switch num {
+        case 0:
+            self.filteredReservations = reservations.filter { $0.state == .new }
+        case 1:
+            self.filteredReservations = reservations.filter { $0.state == .confirm }
+        case 2:
+            self.filteredReservations = reservations.filter { $0.state == .complete || $0.state == .cancel }
+        default: break
         }
     }
 }
