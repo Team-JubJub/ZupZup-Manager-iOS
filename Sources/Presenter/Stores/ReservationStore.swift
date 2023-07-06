@@ -35,16 +35,13 @@ class ReservationStore: ObservableObject {
 // MARK: Store Protocol 준수
 extension ReservationStore: StoreProtocol {
     enum Action {
-        case tabNextButton
-        case fetchReservation
-        case fetchStore
-        case tapTabbarItem
+        case fetchReservation // 예약 불러오기
+        case fetchStore // 가게 불러오기
+        case tapTabbarItem // 상단 탭바 눌렀을 경우, Action
     }
     
     func reduce(action: Action) {
         switch action {
-        case .tabNextButton:
-            self.tabNextButton()
         case .fetchReservation:
             self.fetchReservations(storeId: 9)
         case .fetchStore:
@@ -66,10 +63,6 @@ extension ReservationStore: StoreProtocol {
 
 // MARK: 비즈니스 로직
 extension ReservationStore {
-    private func tabNextButton() {
-        print("tabNextButton")
-    }
-    
     private func fetchReservations(storeId: Int) {
         self.isLoading = true
         fetchReserveUseCase.fetchReserve(storeId: storeId) { result in
@@ -86,6 +79,7 @@ extension ReservationStore {
                     self.filteredReservations = reservations.filter { $0.state == .complete || $0.state == .cancel }
                 default: break
                 }
+                
                 self.isLoading = false
             case .failure(let error):
                 print(error.localizedDescription)
