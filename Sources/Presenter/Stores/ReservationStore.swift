@@ -86,7 +86,6 @@ extension ReservationStore {
                     self.filteredReservations = reservations.filter { $0.state == .complete || $0.state == .cancel }
                 default: break
                 }
-//                self.filteredReservations = reservations.filter { $0.state == .new }
                 self.isLoading = false
             case .failure(let error):
                 print(error.localizedDescription)
