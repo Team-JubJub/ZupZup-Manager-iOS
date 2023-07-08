@@ -25,7 +25,7 @@ struct ProductGridItem: View {
         ZStack {
             VStack(spacing: 0) {
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.designSystem(.ivoryGray200)!, lineWidth: 1)
+                    .stroke(Color.designSystem(count == 0 ? .ivoryGray300 : .ivoryGray200)!, lineWidth: 2)
                     .overlay {
                         VStack(spacing: 0) {
                             ZStack {
