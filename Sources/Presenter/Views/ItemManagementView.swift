@@ -28,40 +28,17 @@ struct ItemManagementView: View {
                 
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns) {
-                        ForEach(manageStore.store.items, id: \.self) { item in
-                            VStack(spacing: 0) {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.designSystem(.ivoryGray200)!, lineWidth: 1)
-                                    .overlay {
-                                        VStack(spacing: 0) {
-                                            KFImage(URL(string: item.imageUrl))
-                                                .resizable()
-                                                .scaledToFill()
-                                                .frame(width: Device.Width * 175 / 390, height: 110)
-                                                .clipped()
-                                            
-                                            VStack(spacing: 0) {
-                                                HStack(spacing: 0) {
-                                                    SuiteLabel(text: item.name, typo: .headline)
-                                                        .lineLimit(2)
-                                                    InfiniteSpacer()
-                                                }
-                                                
-                                                InfiniteSpacer()
-                                                
-                                                HStack(spacing: 0) {
-                                                    SuiteLabel(text: "\(item.priceDiscount)원", typo: .headline, color: .designSystem(.Tangerine300))
-                                                    InfiniteSpacer()
-                                                    SuitLabel(text: item.amount == 0 ? "품절" : item.amount.toString() + "개", typo: .subhead, color: .designSystem(.ivoryGray400))
-                                                }
-                                            }
-                                            .padding(Device.VPadding / 2)
-                                        }
-                                        .cornerRadius(8)
-                                    }
-                                    .frame(width: Device.Width * 175 / 390, height: 200)
-                                    .background(Color.designSystem(.ivoryGray100).cornerRadius(9))
-                            }
+                        ForEach(manageStore.store.items.indices, id: \.self) { idx in
+                            ProductGridItem(
+                                isEditable: $manageStore.isEditable,
+                                count: $manageStore.store.items[idx].amount,
+                                url: $manageStore.store.items[idx].imageUrl,
+                                title: $manageStore.store.items[idx].name,
+                                originalPrice: $manageStore.store.items[idx].priceOrigin,
+                                salePrice: $manageStore.store.items[idx].priceDiscount,
+                                minusAction: { manageStore.reduce(action: .tabMinusButton, idx: idx) },
+                                plusAction: { manageStore.reduce(action: .tabPlusButton, idx: idx) }
+                            )
                         }
                     }
                     .frame(width: Device.WidthWithPadding)
