@@ -20,15 +20,13 @@ struct NavigationBarWithDismiss: View {
             Button {
                 dismiss()
             } label: {
-                Image(systemName: "chevron.left")
+                Image(systemName: "arrow.left")
                     .resizable()
-                    .frame(width: 11, height: 19)
+                    .frame(width: 16, height: 16)
                     .foregroundColor(.designSystem(.Tangerine300))
                     .aspectRatio(contentMode: .fit)
                 
-                Text(label)
-                    .font(SystemFont(size: ._17, weight: .regular))
-                    .foregroundColor(.designSystem(.Tangerine300))
+                SuitLabel(text: label, typo: .body, color: .designSystem(.Tangerine300))
                     .lineLimit(1)
             }
             Spacer()

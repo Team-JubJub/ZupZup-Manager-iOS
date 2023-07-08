@@ -18,6 +18,7 @@ struct HalfSquareButton: View {
             .foregroundColor(.designSystem(backgroundColor))
             .cornerRadius(16)
             .overlay {
+                SuiteLabel(text: title, typo: .headline)
                 Text(title)
                     .foregroundColor(.designSystem(fontColor))
                     .font(SystemFont(size: ._17, weight: .regular))

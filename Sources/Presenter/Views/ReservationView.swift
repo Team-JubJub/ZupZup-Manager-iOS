@@ -22,7 +22,7 @@ struct ReservationView: View {
                 LargeNavigationTitle(title: "예약 상황")
                 .padding(
                     EdgeInsets(
-                        top: Device.Height * 46 / 844,
+                        top: 46,
                         leading: Device.HPadding,
                         bottom: Device.Height * 20 / 844,
                         trailing: Device.HPadding

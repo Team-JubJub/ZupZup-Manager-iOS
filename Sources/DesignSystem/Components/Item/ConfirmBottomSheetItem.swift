@@ -16,14 +16,9 @@ struct ConfirmBottomSheetItem: View {
     var body: some View {
         HStack(spacing: 0) {
             Spacer()
-            Text(itemName)
-                .foregroundColor(.designSystem(.pureBlack))
-                .font(SystemFont(size: ._15, weight: .regular))
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.VPadding))
-
-            Text("\(price)원")
-                .foregroundColor(.designSystem(.pureWhite))
-                .font(SystemFont(size: ._15, weight: .regular))
+            SuitLabel(text: itemName, typo: .subhead)
+            HSpacer(width: 8)
+            SuitLabel(text: price.toPrice(), typo: .subhead, color: .designSystem(.ivoryGray300))
         }
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 5, trailing: 0))
     }
