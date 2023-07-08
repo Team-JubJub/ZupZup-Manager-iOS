@@ -19,7 +19,7 @@ struct StoreManagementView: View {
                     SuiteLabel(text: "설정", typo: .hero, color: .designSystem(.Secondary))
                     InfiniteSpacer()
                 }
-                .padding(EdgeInsets(top: Device.Height * 46 / 844, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
+                .padding(EdgeInsets(top: 46, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
                 
                 HStack(spacing: 0) {
                     SuiteLabel(text: "가게", typo: .h3, color: .designSystem(.Secondary))

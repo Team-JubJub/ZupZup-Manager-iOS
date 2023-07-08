@@ -15,18 +15,14 @@ struct ConfirmBottomSheet: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
-                Text("해당 주문을 확정할까요?")
-                    .font(SystemFont(size: ._20, weight: .semibold))
-                    .foregroundColor(.designSystem(.Secondary))
-                Spacer()
+                SuiteLabel(text: "해당 주문을 확정할까요?", typo: .h3)
+                InfiniteSpacer()
             }
             .padding(EdgeInsets(top: Device.VPadding, leading: Device.HPadding, bottom: Device.VPadding / 2, trailing: 0))
             
             HStack(spacing: 0) {
-                Text("아래 주문을 확인해주세요")
-                    .font(SystemFont(size: ._12, weight: .regular))
-                    .foregroundColor(.designSystem(.Secondary))
-                Spacer()
+                SuitLabel(text: "아래 주문을 확인해주세요", typo: .caption)
+                InfiniteSpacer()
             }
             .padding(EdgeInsets(top: 0, leading: Device.HPadding, bottom: Device.VPadding, trailing: 0))
             
@@ -39,28 +35,24 @@ struct ConfirmBottomSheet: View {
                     HStack(spacing: 0) {
                         HStack(spacing: 0) {
                             VStack(spacing: 0) {
-                                RectangleWithIcon(assetName: .ic_user, color: .designSystem(.warmGray5)!)
-                                Spacer()
+                                RectangleWithIcon(assetName: .ic_user, color: .designSystem(.ivoryGray300)!)
+                                InfiniteSpacer()
                             }
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding / 2))
                             .frame(height: Device.Height * 65 / 844)
                             
                             VStack(alignment: .leading, spacing: 0) {
                                 
-                                Text("주문자")
-                                    .foregroundColor(.designSystem(.Tangerine300))
-                                    .font(SystemFont(size: ._12, weight: .semibold))
+                                SuitLabel(text: "주문자", typo: .caption, color: .designSystem(.Tangerine300))
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                                 
-                                Text(store.reservation.customerName)
-                                    .foregroundColor(.designSystem(.Secondary))
-                                    .font(SystemFont(size: ._17, weight: .regular))
+                                SuitLabel(text: store.reservation.customerName, typo: .body)
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                                 
-                                Text(store.reservation.phoneNumber)
-                                    .foregroundColor(.designSystem(.warmGray6))
-                                    .font(SystemFont(size: ._13, weight: .regular))
-                                Spacer()
+                                SuitLabel(text: store.reservation.phoneNumber, typo: .subhead, color: .designSystem(.ivoryGray300))
+                                    .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
+                                    
+                                InfiniteSpacer()
                             }
                             .frame(height: Device.Height * 65 / 844)
                         }
@@ -68,22 +60,19 @@ struct ConfirmBottomSheet: View {
                         Spacer()
                         
                         VStack(spacing: 0) {
-                            RectangleWithIcon(assetName: .ic_clock_black, color: .designSystem(.warmGray5)!)
+                            RectangleWithIcon(assetName: .ic_clock_white, color: .designSystem(.ivoryGray300)!)
                             Spacer()
                         }
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding / 2))
                         .frame(height: Device.Height * 65 / 844)
                         
                         VStack(alignment: .leading, spacing: 0) {
-                            Text("방문 예정 시간")
-                                .foregroundColor(.designSystem(.Tangerine300))
-                                .font(SystemFont(size: ._12, weight: .semibold))
+                            SuitLabel(text: "방문 예정 시간", typo: .caption, color: .designSystem(.Tangerine300))
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                             
-                            Text(ReservationHelper.twentyMinutePlus(reservation: store.reservation))
-                                .foregroundColor(.designSystem(.Secondary))
-                                .font(SystemFont(size: ._17, weight: .regular))
-                            Spacer()
+                            SuitLabel(text: ReservationHelper.twentyMinutePlus(reservation: store.reservation), typo: .body)
+                            
+                            InfiniteSpacer()
                         }
                         .frame(height: Device.Height * 65 / 844)
                     }
@@ -94,29 +83,27 @@ struct ConfirmBottomSheet: View {
             
             ZStack(alignment: .center) {
                 Rectangle()
-                    .foregroundColor(.designSystem(.SecondaryText))
-                    .frame(width: Device.Width * 358 / 390, height: Device.Height * 145 / 844)
-                    .cornerRadius(16)
+                    .foregroundColor(.designSystem(.pureWhite))
+                    .frame(width: Device.WidthWithPadding, height: Device.Height * 145 / 844)
                 
                 VStack {
-                    Spacer()
+                    InfiniteSpacer()
                     
                     HStack(spacing: 0) {
-                        Text("총 합계")
-                            .font(SystemFont(size: ._15, weight: .regular))
-                            .foregroundColor(.designSystem(.Secondary))
-                        Spacer()
-                        Text("\(ReservationHelper.makeTotalPrice(reservation: store.reservation))원")
-                            .font(SystemFont(size: ._20, weight: .semibold))
-                            .foregroundColor(.designSystem(.Tangerine300))
+                        SuitLabel(text: "총 합계", typo: .subhead)
+                        
+                        InfiniteSpacer()
+                        
+                        SuiteLabel(text: ReservationHelper.makeTotalPrice(reservation: store.reservation).toPrice(), typo: .h3, color: .designSystem(.Tangerine300))
                     }
-                    Spacer()
+                    
+                    InfiniteSpacer()
                     
                     Rectangle()
                         .frame(height: 1)
                         .foregroundColor(.designSystem(.warmGray3))
                     
-                    Spacer()
+                    InfiniteSpacer()
                     
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 0) {
@@ -136,9 +123,9 @@ struct ConfirmBottomSheet: View {
                     store.reduce(action: .tabCancelButton)
                 } label: {
                     HalfSquareButton(
-                        backgroundColor: .warmGray3,
-                        fontColor: .warmGray6,
-                        title: "반려"
+                        backgroundColor: .neutralGray150,
+                        fontColor: .neutralGray400,
+                        title: "취소"
                     )
                     .padding(EdgeInsets(top: 0, leading: Device.HPadding, bottom: 0, trailing: 0))
                 }

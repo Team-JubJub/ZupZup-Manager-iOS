@@ -15,20 +15,9 @@ struct StateCapsule: View {
     var body: some View {
         ZStack {
             Capsule(style: .circular)
-                .frame(
-                    width: 75,
-                    height: 36
-                )
-                .foregroundColor(
-                    getCapsuleColor(state: state)
-                )
-            Text(
-                getCapsuleText(state: state)
-            )
-            .font(SystemFont(size: ._15, weight: .regular))
-            .foregroundColor(
-                getCapsuleTextColor(state: state)
-            )
+                .frame(width: 75, height: 36)
+                .foregroundColor(getCapsuleColor(state: state))
+            SuitLabel(text: getCapsuleText(state: state), typo: .subhead, color: getCapsuleTextColor(state: state))
         }
     }
 }

@@ -21,21 +21,13 @@ struct OrderItem: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .frame(
-                    width: Device.Width * 358 / 390,
-                    height: 73
-                )
-                .cornerRadius(Device.cornerRadious)
+                .frame(width: Device.Width * 358 / 390, height: 73)
                 .foregroundColor(.designSystem(.pureWhite))
             
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(itemName)
-                        .font(SystemFont(size: ._17, weight: .semibold))
-                        .foregroundColor(.designSystem(.Secondary))
-                    Text("\(price)원")
-                        .font(SystemFont(size: ._13, weight: .semibold))
-                        .foregroundColor(.designSystem(.Tangerine300))
+                    SuiteLabel(text: itemName, typo: .headline)
+                    SuitLabel(text: price.toPrice(), typo: .subhead, color: .designSystem(.Tangerine300))
                 }
                 Spacer()
                     HStack(spacing: 0) {
@@ -46,7 +38,7 @@ struct OrderItem: View {
                                 ZStack {
                                     Circle()
                                         .frame(width: 20, height: 20)
-                                        .foregroundColor(.designSystem(.warmGray4))
+                                        .foregroundColor(.designSystem(.ivoryGray300))
                                         .overlay {
                                             Image(assetName: .ic_minus)
                                                 .resizable()
@@ -59,9 +51,7 @@ struct OrderItem: View {
                         
                         Spacer()
                         
-                        Text(state == .new ? "\(count)" : "\(count)개")
-                            .font(SystemFont(size: ._17, weight: .regular))
-                            .foregroundColor(.designSystem(.Secondary))
+                        SuitLabel(text: state == .new ? "\(count)" : "\(count)개", typo: .body)
                         
                         Spacer()
                         
@@ -72,7 +62,7 @@ struct OrderItem: View {
                                 ZStack {
                                     Circle()
                                         .frame(width: 20, height: 20)
-                                        .foregroundColor(.designSystem(.warmGray4))
+                                        .foregroundColor(.designSystem(.ivoryGray300))
                                         .overlay {
                                             Image(assetName: .ic_plus)
                                                 .resizable()
