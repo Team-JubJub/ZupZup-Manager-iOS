@@ -143,6 +143,7 @@ enum Palette {
     case pureWhite
     case Secondary
     case SecondaryText
+    case ScrimBlack40
     
     var real: String {
         return String(describing: self)
