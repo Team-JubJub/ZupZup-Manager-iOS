@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class ManageStore: ObservableObject {
+class ItemManageStore: ObservableObject {
     
     private let fetchStoreUseCase: FetchStoreUseCase
     private let updateItemCountUseCase: UpdateItemCountUseCase
@@ -34,7 +34,7 @@ class ManageStore: ObservableObject {
 }
 
 // MARK: 상태 & 액션 정의 : StoreProtocol
-extension ManageStore: StoreProtocol {
+extension ItemManageStore: StoreProtocol {
     
     enum Action {
         case fetchStore
@@ -82,7 +82,7 @@ extension ManageStore: StoreProtocol {
 }
 
 // MARK: 비즈니스 로직 구현
-extension ManageStore {
+extension ItemManageStore {
     
     private func fetchStore(storeId: Int) {
         self.isLoading = true
@@ -106,6 +106,7 @@ extension ManageStore {
             switch result {
             case .success:
                 print("success")
+                self.isEditCountVisible = false
             case .failure(let error):
                 print(error.localizedDescription)
             }
