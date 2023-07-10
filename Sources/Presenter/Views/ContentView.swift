@@ -20,7 +20,7 @@ struct ContentView: View {
     let seletedImage: [AssetName] = [.tab_zero_on, .tab_one_on, .tab_two_on]
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             if isLogin { // MARK: 로그인이 된 상태
                 VStack(spacing: 0) {
                     ZStack {

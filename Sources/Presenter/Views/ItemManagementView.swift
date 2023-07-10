@@ -23,6 +23,19 @@ struct ItemManagementView: View {
                 HStack(spacing: 0) {
                     LargeNavigationTitle(title: "제품 관리")
                     InfiniteSpacer()
+                    EditButton { manageStore.reduce(action: .tabEditButton) }
+                        .confirmationDialog(
+                            "Title",
+                            isPresented: $manageStore.isEditable
+                        ) {
+                            Button("수량 수정") { manageStore.reduce(action: .tapEditCountButton) }
+                            Button("제품 정보 수정") { manageStore.reduce(action: .tapEditInfoButton) }
+                            Button("제품 추가") { manageStore.reduce(action: .tapAddItemButton) }
+                            Button("취소", role: .cancel) {}
+                        }
+                        .navigationDestination(isPresented: $manageStore.isAddItemVisible) { Text("수량 수정") }
+                        .navigationDestination(isPresented: $manageStore.isEditInfoVisible) { Text("정보 수정") }
+                        .navigationDestination(isPresented: $manageStore.isEditCountVisible) { Text("제품 추가") }
                 }
                 .padding(EdgeInsets(top: 46, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
                 
@@ -42,20 +55,6 @@ struct ItemManagementView: View {
                         }
                     }
                     .frame(width: Device.WidthWithPadding)
-                }
-                
-                if manageStore.isEditable {
-                    BottomButton(height: 67, text: "수정완료", textColor: .designSystem(.pureWhite)!) {
-                        manageStore.reduce(action: .tabEditBottomButton)
-                    }
-                    .padding(
-                        EdgeInsets(
-                            top: Device.VPadding / 2,
-                            leading: 0,
-                            bottom: 0,
-                            trailing: 0
-                        )
-                    )
                 }
             }
         }

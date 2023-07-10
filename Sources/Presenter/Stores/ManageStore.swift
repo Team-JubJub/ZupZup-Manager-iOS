@@ -19,6 +19,10 @@ class ManageStore: ObservableObject {
     @Published var isAddable: Bool = false
     @Published var isLoading: Bool = false
     
+    @Published var isEditCountVisible = false
+    @Published var isAddItemVisible = false
+    @Published var isEditInfoVisible = false
+    
     init(
         fetchStoreUseCase: FetchStoreUseCase = FetchStoreUseCaseImpl(),
         updateItemCountUseCase: UpdateItemCountUseCase = UpdateItemCountUseCaseImpl()
@@ -31,6 +35,19 @@ class ManageStore: ObservableObject {
 
 // MARK: 상태 & 액션 정의 : StoreProtocol
 extension ManageStore: StoreProtocol {
+    
+    enum Action {
+        case fetchStore
+        case tabEditButton // 수정하기 버튼을 눌렀을 경우
+        case tabEditBottomButton // 하단 수정하기 버튼을 눌렀을 경우
+        case tabPlusButton // 제품 개수 더하기 버튼을 눌렀을 경우
+        case tabMinusButton // 제품 개수 빼기 버튼을 눌렀을 경우
+        case tabItem // 제품을 눌렀을 경우
+        case tapEditCountButton // 수량 수정 버튼을 눌렀을 경우
+        case tapAddItemButton // 제품 정보 수정 버튼을 눌렀을 경우
+        case tapEditInfoButton // 제품 추가 버튼을 눌렀을 경우
+    }
+    
     func reduce(action: Action) {
         switch action {
         case .fetchStore:
@@ -41,6 +58,12 @@ extension ManageStore: StoreProtocol {
             self.tabEditBottomButton()
         case .tabItem:
             break
+        case .tapEditCountButton:
+            self.tapEditCountButton()
+        case .tapAddItemButton:
+            self.tapAddItemButton()
+        case .tapEditInfoButton:
+            self.tapEditInfoButton()
         default:
             break
         }
@@ -55,15 +78,6 @@ extension ManageStore: StoreProtocol {
         default:
             break
         }
-    }
-    
-    enum Action {
-        case fetchStore
-        case tabEditButton // 수정하기 버튼을 눌렀을 경우
-        case tabEditBottomButton // 하단 수정하기 버튼을 눌렀을 경우
-        case tabPlusButton // 제품 개수 더하기 버튼을 눌렀을 경우
-        case tabMinusButton // 제품 개수 빼기 버튼을 눌렀을 경우
-        case tabItem // 제품을 눌렀을 경우
     }
 }
 
@@ -130,5 +144,17 @@ extension ManageStore {
             return 0
         }
         return maxItemId + 1
+    }
+    
+    func tapEditCountButton() {
+        self.isEditCountVisible = true
+    }
+    
+    func tapAddItemButton() {
+        self.isAddItemVisible = true
+    }
+    
+    func tapEditInfoButton() {
+        self.isEditInfoVisible = true
     }
 }
