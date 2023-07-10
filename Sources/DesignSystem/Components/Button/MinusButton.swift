@@ -17,14 +17,18 @@ struct MinusButton: View {
         Button {
             action()
         } label: {
-            Circle()
-                .foregroundColor(.designSystem(palette))
-                .frame(width: 20, height: 20)
-                .overlay {
-                    Image(assetName: .ic_minus)
-                        .resizable()
-                        .frame(width: 12, height: 12)
-                }
+            HStack(spacing: 0) {
+                Circle()
+                    .foregroundColor(.designSystem(palette))
+                    .frame(width: 20, height: 20)
+                    .overlay {
+                        Image(assetName: .ic_minus)
+                            .resizable()
+                            .frame(width: 12, height: 12)
+                    }
+                Spacer()
+            }
+            .frame(width: 40, height: 20)
         }
     }
 }

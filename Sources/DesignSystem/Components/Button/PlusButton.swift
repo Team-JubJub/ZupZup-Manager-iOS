@@ -17,14 +17,18 @@ struct PlusButton: View {
         Button {
             action()
         } label: {
-            Circle()
-                .foregroundColor(.designSystem(palette))
-                .frame(width: 20, height: 20)
-                .overlay {
-                    Image(assetName: .ic_plus)
-                        .resizable()
-                        .frame(width: 12, height: 12)
-                }
+            HStack(spacing: 0) {
+                Spacer()
+                Circle()
+                    .foregroundColor(.designSystem(palette))
+                    .frame(width: 20, height: 20)
+                    .overlay {
+                        Image(assetName: .ic_plus)
+                            .resizable()
+                            .frame(width: 12, height: 12)
+                    }
+            }
+            .frame(width: 40, height: 20)
         }
     }
 }
