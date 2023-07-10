@@ -10,7 +10,7 @@ import SwiftUI
 
 class AddItemStore: ObservableObject {
     
-    weak var manageStore: ManageStore?
+    weak var manageStore: ItemManageStore?
     
     private let itemId: Int
     @Published var count: Int = 0
@@ -21,7 +21,7 @@ class AddItemStore: ObservableObject {
     @Published var isShowingImagePicker: Bool = false
     @Published var isShowingAlert: Bool = false
     
-    init(itemId: Int, manageStore: ManageStore) {
+    init(itemId: Int, manageStore: ItemManageStore) {
         self.itemId = itemId
         self.manageStore = manageStore
     }

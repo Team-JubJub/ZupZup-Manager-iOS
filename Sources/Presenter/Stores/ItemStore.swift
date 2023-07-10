@@ -10,7 +10,7 @@ import SwiftUI
 
 class ItemStore: ObservableObject {
     
-    weak var manageStore: ManageStore?
+    weak var manageStore: ItemManageStore?
     
     @Published var item: Item
     
@@ -23,7 +23,7 @@ class ItemStore: ObservableObject {
     @Published var priceString: String
     @Published var discountString: String
     
-    init(item: Item, manageStore: ManageStore) {
+    init(item: Item, manageStore: ItemManageStore) {
         self.item = item
         self.priceString = item.priceOrigin.toString()
         self.discountString = item.priceDiscount.toString()

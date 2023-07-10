@@ -34,8 +34,8 @@ struct ContentView: View {
                                     store.reduce(action: .fetchStore)
                                 }
                         case 1:
-                            let store = ManageStore()
-                            ItemManagementView(manageStore: store)
+                            let store = ItemManageStore()
+                            ItemManagementView(itemManageStore: store)
                         default:
                             let store = StoreManagementStore()
                             StoreManagementView(store: store)
