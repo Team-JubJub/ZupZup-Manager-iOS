@@ -16,8 +16,8 @@ class AddItemStore: ObservableObject {
     @Published var count: Int = 0
     @Published var selectedImage: UIImage?
     @Published var name: String = ""
-    @Published var priceString: String = "0"
-    @Published var discountString: String = "0"
+    @Published var price: String = ""
+    @Published var discountPrice: String = ""
     @Published var isShowingImagePicker: Bool = false
     @Published var isShowingAlert: Bool = false
     
@@ -61,7 +61,7 @@ extension AddItemStore {
     }
     
     func tabMinusButton() {
-       if self.count >= 1 { self.count -= 1 }
+        if self.count >= 1 { self.count -= 1 }
     }
     
     func tabPlusButton() {
@@ -73,10 +73,10 @@ extension AddItemStore {
     }
     
     func tabAlertOkButton() {
-        guard let priceOrigin = Int(priceString) else { return }
-        guard let priceDiscount = Int(discountString) else { return }
-        
         // TODO: 스토어 아이디 수정
+        guard let priceOrigin = Int(price) else { return }
+        guard let priceDiscount = Int(discountPrice) else { return }
+        
         let item = Item(
             itemId: self.itemId,
             name: self.name,

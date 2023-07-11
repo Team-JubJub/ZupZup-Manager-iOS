@@ -21,8 +21,6 @@ enum AssetName: String {
     case ic_home
     case ic_gift
     case ic_trashTong
-    case ic_edit
-    case mockImage
     
     // Tabbar Items
     case tab_zero_off
@@ -42,4 +40,9 @@ enum AssetName: String {
     case ic_direction
     case ic_night
     case ic_date
+    
+    // ItemManagement
+    case ic_edit
+    case ic_edit_white
+    case ic_mockImage
 }
