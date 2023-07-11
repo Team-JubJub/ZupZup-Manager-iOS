@@ -9,7 +9,12 @@
 import SwiftUI
 
 class EditItemInfoStore: ObservableObject {
+    
+    @Environment(\.dismiss) private var dismiss
+    
     @Published var items: [Item]
+    
+    @Published var isShowDetail: Bool = false
     
     init(items: [Item]) {
         self.items = items
@@ -34,10 +39,10 @@ extension EditItemInfoStore: StoreProtocol {
 
 extension EditItemInfoStore {
     func tapGridItem() {
-        
+        self.isShowDetail = true
     }
     
     func tapBottomButton() {
-        
+        dismiss()
     }
 }
