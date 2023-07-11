@@ -28,7 +28,6 @@ struct EditItemCountView: View {
                 LazyVGrid(columns: columns) {
                     ForEach(itemManageStore.store.items.indices, id: \.self) { idx in
                         ProductGridItem(
-                            isEditable: $itemManageStore.isEditable,
                             count: $itemManageStore.store.items[idx].amount,
                             url: $itemManageStore.store.items[idx].imageUrl,
                             title: $itemManageStore.store.items[idx].name,
