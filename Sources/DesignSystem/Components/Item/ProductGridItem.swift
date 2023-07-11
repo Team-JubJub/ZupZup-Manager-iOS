@@ -11,7 +11,6 @@ import Kingfisher
 
 struct ProductGridItem: View {
     
-    @Binding var isEditable: Bool
     @Binding var count: Int
     @Binding var url: String
     @Binding var title: String
@@ -26,8 +25,8 @@ struct ProductGridItem: View {
     
     let type: ItemType
     
-    let minusAction: () -> Void
-    let plusAction: () -> Void
+    var minusAction: (() -> Void)?
+    var plusAction: (() -> Void)?
     
     var body: some View {
         ZStack {
@@ -37,11 +36,20 @@ struct ProductGridItem: View {
                     .overlay {
                         VStack(spacing: 0) {
                             ZStack {
-                                KFImage(URL(string: url))
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: Device.Width * 175 / 390, height: 110)
-                                    .clipped()
+                                ZStack {
+                                    KFImage(URL(string: url))
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: Device.Width * 175 / 390, height: 110)
+                                        .clipped()
+                                    if type == .editInfo {
+                                        Rectangle()
+                                            .frame(width: Device.Width * 175 / 390, height: 110)
+                                        Image(assetName: .ic_edit_white)
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                    }
+                                }
                                 if count == 0 && type == .common {
                                     Rectangle()
                                         .frame(width: Device.Width * 175 / 390, height: 110)
@@ -64,7 +72,7 @@ struct ProductGridItem: View {
                                 InfiniteSpacer()
                                 
                                 switch type {
-                                case .common:
+                                case .common, .editInfo:
                                     HStack(spacing: 0) {
                                         SuiteLabel(
                                             text: "\(salePrice)원",
@@ -82,19 +90,17 @@ struct ProductGridItem: View {
                                     }
                                 case .editCount:
                                     HStack {
-                                        MinusButton(palette: .ivoryGray400, size: 20) { minusAction() }
+                                        MinusButton(palette: .ivoryGray400, size: 20) { minusAction!() }
                                         InfiniteSpacer()
                                         SuitLabel(text: count.toString(), typo: .headline)
                                         InfiniteSpacer()
-                                        PlusButton(palette: .ivoryGray400, size: 20) { plusAction() }
+                                        PlusButton(palette: .ivoryGray400, size: 20) { plusAction!() }
                                     }
-                                case .editInfo:
-                                    EmptyView()
+                                    
                                 }
                             }
                             .padding(Device.VPadding / 2)
                         }
-                        
                     }
                     .frame(width: Device.Width * 175 / 390, height: 200)
                     .background(Color.designSystem(count == 0 && type == .common ? .ivoryGray200 : .ivoryGray100))
