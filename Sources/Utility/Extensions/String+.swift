@@ -25,4 +25,12 @@ extension String {
             return ReservationState.new
         }
     }
+    
+    func toPrice() -> String {
+        guard let transformed = Int(self) else { return "" }
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let result = numberFormatter.string(from: NSNumber(value: transformed))
+        return result!
+    }
 }

@@ -37,12 +37,17 @@ struct ItemManagementView: View {
                             EditItemCountView(itemManageStore: itemManageStore)
                         }
                         .navigationDestination(isPresented: $itemManageStore.isAddItemVisible) {
-                            
+                            AddItemView(
+                                addItemStore: AddItemStore(
+                                    itemId: itemManageStore.getNewItemId(),
+                                    manageStore: itemManageStore
+                                )
+                            )
                         }
                         .navigationDestination(isPresented: $itemManageStore.isEditInfoVisible) {
                             Text("정보 수정")
                         }
-                        
+                    
                 }
                 .padding(EdgeInsets(top: 46, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
                 

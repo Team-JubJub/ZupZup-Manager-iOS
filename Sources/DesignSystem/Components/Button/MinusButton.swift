@@ -11,6 +11,7 @@ import SwiftUI
 struct MinusButton: View {
     
     let palette: Palette
+    let size: CGFloat
     let action: () -> Void
     
     var body: some View {
@@ -20,7 +21,7 @@ struct MinusButton: View {
             HStack(spacing: 0) {
                 Circle()
                     .foregroundColor(.designSystem(palette))
-                    .frame(width: 20, height: 20)
+                    .frame(width: size, height: size)
                     .overlay {
                         Image(assetName: .ic_minus)
                             .resizable()

@@ -11,6 +11,7 @@ import SwiftUI
 struct PlusButton: View {
     
     let palette: Palette
+    let size: CGFloat
     let action: () -> Void
     
     var body: some View {
