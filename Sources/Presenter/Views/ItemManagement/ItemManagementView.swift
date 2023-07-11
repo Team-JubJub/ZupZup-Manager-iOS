@@ -37,15 +37,10 @@ struct ItemManagementView: View {
                             EditItemCountView(itemManageStore: itemManageStore)
                         }
                         .navigationDestination(isPresented: $itemManageStore.isAddItemVisible) {
-                            AddItemView(
-                                addItemStore: AddItemStore(
-                                    itemId: itemManageStore.getNewItemId(),
-                                    manageStore: itemManageStore
-                                )
-                            )
+                            AddItemView(addItemStore: AddItemStore(itemId: itemManageStore.getNewItemId(), manageStore: itemManageStore))
                         }
                         .navigationDestination(isPresented: $itemManageStore.isEditInfoVisible) {
-                            Text("정보 수정")
+                            EditItemInfoView(itemStore: EditItemInfoStore(items: itemManageStore.store.items))
                         }
                     
                 }
@@ -55,7 +50,6 @@ struct ItemManagementView: View {
                     LazyVGrid(columns: columns) {
                         ForEach(itemManageStore.store.items.indices, id: \.self) { idx in
                             ProductGridItem(
-                                isEditable: $itemManageStore.isEditable,
                                 count: $itemManageStore.store.items[idx].amount,
                                 url: $itemManageStore.store.items[idx].imageUrl,
                                 title: $itemManageStore.store.items[idx].name,
