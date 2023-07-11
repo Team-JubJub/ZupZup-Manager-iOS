@@ -71,7 +71,7 @@ struct ItemView: View {
                             if itemStore.selectedImage == nil {
                                 KFImage(URL(string: itemStore.item.imageUrl))
                                     .placeholder {
-                                        Image(assetName: .mockImage)
+                                        Image(assetName: .ic_mockImage)
                                             .resizable()
                                             .scaledToFill()
                                             .frame(
@@ -117,11 +117,11 @@ struct ItemView: View {
                         }
                     }
                     
-                    RectangleWithTwoLabel(leftText: "메뉴", rightText: $itemStore.item.name, textType: .text)
-                    
-                    RectangleWithTwoLabel(leftText: "판매가격", rightText: $itemStore.priceString, textType: .number)
-                    
-                    RectangleWithTwoLabel(leftText: "할인가격", rightText: $itemStore.discountString, textType: .number)
+//                    PriceTextField(leftText: "메뉴", rightText: $itemStore.item.name, textType: .text)
+//
+//                    PriceTextField(leftText: "판매가격", rightText: $itemStore.priceString, textType: .number)
+//
+//                    PriceTextField(leftText: "할인가격", rightText: $itemStore.discountString, textType: .number)
                     
                     RectangleWithTwoButton(
                         text: "수량",
