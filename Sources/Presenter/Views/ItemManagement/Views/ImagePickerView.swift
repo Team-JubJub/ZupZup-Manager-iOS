@@ -7,19 +7,36 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ImagePickerView: View {
     
     @Binding var image: UIImage?
+    
+    var imageUrl: String?
     let action: () -> Void
     
     var body: some View {
         ZStack {
-            Image(uiImage: ((image ?? UIImage(named: "ic_mockImage"))!))
+            KFImage(URL(string: imageUrl ?? ""))
                 .resizable()
+                .placeholder {
+                    Image(assetName: .ic_mockImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 192)
+                        .clipped()
+                }
                 .scaledToFill()
                 .frame(height: 192)
                 .clipped()
+            if image != nil {
+                Image(uiImage: image!)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 192)
+                    .clipped()
+            }
             
             Rectangle()
                 .foregroundColor(.designSystem(.ScrimBlack40))

@@ -15,25 +15,34 @@ struct EditItemInfoDetailView: View {
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
+                // 네비게이션바 뒤로가기 버튼
                 HStack(spacing: 0) {
                     NavigationBarWithDismiss(label: "제품 관리")
                     InfiniteSpacer()
                 }
                 .frame(height: 42)
                 
+                // 네비게이션 타이틀
                 HStack(spacing: 0) {
                     InfiniteSpacer()
                     SuiteLabel(text: "제품 정보", typo: .headline)
                     InfiniteSpacer()
                 }
                 .frame(height: 42)
+                
+                HStack(spacing: 0) {
+                    InfiniteSpacer()
+                    TrashTongButton {
+                        store.reduce(action: .tapTrashTongButton)
+                    }
+                }
             }
             
             VSpacer(height: 41)
             
             ScrollView {
                 VStack(spacing: 0) {
-                    ImagePickerView(image: $store.selectedImage) {
+                    ImagePickerView(image: $store.selectedImage, imageUrl: store.imageUrl) {
                         store.reduce(action: .tabImagePickerButton)
                     }
                     .frame(height: 192)
@@ -45,7 +54,7 @@ struct EditItemInfoDetailView: View {
                         SuiteLabel(text: "제품명", typo: .h3)
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 0))
                                                 
-                        ItemNameTextField(name: $store.name) {
+                        ItemNameTextField(placeHolder: store.name, name: $store.name) {
                             // TODO: action 정의 필요
                             print("지우기")
                         }
@@ -58,12 +67,12 @@ struct EditItemInfoDetailView: View {
                         
                         SuiteLabel(text: "할인 가격", typo: .body)
                         
-                        PriceTextField(rightText: $store.price)
+                        PriceTextField(rightText: $store.priceOrigin)
                         
                         SuiteLabel(text: "가격", typo: .body)
                             .padding(EdgeInsets(top: 4, leading: 0, bottom: 0, trailing: 0))
                         
-                        PriceTextField(rightText: $store.discountPrice)
+                        PriceTextField(rightText: $store.priceDiscount)
                     }
                     .frame(width: Device.WidthWithPadding)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
