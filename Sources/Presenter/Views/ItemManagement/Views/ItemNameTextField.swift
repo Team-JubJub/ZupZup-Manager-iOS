@@ -1,5 +1,5 @@
 //
-//  ItemCountTextField.swift
+//  ItemNameTextField.swift
 //  ZupZupManager
 //
 //  Created by YeongJin Jeong on 2023/07/11.
