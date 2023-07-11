@@ -90,7 +90,7 @@ struct ItemView: View {
                                     .cornerRadius(Device.cornerRadious)
                                     .clipped()
                             } else {
-                                Image(uiImage: (itemStore.selectedImage ?? UIImage(named: "mockImage"))!)
+                                Image(uiImage: (itemStore.selectedImage ?? UIImage(named: "ic_mockImage"))!)
                                     .resizable()
                                     .scaledToFill()
                                     .frame(
@@ -117,14 +117,7 @@ struct ItemView: View {
                         }
                     }
                     
-//                    PriceTextField(leftText: "메뉴", rightText: $itemStore.item.name, textType: .text)
-//
-//                    PriceTextField(leftText: "판매가격", rightText: $itemStore.priceString, textType: .number)
-//
-//                    PriceTextField(leftText: "할인가격", rightText: $itemStore.discountString, textType: .number)
-                    
-                    RectangleWithTwoButton(
-                        text: "수량",
+                    ItemCountRectangle(
                         count: $itemStore.item.amount,
                         minusButtonAction: {
                             itemStore.reduce(action: .tabMinusButton)

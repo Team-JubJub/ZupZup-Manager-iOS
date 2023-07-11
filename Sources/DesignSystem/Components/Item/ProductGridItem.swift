@@ -82,11 +82,11 @@ struct ProductGridItem: View {
                                     }
                                 case .editCount:
                                     HStack {
-                                        MinusButton(palette: .ivoryGray400) { minusAction() }
+                                        MinusButton(palette: .ivoryGray400, size: 20) { minusAction() }
                                         InfiniteSpacer()
                                         SuitLabel(text: count.toString(), typo: .headline)
                                         InfiniteSpacer()
-                                        PlusButton(palette: .ivoryGray400) { plusAction() }
+                                        PlusButton(palette: .ivoryGray400, size: 20) { plusAction() }
                                     }
                                 case .editInfo:
                                     EmptyView()

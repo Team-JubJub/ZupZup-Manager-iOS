@@ -34,74 +34,58 @@ struct AddItemView: View {
             
             ScrollView {
                 VStack(spacing: 0) {
-                    ZStack {
-                        ZStack {
-                            Image(uiImage: (addItemStore.selectedImage ?? UIImage(named: "mockImage"))!)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(height: 192)
-                                .clipped()
-                            
-                            Rectangle()
-                                .foregroundColor(.designSystem(.ScrimBlack40))
-                            
-                            Image(assetName: .ic_edit_white)
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                                .scaledToFit()
-                        }
-                        .onTapGesture {
-                            addItemStore.reduce(action: .tabImagePickerButton)
-                        }
-                        .sheet(isPresented: $addItemStore.isShowingImagePicker) {
-                            ImagePicker(selectedImage: $addItemStore.selectedImage)
-                        }
+                    ImagePickerView(image: $addItemStore.selectedImage) {
+                        addItemStore.reduce(action: .tabImagePickerButton)
+                    }
+                    .frame(height: 192)
+                    .sheet(isPresented: $addItemStore.isShowingImagePicker) {
+                        ImagePicker(selectedImage: $addItemStore.selectedImage)
                     }
                     
-                    VStack(spacing: 0) {
-                        HStack(spacing: 0) {
-                            SuiteLabel(text: "제품명", typo: .h3)
-                            InfiniteSpacer()
+                    VStack(alignment: .leading, spacing: 0) {
+                        SuiteLabel(text: "제품명", typo: .h3)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 0))
+                                                
+                        ItemNameTextField(name: $addItemStore.name) {
+                            // TODO: action 정의 필요
+                            print("지우기")
                         }
                     }
                     .frame(width: Device.WidthWithPadding)
+                    .padding(EdgeInsets(top: 14, leading: 0, bottom: 16, trailing: 0))
                     
-                    VStack(spacing: 0) {
-                        HStack(spacing: 0) {
-                            SuiteLabel(text: "가격", typo: .h3)
-                            InfiniteSpacer()
-                        }
+                    VStack(alignment: .leading, spacing: 4) {
+                        SuiteLabel(text: "가격", typo: .h3)
                         
-                        HStack(spacing: 0) {
-                            SuiteLabel(text: "할인 가격", typo: .body)
-                            InfiniteSpacer()
-                        }
+                        SuiteLabel(text: "할인 가격", typo: .body)
+                        
+                        PriceTextField(rightText: $addItemStore.price)
+                        
+                        SuiteLabel(text: "가격", typo: .body)
+                            .padding(EdgeInsets(top: 4, leading: 0, bottom: 0, trailing: 0))
                         
                         PriceTextField(rightText: $addItemStore.discountPrice)
+                    }
+                    .frame(width: Device.WidthWithPadding)
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
                     
+                    VStack(spacing: 4) {
                         HStack(spacing: 0) {
-                            SuiteLabel(text: "가격", typo: .body)
+                            SuiteLabel(text: "수량", typo: .h3)
                             InfiniteSpacer()
                         }
                         
-                        IvoryRoundedRectangle(width: Device.WidthWithPadding, height: 56)
+                        ItemCountRectangle(
+                            count: $addItemStore.count,
+                            minusButtonAction: {
+                                addItemStore.reduce(action: .tabMinusButton)
+                            },
+                            plusButtonAction: {
+                                addItemStore.reduce(action: .tabPlusButton)
+                            }
+                        )
                     }
                     .frame(width: Device.WidthWithPadding)
-                    
-                    PriceTextField(rightText: $addItemStore.price)
-                    
-                    PriceTextField(rightText: $addItemStore.discountPrice)
-                    
-                    RectangleWithTwoButton(
-                        text: "수량",
-                        count: $addItemStore.count,
-                        minusButtonAction: {
-                            addItemStore.reduce(action: .tabMinusButton)
-                        },
-                        plusButtonAction: {
-                            addItemStore.reduce(action: .tabPlusButton)
-                        }
-                    )
                 }
                 .onTapGesture {
                     addItemStore.hideKeyboard()
@@ -112,7 +96,7 @@ struct AddItemView: View {
             BottomButton(
                 height: Device.Height * 64 / 844,
                 text: "등록하기",
-                textColor: .designSystem(.pureWhite)!
+                textColor: .designSystem(.pureBlack)!
             ) {
                 addItemStore.reduce(action: .tabBottomButton)
             }
