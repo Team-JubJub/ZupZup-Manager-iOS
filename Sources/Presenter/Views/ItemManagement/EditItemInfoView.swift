@@ -33,7 +33,7 @@ struct EditItemInfoView: View {
                                 title: $itemStore.items[idx].name,
                                 originalPrice: $itemStore.items[idx].priceOrigin,
                                 salePrice: $itemStore.items[idx].priceDiscount,
-                                type: .common
+                                type: .editInfo
                             )
                         }
                         .navigationDestination(for: Item.self) { item in

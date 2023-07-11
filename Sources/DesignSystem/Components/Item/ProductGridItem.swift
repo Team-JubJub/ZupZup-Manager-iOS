@@ -36,35 +36,33 @@ struct ProductGridItem: View {
                     .overlay {
                         VStack(spacing: 0) {
                             ZStack {
-                                ZStack {
-                                    KFImage(URL(string: url))
-                                        .resizable()
-                                        .scaledToFill()
+                                KFImage(URL(string: url))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: Device.Width * 175 / 390, height: 110)
+                                    .clipped()
+                                
+                                if (count == 0 && type == .common) || type == .editInfo {
+                                    Rectangle()
                                         .frame(width: Device.Width * 175 / 390, height: 110)
-                                        .clipped()
+                                        .foregroundColor(.designSystem(.ScrimBlack40))
+                                    
                                     if type == .editInfo {
-                                        Rectangle()
-                                            .frame(width: Device.Width * 175 / 390, height: 110)
                                         Image(assetName: .ic_edit_white)
                                             .resizable()
                                             .frame(width: 24, height: 24)
                                     }
                                 }
-                                if count == 0 && type == .common {
-                                    Rectangle()
-                                        .frame(width: Device.Width * 175 / 390, height: 110)
-                                        .foregroundColor(.designSystem(.ScrimBlack40))
-                                }
                             }
                             
                             VStack(spacing: 0) {
-                                HStack(spacing: 0) {
+                                HStack(alignment: .top, spacing: 0) {
                                     SuiteLabel(
                                         text: title,
                                         typo: .headline,
                                         color: .designSystem(count == 0 && type == .common ? .ivoryGray500 : .pureBlack)
                                     )
-                                    .lineLimit(2)
+                                    .multilineTextAlignment(.leading)
                                     
                                     InfiniteSpacer()
                                 }
@@ -96,7 +94,6 @@ struct ProductGridItem: View {
                                         InfiniteSpacer()
                                         PlusButton(palette: .ivoryGray400, size: 20) { plusAction!() }
                                     }
-                                    
                                 }
                             }
                             .padding(Device.VPadding / 2)

@@ -22,7 +22,7 @@ struct PlusButton: View {
                 Spacer()
                 Circle()
                     .foregroundColor(.designSystem(palette))
-                    .frame(width: 20, height: 20)
+                    .frame(width: size, height: size)
                     .overlay {
                         Image(assetName: .ic_plus)
                             .resizable()
