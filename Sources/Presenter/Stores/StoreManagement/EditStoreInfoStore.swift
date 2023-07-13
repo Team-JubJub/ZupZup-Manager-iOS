@@ -12,24 +12,46 @@ class EditStoreInfoStore: ObservableObject {
     
     @Published var isShowingImagePicker = false // 이미지 피커 상태 변수
     @Published var selectedImage: UIImage? // 이미지 피커에서 선택된 이미지 변수
+    
     @Published var isShowingOpenTimePicker: Bool = false
+    @Published var openTime: String = "09" // 영업 시작 시간 (시)
+    @Published var openMinute: String = "10" // 영업 시작 시간 (분)
+    
+    @Published var isShowingCloseTimePicker: Bool = false
+    @Published var closeTime: String = "21" // 영업 종료 시간 (시)
+    @Published var closeMinute: String = "10" // 영업 종료 시간 (분)
+    
+    @Published var isShowingDiscountStartTimePicker: Bool = false
+    @Published var discountStartTime: String = "09" // 할인 시작 시간 (시)
+    @Published var discountStartMinute: String = "15" // 할인 시작 시간 (분)
+    
+    @Published var isShowingDiscountEndTimePicker: Bool = false
+    @Published var discountEndTime: String = "21" // 할인 종료 시간 (시)
+    @Published var discountEndMinute: String = "00" // 할인 종료 시간 (분)
 }
 
 extension EditStoreInfoStore: StoreProtocol {
     enum Action {
         case tapImagePicker // 이미지 피커를 눌렀을 경우
-        case tapOpenTimeStart // 영업 시간 시작 버튼을 눌렀을 경우
-        case tapOpenTimeEnd // 영업 시간 종료 버튼을 눌렀을 경우
+        case tapOpenStartTime // 영업 시간 시작 버튼을 눌렀을 경우
+        case tapOpenEndTime // 영업 시간 종료 버튼을 눌렀을 경우
+        case tapDiscountStartTime // 마감 할인 시작 시간을 눌렀을 경우
+        case tapDiscountEndTime // 마감 할인 시작 시간을 눌렀을 경우
+        
     }
     
     func reduce(action: Action) {
         switch action {
         case .tapImagePicker:
             self.tapImagePicker()
-        case .tapOpenTimeStart:
+        case .tapOpenStartTime:
             self.tapOpenTimeStart()
-        case .tapOpenTimeEnd:
+        case .tapOpenEndTime:
             self.tapOpenTimeEnd()
+        case .tapDiscountStartTime:
+            self.tapDiscountStartTime()
+        case .tapDiscountEndTime:
+            self.tapDiscountEndTime()
         }
     }
 }
@@ -40,14 +62,38 @@ extension EditStoreInfoStore {
     }
     
     private func tapOpenTimeStart() {
-        withAnimation {
-            self.isShowingOpenTimePicker.toggle()
+        self.isShowingCloseTimePicker = false
+        if !isShowingCloseTimePicker {
+            withAnimation {
+                self.isShowingOpenTimePicker = true
+            }
         }
     }
     
     private func tapOpenTimeEnd() {
-        withAnimation {
-            self.isShowingOpenTimePicker.toggle()
+        self.isShowingOpenTimePicker = false
+        if !isShowingOpenTimePicker {
+            withAnimation {
+                self.isShowingCloseTimePicker = true
+            }
+        }
+    }
+    
+    private func tapDiscountStartTime() {
+        self.isShowingDiscountEndTimePicker = false
+        if !isShowingDiscountEndTimePicker {
+            withAnimation {
+                self.isShowingDiscountStartTimePicker = true
+            }
+        }
+    }
+    
+    private func tapDiscountEndTime() {
+        self.isShowingDiscountStartTimePicker = false
+        if !isShowingDiscountStartTimePicker {
+            withAnimation {
+                self.isShowingDiscountEndTimePicker = true
+            }
         }
     }
 }

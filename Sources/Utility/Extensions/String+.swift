@@ -34,3 +34,7 @@ extension String {
         return result!
     }
 }
+
+extension String: Identifiable {
+    public var id: String { return self }
+}
