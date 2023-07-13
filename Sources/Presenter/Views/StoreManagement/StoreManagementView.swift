@@ -63,7 +63,7 @@ struct StoreManagementView: View {
                                 store.reduce(action: .tapInfoButton)
                             }
                             .navigationDestination(isPresented: $store.isShowingEditStoreInfo) {
-                                EditStoreInfoView()
+                                EditStoreInfoView(store: EditStoreInfoStore())
                             }
                         }
                         
