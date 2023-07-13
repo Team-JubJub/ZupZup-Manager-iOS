@@ -28,6 +28,8 @@ class EditStoreInfoStore: ObservableObject {
     @Published var isShowingDiscountEndTimePicker: Bool = false
     @Published var discountEndTime: String = "21" // 할인 종료 시간 (시)
     @Published var discountEndMinute: String = "00" // 할인 종료 시간 (분)
+    
+    @Published var daysOfWeek: [Bool] = [ true, false, false, false, false, false, false ]
 }
 
 extension EditStoreInfoStore: StoreProtocol {
@@ -37,7 +39,8 @@ extension EditStoreInfoStore: StoreProtocol {
         case tapOpenEndTime // 영업 시간 종료 버튼을 눌렀을 경우
         case tapDiscountStartTime // 마감 할인 시작 시간을 눌렀을 경우
         case tapDiscountEndTime // 마감 할인 시작 시간을 눌렀을 경우
-        
+        case tapBottomButton // 수정 완료 버튼을 눌렀을 경우
+        case tapDaysButton // 요일 버튼을 눌렀을 경우
     }
     
     func reduce(action: Action) {
@@ -52,6 +55,19 @@ extension EditStoreInfoStore: StoreProtocol {
             self.tapDiscountStartTime()
         case .tapDiscountEndTime:
             self.tapDiscountEndTime()
+        case .tapBottomButton:
+            self.tapBottomButton()
+        default:
+            break
+        }
+    }
+    
+    func reduce(action: Action, idx: Int) {
+        switch action {
+        case .tapDaysButton:
+            self.tapDaysButton(idx: idx)
+        default:
+            break
         }
     }
 }
@@ -65,7 +81,7 @@ extension EditStoreInfoStore {
         self.isShowingCloseTimePicker = false
         if !isShowingCloseTimePicker {
             withAnimation {
-                self.isShowingOpenTimePicker = true
+                self.isShowingOpenTimePicker.toggle()
             }
         }
     }
@@ -74,7 +90,7 @@ extension EditStoreInfoStore {
         self.isShowingOpenTimePicker = false
         if !isShowingOpenTimePicker {
             withAnimation {
-                self.isShowingCloseTimePicker = true
+                self.isShowingCloseTimePicker.toggle()
             }
         }
     }
@@ -83,7 +99,7 @@ extension EditStoreInfoStore {
         self.isShowingDiscountEndTimePicker = false
         if !isShowingDiscountEndTimePicker {
             withAnimation {
-                self.isShowingDiscountStartTimePicker = true
+                self.isShowingDiscountStartTimePicker.toggle()
             }
         }
     }
@@ -92,8 +108,16 @@ extension EditStoreInfoStore {
         self.isShowingDiscountStartTimePicker = false
         if !isShowingDiscountStartTimePicker {
             withAnimation {
-                self.isShowingDiscountEndTimePicker = true
+                self.isShowingDiscountEndTimePicker.toggle()
             }
         }
+    }
+    
+    private func tapBottomButton() {
+        // TODO: 통신 - 수정 완료
+    }
+    
+    private func tapDaysButton(idx: Int) {
+        self.daysOfWeek[idx].toggle()
     }
 }

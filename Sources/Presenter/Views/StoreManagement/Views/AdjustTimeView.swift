@@ -64,7 +64,7 @@ struct AdjustTimeView: View {
                             SuiteLabel(text: ":", typo: .h2)
                             TimePicker(selectedTime: isShowingStartPicker ? $startMinute : $endMinute, mode: .minute)
                         }
-                        .frame(width: Device.WidthWithPadding - Device.HPadding * 2, height: 135)
+                        .frame(width: Device.WidthWithPadding - Device.HPadding * 2, height: isShowingStartPicker || isShowingEndPicker ? 135 : 0)
                     }
                     .offset(y: 65)
                 }
