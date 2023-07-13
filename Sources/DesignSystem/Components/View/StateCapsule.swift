@@ -32,7 +32,7 @@ extension StateCapsule {
         case .complete:
             return Color.designSystem(.green300)
         case .cancel:
-            return Color.designSystem(.warmGray5)
+            return Color.designSystem(.ivoryGray300)
         }
     }
     
@@ -58,7 +58,7 @@ extension StateCapsule {
         case .complete:
             return .designSystem(.pureBlack)
         case .cancel:
-            return .designSystem(.warmGray3)
+            return .designSystem(.pureBlack)
         }
     }
 }

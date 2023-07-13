@@ -42,12 +42,6 @@ enum Palette {
     case neutralGray700
     case neutralGray800
     
-    // Warm Gray
-    case warmGray3
-    case warmGray4
-    case warmGray5
-    case warmGray6
-    
     // Yellow
     case yellow100
     case yellow200

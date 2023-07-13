@@ -9,7 +9,7 @@
 import Foundation
 
 enum AssetName: String {
-
+    
     // Common
     case ic_plus
     case ic_minus
