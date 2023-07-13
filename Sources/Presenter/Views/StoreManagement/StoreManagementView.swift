@@ -60,8 +60,10 @@ struct StoreManagementView: View {
                             RectangleWithIcon(assetName: .ic_store, color: .designSystem(.ivoryGray400)!)
                             InfiniteSpacer()
                             RightChevronButton {
-                                // TODO: 가게 상세 정보 수정 화면 전환
-                                print("가게 상세 정보 수정")
+                                store.reduce(action: .tapInfoButton)
+                            }
+                            .navigationDestination(isPresented: $store.isShowingEditStoreInfo) {
+                                EditStoreInfoView()
                             }
                         }
                         
