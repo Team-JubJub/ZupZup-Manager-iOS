@@ -101,7 +101,7 @@ struct ConfirmBottomSheet: View {
                     
                     Rectangle()
                         .frame(height: 1)
-                        .foregroundColor(.designSystem(.warmGray3))
+                        .foregroundColor(.designSystem(.ivoryGray150))
                     
                     InfiniteSpacer()
                     
