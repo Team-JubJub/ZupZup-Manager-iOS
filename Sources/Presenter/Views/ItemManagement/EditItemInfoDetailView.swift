@@ -30,6 +30,7 @@ struct EditItemInfoDetailView: View {
                 }
                 .frame(height: 42)
                 
+                // 우측 상단 쓰레기통 모양 버튼
                 HStack(spacing: 0) {
                     InfiniteSpacer()
                     TrashTongButton {
@@ -67,12 +68,12 @@ struct EditItemInfoDetailView: View {
                         
                         SuiteLabel(text: "할인 가격", typo: .body)
                         
-                        PriceTextField(rightText: $store.priceOrigin)
+                        PriceTextField(rightText: $store.priceDiscount)
                         
                         SuiteLabel(text: "가격", typo: .body)
                             .padding(EdgeInsets(top: 4, leading: 0, bottom: 0, trailing: 0))
                         
-                        PriceTextField(rightText: $store.priceDiscount)
+                        PriceTextField(rightText: $store.priceOrigin)
                     }
                     .frame(width: Device.WidthWithPadding)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
@@ -112,18 +113,18 @@ struct EditItemInfoDetailView: View {
         .navigationTitle("")
         .navigationBarHidden(true)
         .alert(
-            "제품 추가",
+            "제품 삭제",
             isPresented: $store.isShowingAlert,
             actions: {
-                Button("아니오", role: .destructive) {
-                    store.reduce(action: .alertCancelButton)
+                Button("삭제", role: .destructive) {
+                    store.reduce(action: .tapAlertDelete)
                 }
-                Button("네", role: .cancel) {
-                    store.reduce(action: .alertOkButton)
+                Button("아니오", role: .cancel) {
+                    store.reduce(action: .tapAlertCancel)
                 }
             },
             message: {
-                Text("제품을 추가하시겠습니까?")
+                Text("제품을 리스트에서 삭제합니다.")
             }
         )
     }

@@ -39,8 +39,8 @@ extension EditItemDetailStore: StoreProtocol {
         case tabPlusButton
         case tabBottomButton
         case tapTrashTongButton
-        case alertOkButton
-        case alertCancelButton
+        case tapAlertCancel
+        case tapAlertDelete
     }
     
     func reduce(action: Action) {
@@ -55,10 +55,10 @@ extension EditItemDetailStore: StoreProtocol {
             self.tabBottomButton()
         case .tapTrashTongButton:
             self.tapTrashTongButton()
-        case .alertOkButton:
-            self.tabAlertOkButton()
-        case .alertCancelButton:
-            self.tabAlertCancelButton()
+        case .tapAlertCancel:
+            self.tapAlertCancel()
+        case .tapAlertDelete:
+            self.tapAlertDelete()
         }
     }
 }
@@ -77,18 +77,19 @@ extension EditItemDetailStore {
     }
     
     func tabBottomButton() {
-        self.isShowingAlert = true
-    }
-    
-    func tabAlertOkButton() {
-    }
-    
-    func tapTrashTongButton() {
         
     }
     
-    func tabAlertCancelButton() {
+    func tapAlertCancel() {
         self.isShowingAlert = false
+    }
+    
+    func tapTrashTongButton() {
+        self.isShowingAlert = true
+    }
+    
+    func tapAlertDelete() {
+        
     }
     
     func hideKeyboard() {
