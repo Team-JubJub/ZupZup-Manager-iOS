@@ -46,7 +46,7 @@ struct AddItemView: View {
                         SuiteLabel(text: "제품명", typo: .h3)
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 0))
                                                 
-                        ItemNameTextField(name: $addItemStore.name) {
+                        ItemNameTextField(placeHolder: "제품명을 입력해주세요", name: $addItemStore.name) {
                             // TODO: action 정의 필요
                             print("지우기")
                         }

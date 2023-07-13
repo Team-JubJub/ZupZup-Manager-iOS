@@ -1,5 +1,5 @@
 //
-//  ItemCountTextField.swift
+//  ItemNameTextField.swift
 //  ZupZupManager
 //
 //  Created by YeongJin Jeong on 2023/07/11.
@@ -10,13 +10,14 @@ import SwiftUI
 
 struct ItemNameTextField: View {
     
+    let placeHolder: String
     @Binding var name: String
     let action: () -> Void
     
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
-                TextField("제품명을 입력해주세요", text: $name)
+                TextField(placeHolder, text: $name)
                     .font(Suit(weight: .regular, size: ._17))
                 
                 Spacer()

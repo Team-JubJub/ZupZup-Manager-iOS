@@ -42,7 +42,7 @@ struct EditItemInfoView: View {
                                 )
                             }
                             .navigationDestination(isPresented: $itemStore.isShowDetail) {
-                                EditItemInfoDetailView(item: itemStore.items[idx])
+                                EditItemInfoDetailView(store: EditItemDetailStore(item: itemStore.items[idx]))
                             }
                         }
                     }

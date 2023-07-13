@@ -16,9 +16,12 @@ struct TrashTongButton: View {
         Button {
             action()
         } label: {
-            Image(assetName: .ic_trashTong)
-                .resizable()
-                .frame(width: 24, height: 24)
+            ZStack {
+                Image(assetName: .ic_trashTong)
+                    .resizable()
+                    .frame(width: 24, height: 24)
+            }
+            .frame(width: 40, height: 40)
         }
     }
 }
