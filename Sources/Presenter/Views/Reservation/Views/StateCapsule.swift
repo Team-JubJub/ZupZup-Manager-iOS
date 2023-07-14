@@ -10,7 +10,7 @@ import SwiftUI
 
 struct StateCapsule: View {
     
-    @Binding var state: ReservationCondition
+    var state: ReservationCondition
     
     var body: some View {
         ZStack {
