@@ -12,7 +12,7 @@ protocol ChangeStateUseCase {
     func changeState(
         documentID: String,
         state: ReservationCondition,
-        completion: @escaping (Result<Bool, Error>) -> Void
+        completion: @escaping (Result<ReservationCondition, NetworkError>) -> Void
     )
 }
 
@@ -29,16 +29,16 @@ final class ChangeStateUseCaseImpl: ChangeStateUseCase {
     func changeState(
         documentID: String,
         state: ReservationCondition,
-        completion: @escaping (Result<Bool, Error>) -> Void
+        completion: @escaping (Result<ReservationCondition, NetworkError>) -> Void
     ) {
         self.changeStateRepository.changeState(
             documentID: documentID,
             state: state) { result in
                 switch result {
-                case .success(let data):
-                    completion(.success(data))
-                case .failure(let err):
-                    completion(.failure(err))
+                case .success:
+                    completion(.success(state))
+                case .failure:
+                    completion(.failure(NetworkError.invalidResponse))
                 }
         }
     }

@@ -10,10 +10,10 @@ import SwiftUI
 
 struct OrderItem: View {
     
-    @Binding var itemName: String
-    @Binding var price: Int
-    @Binding var count: Int
-    @Binding var state: ReservationCondition
+    var itemName: String
+    var price: Int
+    var count: Int
+    var state: ReservationCondition
     
     let minusAction: () -> Void
     let plusAction: () -> Void

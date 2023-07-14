@@ -57,9 +57,9 @@ let reservationReducer = AnyReducer<ReservationState, ReservationAction, Reserva
         return .none
         
     case let .storeFetched(.failure(error)):
-#if DEBUG
+        #if DEBUG
         print("가게정보 조희 API 호출 실패 : ", error)
-#endif
+        #endif
         state.isLoading = false
         return .none
         
@@ -78,9 +78,9 @@ let reservationReducer = AnyReducer<ReservationState, ReservationAction, Reserva
         return .none
         
     case let .reservationsFetched(.failure(error)):
-#if DEBUG
+        #if DEBUG
         print("예약 상태 조희 API 호출 실패", error)
-#endif
+        #endif
         return .none
         
     case let .tapTabbarItem(num):
