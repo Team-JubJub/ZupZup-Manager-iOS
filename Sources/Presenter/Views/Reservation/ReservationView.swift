@@ -14,7 +14,7 @@ import ComposableArchitecture
 struct ReservationView: View {
     
     let store: Store<ReservationState, ReservationAction>
-
+    
     var body: some View {
         WithViewStore(store) { viewStore in
             if viewStore.isLoading {
@@ -31,7 +31,7 @@ struct ReservationView: View {
                                 trailing: Device.HPadding
                             )
                         )
-
+                    
                     HStack(spacing: 0) {
                         ForEach(viewStore.tabBarNames.indices, id: \.self) { num in
                             ReservationStateTabbarItem(
@@ -46,15 +46,28 @@ struct ReservationView: View {
                     }
                     .frame(width: Device.WidthWithPadding, height: Device.Height * 44 / 844)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
-
+                    
                     ScrollView(showsIndicators: false) {
                         ForEach(viewStore.filteredReservations, id: \.self) { reservation in
                             NavigationLink(
                                 destination: ReserveDetailView(
-                                    store: ReservationDetailStore(
-                                        reservation: reservation,
-                                        store: viewStore.store
-                                    )
+                                    store:
+                                        Store<ReservationDetailState, ReservationDetailAction>(
+                                            initialState: ReservationDetailState(
+                                                reservation: reservation,
+                                                store: viewStore.store
+                                            ),
+                                            reducer: reservationDetailReducer,
+                                            environment: ReservationDetailEnvironment(changeState: { id, condition in
+                                                return Future { promise in
+                                                    ChangeStateUseCaseImpl()
+                                                        .changeState(documentID: id, state: condition) { result in
+                                                            promise(.success(result))
+                                                        }
+                                                }
+                                                .eraseToEffect()
+                                            })
+                                        )
                                 )
                             ) {
                                 ReservationItem(
