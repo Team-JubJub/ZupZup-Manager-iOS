@@ -15,7 +15,7 @@ protocol ChangeStateRepository {
     func changeState(
         documentID: String,
         state: ReservationCondition,
-        completion: @escaping (Result<Bool, Error>) -> Void
+        completion: @escaping (Result<ReservationCondition, NetworkError>) -> Void
     )
 }
 
@@ -26,7 +26,7 @@ final class ChangeStateRepositoryImpl: ChangeStateRepository {
     func changeState(
         documentID: String,
         state: ReservationCondition,
-        completion: @escaping (Result<Bool, Error>) -> Void
+        completion: @escaping (Result<ReservationCondition, NetworkError>) -> Void
     ) {
         // TODO: Reservation으로 수정해야함
 //        let reservationRef = database.collection("Reservation")
@@ -35,10 +35,10 @@ final class ChangeStateRepositoryImpl: ChangeStateRepository {
         reservationRef.document(documentID).updateData(["state": state.rawString]) { err in
             if let err = err {
                 print(err.localizedDescription)
-                completion(.failure(err))
+                completion(.failure(NetworkError.invalidResponse))
             } else {
                 print("Document successfully written!")
-                completion(.success(true))
+                completion(.success(state))
             }
         }
     }
