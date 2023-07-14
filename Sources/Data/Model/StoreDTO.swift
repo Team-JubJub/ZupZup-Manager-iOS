@@ -36,8 +36,8 @@ public struct StoreDTO: Codable {
 }
 
 extension StoreDTO.Merchandise {
-    func toItem() -> Item {
-        return Item(
+    func toItem() -> ItemEntity {
+        return ItemEntity(
             itemId: self.itemId,
             name: self.itemName,
             priceOrigin: self.price,
@@ -50,8 +50,8 @@ extension StoreDTO.Merchandise {
 }
 
 extension StoreDTO {
-    func toStore() -> Store {
-        return Store(
+    func toStore() -> StoreEntity {
+        return StoreEntity(
             name: self.name,
             time: self.openTime,
             event: self.eventList[0],

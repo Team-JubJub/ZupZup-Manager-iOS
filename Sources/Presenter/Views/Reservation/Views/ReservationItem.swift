@@ -14,7 +14,7 @@ struct ReservationItem: View {
     @State var menu: String
     @State var time: String
     @State var customer: String
-    @State var state: ReservationState
+    @State var state: ReservationCondition
     
     var body: some View {
         VStack(spacing: 0) {

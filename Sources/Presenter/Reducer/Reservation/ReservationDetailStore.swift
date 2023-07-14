@@ -10,16 +10,16 @@ import Foundation
 
 class ReservationDetailStore: ObservableObject {
     
-    @Published var reservation: Reservation
-    @Published var store: Store
+    @Published var reservation: ReservationEntity
+    @Published var store: StoreEntity
     @Published var isChecked: Bool = false
     
     private let changeStateUseCase: ChangeStateUseCase
     private let updateItemCountUseCase: UpdateItemCountUseCase
     
     init(
-        reservation: Reservation,
-        store: Store,
+        reservation: ReservationEntity,
+        store: StoreEntity,
         changeStateUseCase: ChangeStateUseCase = ChangeStateUseCaseImpl(),
         updateItemCountUseCase: UpdateItemCountUseCase = UpdateItemCountUseCaseImpl()
     ) {

@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
+import Combine
 
 // MARK: ContentView
 struct ContentView: View {
@@ -27,11 +29,33 @@ struct ContentView: View {
                         // 화면 부분
                         switch selectedIndex {
                         case 0:
-                            let store = ReservationStore()
-                            ReservationView(reservationStore: store)
+                            let store = Store<ReservationState, ReservationAction>(
+                                initialState: ReservationState(),
+                                reducer: reservationReducer,
+                                environment: ReservationEnvironment(
+                                    mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
+                                    store: { storeId in
+                                        return Future { promise in
+                                            FetchStoreUseCaseImpl().fetchStore(storeId: storeId) { result in
+                                                promise(.success(result))
+                                            }
+                                        }
+                                        .eraseToEffect()
+                                    },
+                                    reservations: { storeId in
+                                        return Future { promise in
+                                            FetchReserveUseCaseImpl().fetchReserve(storeId: storeId) { result in
+                                                promise(.success(result))
+                                            }
+                                        }
+                                        .eraseToEffect()
+                                    }
+                                )
+                            )
+                            ReservationView(store: store)
                                 .onAppear {
-                                    store.reduce(action: .fetchReservation)
-                                    store.reduce(action: .fetchStore)
+                                    ViewStore(store).send(.fetchStore)
+                                    ViewStore(store).send(.fetchReservation)
                                 }
                         case 1:
                             let store = ItemManageStore()

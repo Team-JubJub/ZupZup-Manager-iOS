@@ -12,11 +12,11 @@ class EditItemInfoStore: ObservableObject {
     
     @Environment(\.dismiss) private var dismiss
     
-    @Published var items: [Item]
+    @Published var items: [ItemEntity]
     
     @Published var isShowDetail: Bool = false
     
-    init(items: [Item]) {
+    init(items: [ItemEntity]) {
         self.items = items
     }
 }

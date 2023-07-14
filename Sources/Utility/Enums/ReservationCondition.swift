@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-enum ReservationState {
+enum ReservationCondition: Equatable {
     case new
     case confirm
     case complete

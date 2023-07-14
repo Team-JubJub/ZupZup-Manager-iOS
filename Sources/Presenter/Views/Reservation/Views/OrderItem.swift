@@ -13,7 +13,7 @@ struct OrderItem: View {
     @Binding var itemName: String
     @Binding var price: Int
     @Binding var count: Int
-    @Binding var state: ReservationState
+    @Binding var state: ReservationCondition
     
     let minusAction: () -> Void
     let plusAction: () -> Void

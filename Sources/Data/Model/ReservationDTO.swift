@@ -60,8 +60,8 @@ struct ReservationDTO: Codable, Equatable, Hashable {
 
 // Entity로 변환하는 코드 DTO -> Entity
 extension ReservationDTO {
-    func toReservation() -> Reservation {
-        return Reservation(
+    func toReservation() -> ReservationEntity {
+        return ReservationEntity(
             id: self.reserveId.toString(),
             customerName: self.customerName,
             phoneNumber: self.customerPhone,

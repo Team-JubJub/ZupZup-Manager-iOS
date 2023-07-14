@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Item: Hashable {
+struct ItemEntity: Hashable, Equatable {
     var itemId: Int
     var name: String
     var priceOrigin: Int
@@ -18,7 +18,7 @@ struct Item: Hashable {
     var storeId: Int
 }
 
-extension Item {
+extension ItemEntity {
     func toMerchandiseDTO() -> StoreDTO.Merchandise {
         return StoreDTO.Merchandise(
             discounted: self.priceDiscount,

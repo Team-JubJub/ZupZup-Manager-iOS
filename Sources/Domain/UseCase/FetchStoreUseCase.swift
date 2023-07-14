@@ -9,7 +9,7 @@
 import Foundation
 
 protocol FetchStoreUseCase {
-    func fetchStore(storeId: Int, completion: @escaping (Result<Store, Error>) -> Void)
+    func fetchStore(storeId: Int, completion: @escaping (Result<StoreEntity, NetworkError>) -> Void)
 }
 
 final class FetchStoreUseCaseImpl: FetchStoreUseCase {
@@ -22,7 +22,7 @@ final class FetchStoreUseCaseImpl: FetchStoreUseCase {
     
     func fetchStore(
         storeId: Int,
-        completion: @escaping (Result<Store, Error>) -> Void
+        completion: @escaping (Result<StoreEntity, NetworkError>) -> Void
     ) {
         self.fetchStoreRepository.fetchStore(storeId: storeId) { result in
             switch result {

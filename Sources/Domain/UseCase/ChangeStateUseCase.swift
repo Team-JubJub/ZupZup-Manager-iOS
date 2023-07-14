@@ -11,7 +11,7 @@ import Foundation
 protocol ChangeStateUseCase {
     func changeState(
         documentID: String,
-        state: ReservationState,
+        state: ReservationCondition,
         completion: @escaping (Result<Bool, Error>) -> Void
     )
 }
@@ -28,7 +28,7 @@ final class ChangeStateUseCaseImpl: ChangeStateUseCase {
     
     func changeState(
         documentID: String,
-        state: ReservationState,
+        state: ReservationCondition,
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
         self.changeStateRepository.changeState(

@@ -8,10 +8,10 @@
 
 import Foundation
 
-struct Store {
+struct StoreEntity: Equatable {
     var name: String = ""
     var time: String = ""
     var event: String = ""
     var discountTime: String = ""
-    var items: [Item] = []
+    var items: [ItemEntity] = []
 }

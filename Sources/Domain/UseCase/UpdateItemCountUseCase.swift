@@ -11,7 +11,7 @@ import Foundation
 protocol UpdateItemCountUseCase {
     func updateItemCount(
         id: Int,
-        _ to: [Item],
+        _ to: [ItemEntity],
         completion: @escaping (Result<Void, Error>) -> Void
     )
 }
@@ -26,7 +26,7 @@ class UpdateItemCountUseCaseImpl: UpdateItemCountUseCase {
     
     func updateItemCount(
         id: Int,
-        _ to: [Item],
+        _ to: [ItemEntity],
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         updateItemCountRepository.updateItemCount(

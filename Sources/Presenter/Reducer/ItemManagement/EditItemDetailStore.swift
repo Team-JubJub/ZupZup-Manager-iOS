@@ -23,7 +23,7 @@ class EditItemDetailStore: ObservableObject {
     @Published var isShowingImagePicker: Bool = false
     @Published var isShowingAlert: Bool = false
     
-    init(item: Item) {
+    init(item: ItemEntity) {
         self.imageUrl = item.imageUrl
         self.count = item.amount
         self.name = item.name
