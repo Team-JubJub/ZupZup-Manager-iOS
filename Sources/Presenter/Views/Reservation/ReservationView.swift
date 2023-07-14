@@ -7,63 +7,69 @@
 //
 
 import SwiftUI
+import Combine
+
+import ComposableArchitecture
 
 struct ReservationView: View {
     
-    @StateObject var reservationStore: ReservationStore
-    
+    let store: Store<ReservationState, ReservationAction>
+
     var body: some View {
-        if reservationStore.isLoading {
-            RoundCircleProgress()
-        } else {
-            VSpacer(height: Device.VPadding)
-            VStack(spacing: 8) {
-                // 네비게이션 타이틀
-                LargeNavigationTitle(title: "예약 상황")
-                .padding(
-                    EdgeInsets(
-                        top: 46,
-                        leading: Device.HPadding,
-                        bottom: Device.Height * 20 / 844,
-                        trailing: Device.HPadding
-                    )
-                )
-                
-                // 탭바 구현 부분
-                HStack(spacing: 0) {
-                    ForEach(reservationStore.tabBarNames.indices, id: \.self) { num in
-                        ReservationStateTabbarItem(
-                            selectedIndex: $reservationStore.selectedIndex,
-                            num: num,
-                            name: reservationStore.tabBarNames[num],
-                            action: { reservationStore.reduce(action: .tapTabbarItem, num: num) }
+        WithViewStore(store) { viewStore in
+            if viewStore.isLoading {
+                RoundCircleProgress()
+            } else {
+                VSpacer(height: Device.VPadding)
+                VStack(spacing: 8) {
+                    LargeNavigationTitle(title: "예약 상황")
+                        .padding(
+                            EdgeInsets(
+                                top: 46,
+                                leading: Device.HPadding,
+                                bottom: Device.Height * 20 / 844,
+                                trailing: Device.HPadding
+                            )
                         )
+
+                    HStack(spacing: 0) {
+                        ForEach(viewStore.tabBarNames.indices, id: \.self) { num in
+                            ReservationStateTabbarItem(
+                                selectedIndex: viewStore.binding(get: \.selectedIndex, send: ReservationAction.tapTabbarItem),
+                                num: num,
+                                name: viewStore.tabBarNames[num]
+                            )
+                            .onTapGesture {
+                                viewStore.send(.tapTabbarItem(num))
+                            }
+                        }
                     }
-                }
-                .frame(width: Device.WidthWithPadding, height: Device.Height * 44 / 844)
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
-                
-                // 예약 상황 아이템 리스트 부분
-                ScrollView(showsIndicators: false) {
-                    ForEach(reservationStore.filteredReservations, id: \.self) { reservation in
-                        NavigationLink {
-                            let store = ReservationDetailStore(
-                                reservation: reservation,
-                                store: reservationStore.store
-                            )
-                            ReserveDetailView(store: store)
-                        } label: {
-                            ReservationItem(
-                                date: reservation.date,
-                                menu: reservation.orderedItemdName,
-                                time: reservation.orderedTime,
-                                customer: reservation.customerName,
-                                state: reservation.state
-                            )
+                    .frame(width: Device.WidthWithPadding, height: Device.Height * 44 / 844)
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
+
+                    ScrollView(showsIndicators: false) {
+                        ForEach(viewStore.filteredReservations, id: \.self) { reservation in
+                            NavigationLink(
+                                destination: ReserveDetailView(
+                                    store: ReservationDetailStore(
+                                        reservation: reservation,
+                                        store: viewStore.store
+                                    )
+                                )
+                            ) {
+                                ReservationItem(
+                                    date: reservation.date,
+                                    menu: reservation.orderedItemdName,
+                                    time: reservation.orderedTime,
+                                    customer: reservation.customerName,
+                                    state: reservation.state
+                                )
+                            }
                         }
                     }
                 }
-            }.navigationTitle("")
+                .navigationTitle("")
+            }
         }
     }
 }
