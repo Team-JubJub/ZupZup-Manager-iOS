@@ -77,7 +77,7 @@ extension AddItemStore {
         guard let priceOrigin = Int(price) else { return }
         guard let priceDiscount = Int(discountPrice) else { return }
         
-        let item = Item(
+        let item = ItemEntity(
             itemId: self.itemId,
             name: self.name,
             priceOrigin: priceOrigin,

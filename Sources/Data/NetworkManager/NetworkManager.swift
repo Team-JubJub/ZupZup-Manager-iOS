@@ -36,8 +36,8 @@ class NetworkManager {
             case .success(let value):
                 completion(.success(value))
             case .failure(let error):
-                if let underlyingError = error.underlyingError {
-                    completion(.failure(.requestFailed(underlyingError)))
+                if error.underlyingError != nil {
+                    completion(.failure(.requestFailed))
                 } else {
                     dump(error)
                     completion(.failure(.invalidResponse))

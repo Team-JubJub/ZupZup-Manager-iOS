@@ -11,7 +11,7 @@ import Foundation
 protocol FetchReserveUseCase {
     func fetchReserve(
         storeId: Int,
-        completion: @escaping (Result<[Reservation], Error>) -> Void
+        completion: @escaping (Result<[ReservationEntity], NetworkError>) -> Void
     )
 }
 
@@ -25,7 +25,7 @@ final class FetchReserveUseCaseImpl: FetchReserveUseCase {
     
     func fetchReserve(
         storeId: Int,
-        completion: @escaping (Result<[Reservation], Error>) -> Void
+        completion: @escaping (Result<[ReservationEntity], NetworkError>) -> Void
     ) {
         self.fetchReserveRepository.fetchReserve(
             storeId: storeId) { result in
@@ -33,8 +33,8 @@ final class FetchReserveUseCaseImpl: FetchReserveUseCase {
                 case .success(let reserveDTO):
                     let reservations = reserveDTO.map { $0.toReservation() }
                     completion(.success(reservations))
-                case .failure(let error):
-                    completion(.failure(error))
+                case .failure:
+                    completion(.failure(NetworkError.invalidResponse))
                 }
         }
     }

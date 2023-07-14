@@ -10,7 +10,7 @@ import SwiftUI
 
 struct StateCapsule: View {
     
-    @Binding var state: ReservationState
+    @Binding var state: ReservationCondition
     
     var body: some View {
         ZStack {
@@ -23,7 +23,7 @@ struct StateCapsule: View {
 }
 
 extension StateCapsule {
-    func getCapsuleColor(state: ReservationState) -> Color? {
+    func getCapsuleColor(state: ReservationCondition) -> Color? {
         switch state {
         case .new:
             return Color.designSystem(.orange400)
@@ -36,7 +36,7 @@ extension StateCapsule {
         }
     }
     
-    func getCapsuleText(state: ReservationState) -> String {
+    func getCapsuleText(state: ReservationCondition) -> String {
         switch state {
         case .new:
             return "신규"
@@ -49,7 +49,7 @@ extension StateCapsule {
         }
     }
     
-    func getCapsuleTextColor(state: ReservationState) -> Color? {
+    func getCapsuleTextColor(state: ReservationCondition) -> Color? {
         switch state {
         case .new:
             return .designSystem(.Secondary)

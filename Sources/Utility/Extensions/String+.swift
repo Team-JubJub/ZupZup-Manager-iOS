@@ -11,18 +11,18 @@ import Foundation
 extension String {
     
     /// DB에 있는 String형태의 state를 Enum으로 관리하기 위함
-    var toReservationState: ReservationState {
+    var toReservationState: ReservationCondition {
         switch self {
         case "NEW":
-            return ReservationState.new
+            return ReservationCondition.new
         case "CONFIRM":
-            return ReservationState.confirm
+            return ReservationCondition.confirm
         case "COMPLETE":
-            return ReservationState.complete
+            return ReservationCondition.complete
         case "CANCEL":
-            return ReservationState.cancel
+            return ReservationCondition.cancel
         default:
-            return ReservationState.new
+            return ReservationCondition.new
         }
     }
     

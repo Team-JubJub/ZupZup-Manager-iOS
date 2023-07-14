@@ -8,11 +8,11 @@
 
 import Foundation
 
-struct Reservation: Hashable {
+struct ReservationEntity: Hashable, Equatable {
     var id: String
     var customerName: String
     var phoneNumber: String
-    var state: ReservationState
+    var state: ReservationCondition
     var storeId: Int
     var date: String
     var cartList: [ReservationDTO.CartDTO]

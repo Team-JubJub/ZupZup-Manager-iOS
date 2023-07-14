@@ -14,7 +14,7 @@ import FirebaseFirestoreSwift
 protocol FetchStoreRepository {
     func fetchStore(
         storeId: Int,
-        completion: @escaping (Result<StoreDTO, Error>) -> Void
+        completion: @escaping (Result<StoreDTO, NetworkError>) -> Void
     )
 }
 
@@ -26,7 +26,7 @@ final class FetchStoreRepositoryImpl: FetchStoreRepository {
     
     func fetchStore(
         storeId: Int,
-        completion: @escaping (Result<StoreDTO, Error>) -> Void
+        completion: @escaping (Result<StoreDTO, NetworkError>) -> Void
     ) {
         
         let storeRef = database.collection("TestStore")
@@ -34,14 +34,14 @@ final class FetchStoreRepositoryImpl: FetchStoreRepository {
         storeRef.document(storeId.toString()).getDocument { document, error in
             if let error = error {
                 dump(error.localizedDescription)
-                completion(.failure(error))
+                completion(.failure(NetworkError.requestFailed))
             } else {
                 if let document = document, document.exists {
                     do {
                         let store = try document.data(as: StoreDTO.self)
                         completion(.success(store))
                     } catch {
-                        completion(.failure(error))
+                        completion(.failure(NetworkError.invalidResponse))
                     }
                 }
             }

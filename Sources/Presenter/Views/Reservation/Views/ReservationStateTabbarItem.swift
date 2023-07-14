@@ -14,7 +14,6 @@ struct ReservationStateTabbarItem: View {
     
     let num: Int
     let name: String
-    let action: () -> Void
     
     var body: some View {
         VStack(spacing: 0) {
@@ -33,7 +32,6 @@ struct ReservationStateTabbarItem: View {
         .gesture(
             TapGesture()
                 .onEnded { _ in
-                    action()
                     withAnimation {
                         selectedIndex = num
                     }

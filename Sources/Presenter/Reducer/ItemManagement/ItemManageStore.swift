@@ -13,7 +13,7 @@ class ItemManageStore: ObservableObject {
     private let fetchStoreUseCase: FetchStoreUseCase
     private let updateItemCountUseCase: UpdateItemCountUseCase
     
-    @Published var store = Store()
+    @Published var store = StoreEntity()
     
     @Published var isEditable: Bool = false
     @Published var isAddable: Bool = false
@@ -122,13 +122,13 @@ extension ItemManageStore {
         if self.store.items[idx].amount > 0 { self.store.items[idx].amount -= 1 }
     }
     
-    func updateItem(newItem: Item) {
+    func updateItem(newItem: ItemEntity) {
         if let index = store.items.firstIndex(where: { $0.itemId == newItem.itemId }) {
             store.items[index] = newItem
         }
     }
     
-    func appendItem(item: Item) {
+    func appendItem(item: ItemEntity) {
         self.store.items.append(item)
     }
     

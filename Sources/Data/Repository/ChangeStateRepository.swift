@@ -14,7 +14,7 @@ import FirebaseFirestoreSwift
 protocol ChangeStateRepository {
     func changeState(
         documentID: String,
-        state: ReservationState,
+        state: ReservationCondition,
         completion: @escaping (Result<Bool, Error>) -> Void
     )
 }
@@ -25,7 +25,7 @@ final class ChangeStateRepositoryImpl: ChangeStateRepository {
     
     func changeState(
         documentID: String,
-        state: ReservationState,
+        state: ReservationCondition,
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
         // TODO: Reservation으로 수정해야함

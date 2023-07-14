@@ -9,7 +9,7 @@
 import Foundation
 
 class ReservationHelper {
-    static func makeTotalPrice(reservation: Reservation) -> Int {
+    static func makeTotalPrice(reservation: ReservationEntity) -> Int {
         
         var totalPrice: Int = 0
 
@@ -21,7 +21,7 @@ class ReservationHelper {
         return totalPrice
     }
     
-    static func twentyMinutePlus(reservation: Reservation) -> String {
+    static func twentyMinutePlus(reservation: ReservationEntity) -> String {
         
         let origin = reservation.orderedTime.filter { $0.isNumber }
         
