@@ -13,7 +13,7 @@ import Combine
 // MARK: ContentView
 struct ContentView: View {
     // 로그인 여부를 확인하는 변수입니다.
-    @State var isLogin = true
+    @State var isLogin = false
     // 탭바 아이템의 인덱스 번호
     @State private var selectedIndex = 0
     // 탭바 아이콘의 정보를 담고 있는 배열

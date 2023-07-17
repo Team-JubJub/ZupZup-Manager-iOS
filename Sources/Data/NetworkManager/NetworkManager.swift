@@ -20,14 +20,10 @@ class NetworkManager {
         parameters: P? = nil,
         completion: @escaping (Result<T, NetworkError>) -> Void
     ) {
-        guard let encodedParameters = try? JSONEncoder().encode(parameters) else {
-            completion(.failure(.failToEncode))
-            return
-        }
         AF.request(
             url,
             method: method,
-            parameters: encodedParameters,
+            parameters: parameters,
             encoder: JSONParameterEncoder.default
         )
         .validate()
