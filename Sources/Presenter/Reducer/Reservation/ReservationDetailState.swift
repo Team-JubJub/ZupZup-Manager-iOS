@@ -13,7 +13,6 @@ import ComposableArchitecture
 
 struct ReservationDetailState: Equatable {
     var reservation: ReservationEntity
-    var store: StoreEntity
     var isShowingHalfModal: Bool = false
 }
 

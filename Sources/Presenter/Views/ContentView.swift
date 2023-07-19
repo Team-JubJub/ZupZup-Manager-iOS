@@ -35,14 +35,6 @@ struct ContentView: View {
                                 reducer: reservationReducer,
                                 environment: ReservationEnvironment(
                                     mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-                                    store: { storeId in
-                                        return Future { promise in
-                                            FetchStoreUseCaseImpl().fetchStore(storeId: storeId) { result in
-                                                promise(.success(result))
-                                            }
-                                        }
-                                        .eraseToEffect()
-                                    },
                                     reservations: { request in
                                         return Future { promise in
                                             FetchReserveUseCaseImpl()
@@ -56,7 +48,6 @@ struct ContentView: View {
                             )
                             ReservationView(store: store)
                                 .onAppear {
-                                    ViewStore(store).send(.fetchStore)
                                     ViewStore(store).send(.fetchReservation)
                                 }
                         case 1:
