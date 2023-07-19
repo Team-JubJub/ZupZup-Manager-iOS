@@ -15,7 +15,7 @@ struct ReservationEntity: Hashable, Equatable {
     var state: ReservationCondition
     var storeId: Int
     var date: String
-    var cartList: [ReservationDTO.CartDTO]
+    var cartList: [CartEntity]
     var orderedItemdName: String
     var orderedTime: String
 }

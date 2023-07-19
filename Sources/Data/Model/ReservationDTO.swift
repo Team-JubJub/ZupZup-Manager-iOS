@@ -68,9 +68,20 @@ extension ReservationDTO {
             state: self.state.toReservationState,
             storeId: self.storeId,
             date: self.reserveId.dateFromMilliseconds(),
-            cartList: self.cartList,
+            cartList: self.cartList.map { $0.toCart() },
             orderedItemdName: self.makeItemString(),
             orderedTime: self.visitTime.makeDiscountTime()
+        )
+    }
+}
+
+extension ReservationDTO.CartDTO {
+    func toCart() -> CartEntity {
+        return CartEntity(
+            itemId: self.itemId,
+            amount: self.amount,
+            name: self.name,
+            price: self.salesPrice
         )
     }
 }

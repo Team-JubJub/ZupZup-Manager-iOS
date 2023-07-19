@@ -43,11 +43,12 @@ struct ContentView: View {
                                         }
                                         .eraseToEffect()
                                     },
-                                    reservations: { storeId in
+                                    reservations: { request in
                                         return Future { promise in
-                                            FetchReserveUseCaseImpl().fetchReserve(storeId: storeId) { result in
-                                                promise(.success(result))
-                                            }
+                                            FetchReserveUseCaseImpl()
+                                                .fetchReserve(request: request) { result in
+                                                    promise(.success(result))
+                                                }
                                         }
                                         .eraseToEffect()
                                     }

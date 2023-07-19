@@ -9,33 +9,27 @@
 import Foundation
 
 protocol FetchReserveUseCase {
-    func fetchReserve(
-        storeId: Int,
-        completion: @escaping (Result<[ReservationEntity], NetworkError>) -> Void
-    )
+    func fetchReserve(request: FetchReservationsRequest?, completion: @escaping (Result<[ReservationEntity], NetworkError>) -> Void)
 }
 
 final class FetchReserveUseCaseImpl: FetchReserveUseCase {
     
-    private let fetchReserveRepository: FetchReserveRepository
+    private let fetchReservationsRepository: FetchReservationsRepository
     
-    init(fetchReserveRepository: FetchReserveRepository = FetchReserveRepositoryImpl()) {
-        self.fetchReserveRepository = fetchReserveRepository
+    init(fetchReservationsRepository: FetchReservationsRepository = FetchReservationsRepositoryImpl()) {
+        self.fetchReservationsRepository = fetchReservationsRepository
     }
     
-    func fetchReserve(
-        storeId: Int,
-        completion: @escaping (Result<[ReservationEntity], NetworkError>) -> Void
-    ) {
-        self.fetchReserveRepository.fetchReserve(
-            storeId: storeId) { result in
-                switch result {
-                case .success(let reserveDTO):
-                    let reservations = reserveDTO.map { $0.toReservation() }
-                    completion(.success(reservations))
-                case .failure:
-                    completion(.failure(NetworkError.invalidResponse))
-                }
+    func fetchReserve(request: FetchReservationsRequest?, completion: @escaping (Result<[ReservationEntity], NetworkError>) -> Void) {
+        fetchReservationsRepository.fetchReservations(
+            request: request
+        ) { result in
+            switch result {
+            case .success(let response):
+                completion(.success(response.toReservations()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 }

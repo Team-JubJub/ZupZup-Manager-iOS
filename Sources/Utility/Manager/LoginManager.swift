@@ -41,15 +41,12 @@ extension LoginManager {
         return token
     }
     
-    func getStoreId() -> Int? {
+    func getStoreId() -> Int {
         return UserDefaults.standard.integer(forKey: LoginManager.storeID)
     }
     
     func isLoginValid() -> Bool {
-        guard let storeId = getStoreId() else {
-            return false
-        }
-        return storeId != 0
+        return getStoreId() != 0
     }
     
     func removeStoreId() {

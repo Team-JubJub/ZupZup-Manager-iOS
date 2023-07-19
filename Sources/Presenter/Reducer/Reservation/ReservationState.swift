@@ -33,7 +33,7 @@ enum ReservationAction: Equatable {
 struct ReservationEnvironment {
     var mainQueue: AnySchedulerOf<DispatchQueue>
     var store: (Int) -> EffectPublisher<Result<StoreEntity, NetworkError>, Never>
-    var reservations: (Int) -> EffectPublisher<Result<[ReservationEntity], NetworkError>, Never>
+    var reservations: (FetchReservationsRequest?) -> EffectPublisher<Result<[ReservationEntity], NetworkError>, Never>
 }
 
 // Reducer
@@ -41,7 +41,7 @@ let reservationReducer = AnyReducer<ReservationState, ReservationAction, Reserva
     switch action {
     case .fetchReservation:
         state.isLoading = true
-        return environment.reservations(9)
+        return environment.reservations(nil)
             .map(ReservationAction.reservationsFetched)
             .eraseToEffect()
         
