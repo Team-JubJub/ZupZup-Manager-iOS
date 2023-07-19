@@ -8,36 +8,61 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 struct LoginView: View {
     
-    @StateObject var store: LoginStore
+    let store: Store<LoginState, LoginAction>
+    
     @Binding var isLogin: Bool
     
     var body: some View {
-        VStack(spacing: 0) {
-            InfiniteSpacer()
-            
-            BoxHighlighted()
-            
-            InfiniteSpacer()
-            
-            IdTextField(idString: $store.id)
-            
-            VSpacer(height: 20)
-            
-            PasswordTextField(
-                action: {
-                    store.reduce(action: .tapLoginButton)
-                    self.isLogin.toggle()
-                },
-                password: $store.password
-            )
-            
-            VSpacer(height: Device.Height * 128 / 844)
-        }
-        .background(Color.designSystem(.pureWhite))
-        .onTapGesture {
-            store.hideKeyboard()
+        WithViewStore(store) { viewStore in
+            VStack(spacing: 0) {
+                InfiniteSpacer()
+                
+                BoxHighlighted()
+                
+                InfiniteSpacer()
+                
+                IdTextField(
+                    idString: viewStore.binding(
+                        get: { $0.id },
+                        send: LoginAction.idChanged
+                    )
+                )
+                
+                VSpacer(height: 20)
+                
+                PasswordTextField(
+                    password: viewStore.binding(
+                        get: { $0.password },
+                        send: LoginAction.passwordChanged
+                    )
+                )
+                
+                BottomButton(
+                    height: 56,
+                    text: "로그인",
+                    textColor: .designSystem(.neutralGray400)!
+                ) {
+                    viewStore.send(.tapLoginButton)
+                }
+                .padding(
+                    EdgeInsets(
+                        top: 20,
+                        leading: 0,
+                        bottom: 0,
+                        trailing: 0
+                    )
+                )
+                
+                VSpacer(height: Device.Height * 128 / 844)
+            }
+            .background(Color.designSystem(.pureWhite))
+            .onTapGesture {
+                viewStore.send(.tapEmptySpace)
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ import Combine
 // MARK: ContentView
 struct ContentView: View {
     // 로그인 여부를 확인하는 변수입니다.
-    @State var isLogin = true
+    @State var isLogin = false
     // 탭바 아이템의 인덱스 번호
     @State private var selectedIndex = 0
     // 탭바 아이콘의 정보를 담고 있는 배열
@@ -23,12 +23,13 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            if isLogin { // MARK: 로그인이 된 상태
+            if LoginManager.shared.isLoginValid() || isLogin { // MARK: 로그인이 된 상태
                 VStack(spacing: 0) {
                     ZStack {
                         // 화면 부분
                         switch selectedIndex {
                         case 0:
+                            // MARK: 예약 상황 화면
                             let store = Store<ReservationState, ReservationAction>(
                                 initialState: ReservationState(),
                                 reducer: reservationReducer,
@@ -81,7 +82,22 @@ struct ContentView: View {
                 }
             } else { // MARK: 로그인이 되지 않은 상태
                 // 로그인 화면 호출
-                let store = LoginStore()
+                let store = Store<LoginState, LoginAction>(
+                    initialState: LoginState(),
+                    reducer: loginReducer,
+                    environment: LoginEnvironment(
+                        loginRepository: LoginRepository(),
+                        login: { request in
+                            return Future { promise in
+                                LoginRepository().login(request: request) { result in
+                                    self.isLogin.toggle()
+                                    promise(.success(result))
+                                }
+                            }
+                            .eraseToEffect()
+                        }
+                    )
+                )
                 LoginView(store: store, isLogin: $isLogin)
             }
         }

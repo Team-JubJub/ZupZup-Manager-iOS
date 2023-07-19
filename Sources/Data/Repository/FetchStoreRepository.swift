@@ -33,7 +33,6 @@ final class FetchStoreRepositoryImpl: FetchStoreRepository {
         
         storeRef.document(storeId.toString()).getDocument { document, error in
             if let error = error {
-                dump(error.localizedDescription)
                 completion(.failure(NetworkError.requestFailed))
             } else {
                 if let document = document, document.exists {
