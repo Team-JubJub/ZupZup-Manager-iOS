@@ -23,12 +23,13 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            if isLogin { // MARK: 로그인이 된 상태
+            if LoginManager.shared.isLoginValid() || isLogin { // MARK: 로그인이 된 상태
                 VStack(spacing: 0) {
                     ZStack {
                         // 화면 부분
                         switch selectedIndex {
                         case 0:
+                            // MARK: 예약 상황 화면
                             let store = Store<ReservationState, ReservationAction>(
                                 initialState: ReservationState(),
                                 reducer: reservationReducer,
@@ -81,7 +82,22 @@ struct ContentView: View {
                 }
             } else { // MARK: 로그인이 되지 않은 상태
                 // 로그인 화면 호출
-                let store = LoginStore()
+                let store = Store<LoginState, LoginAction>(
+                    initialState: LoginState(),
+                    reducer: loginReducer,
+                    environment: LoginEnvironment(
+                        loginRepository: LoginRepository(),
+                        login: { request in
+                            return Future { promise in
+                                LoginRepository().login(request: request) { result in
+                                    self.isLogin.toggle()
+                                    promise(.success(result))
+                                }
+                            }
+                            .eraseToEffect()
+                        }
+                    )
+                )
                 LoginView(store: store, isLogin: $isLogin)
             }
         }
