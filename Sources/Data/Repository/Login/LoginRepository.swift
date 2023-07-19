@@ -11,13 +11,7 @@ import Alamofire
 
 final class LoginRepository {
     
-    let request: LoginRequest
-    
-    init(request: LoginRequest) {
-        self.request = request
-    }
-    
-    func login(completion: @escaping (Result<LoginResponse, NetworkError>) -> Void) {
+    func login(request: LoginRequest, completion: @escaping (Result<LoginResponse, NetworkError>) -> Void) {
         NetworkManager.shared.sendRequest(
             to: "https://zupzuptest.com:8080/seller/test/sign-in",
             method: .post,

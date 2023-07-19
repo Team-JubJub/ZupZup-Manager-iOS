@@ -10,7 +10,6 @@ import SwiftUI
 
 struct PasswordTextField: View {
     
-    let action: () -> Void
     @Binding var password: String
     
     var body: some View {
@@ -33,10 +32,6 @@ struct PasswordTextField: View {
                 text: $password,
                 prompt: Text("비밀번호").foregroundColor(.designSystem(.ivoryGray500))
             )
-            .submitLabel(.done)
-            .onSubmit {
-                action()
-            }
             .padding(
                 EdgeInsets(
                     top: 0,
