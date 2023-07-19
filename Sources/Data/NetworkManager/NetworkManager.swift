@@ -35,7 +35,6 @@ class NetworkManager {
                 if error.underlyingError != nil {
                     completion(.failure(.requestFailed))
                 } else {
-                    dump(error)
                     completion(.failure(.invalidResponse))
                 }
             }

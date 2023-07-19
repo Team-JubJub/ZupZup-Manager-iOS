@@ -11,39 +11,48 @@ import Foundation
 final class LoginManager {
     
     static let shared = LoginManager()
-    
     static let accessToken = "accessToken"
     static let refreshToken = "refreshToken"
-    
     static let storeID = "storeID"
     
     private init() { }
 }
 
 extension LoginManager {
-    static func setAccessToken(newToken: String) {
+    func setAccessToken(newToken: String) {
         UserDefaults.standard.set(newToken, forKey: LoginManager.accessToken)
     }
     
-    static func setRefresh(newToken: String) {
+    func setRefresh(newToken: String) {
         UserDefaults.standard.set(newToken, forKey: LoginManager.refreshToken)
     }
     
-    static func setStoreId(id: Int) {
+    func setStoreId(id: Int) {
         UserDefaults.standard.set(id, forKey: LoginManager.storeID)
     }
     
-    static func getAccessToken() -> String {
+    func getAccessToken() -> String {
         guard let token = UserDefaults.standard.string(forKey: LoginManager.accessToken) else { return "" }
         return token
     }
     
-    static func getRefreshToken() -> String {
+    func getRefreshToken() -> String {
         guard let token = UserDefaults.standard.string(forKey: LoginManager.refreshToken) else { return "" }
         return token
     }
     
-    static func getStoreId() -> Int? {
+    func getStoreId() -> Int? {
         return UserDefaults.standard.integer(forKey: LoginManager.storeID)
+    }
+    
+    func isLoginValid() -> Bool {
+        guard let storeId = getStoreId() else {
+            return false
+        }
+        return storeId != 0
+    }
+    
+    func removeStoreId() {
+        UserDefaults.standard.removeObject(forKey: LoginManager.storeID)
     }
 }
