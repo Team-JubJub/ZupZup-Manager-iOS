@@ -43,8 +43,7 @@ extension StoreDTO.Merchandise {
             priceOrigin: self.price,
             priceDiscount: self.discounted,
             amount: self.stock,
-            imageUrl: self.imgUrl,
-            storeId: self.storeId
+            imageUrl: self.imgUrl
         )
     }
 }

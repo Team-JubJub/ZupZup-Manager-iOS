@@ -80,8 +80,7 @@ extension AddItemStore {
             priceOrigin: priceOrigin,
             priceDiscount: priceDiscount,
             amount: self.count,
-            imageUrl: "",
-            storeId: 9
+            imageUrl: ""
         )
     }
     

@@ -67,7 +67,17 @@ struct ContentView: View {
                                 )
                             )
                             ItemManagementView(store: store)
-                                .onAppear { ViewStore(store).send(.fetchStore) }
+                                .onAppear {
+                                    ViewStore(store).send(.fetchStore)
+                                    FetchItemsRepositoryImpl().fetchItems { result in
+                                        switch result {
+                                        case .success(let items):
+                                            dump(items)
+                                        case .failure(let error):
+                                            dump(error)
+                                        }
+                                    }
+                                }
                         default:
                             let store = StoreManagementStore()
                             StoreManagementView(store: store)
