@@ -14,7 +14,7 @@ class NetworkManager {
     
     private init() {}
     
-    func sendRequest<T: Codable, P: Encodable>(
+    func sendRequest<T: Decodable, P: Encodable>(
         to url: String,
         method: HTTPMethod,
         parameters: P? = nil,
@@ -40,4 +40,33 @@ class NetworkManager {
             }
         }
     }
+    
+    func sendRequest<T: Decodable>(
+           to url: String,
+           method: HTTPMethod,
+           completion: @escaping (Result<T, NetworkError>) -> Void
+       ) {
+           let parameters: String? = nil
+           
+           AF.request(
+               url,
+               method: method,
+               parameters: parameters,
+               encoder: JSONParameterEncoder.default
+           )
+           .validate()
+           .responseDecodable(of: T.self) { response in
+               switch response.result {
+               case .success(let value):
+                   completion(.success(value))
+               case .failure(let error):
+                   print(error.localizedDescription)
+                   if error.underlyingError != nil {
+                       completion(.failure(.requestFailed))
+                   } else {
+                       completion(.failure(.invalidResponse))
+                   }
+               }
+           }
+       }
 }

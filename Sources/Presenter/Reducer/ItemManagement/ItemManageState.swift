@@ -7,14 +7,14 @@
 //
 
 import SwiftUI
+import Combine
 
 import ComposableArchitecture
 
 // MARK: TCA - State
 struct ItemManageState: Equatable {
     
-    var items: [ItemEntity] = []
-    var store = StoreEntity()
+    var items: [ItemEntity] = [] // 제품 목록
     
     var isEditable = false // 애션 시트 호출
     var isLoading = false // 로딩 인디케이터 호출
@@ -26,8 +26,8 @@ struct ItemManageState: Equatable {
 
 // MARK: TCA - Action
 enum ItemManageAction: Equatable {
-    case fetchStore
-    case storeFetched(Result<StoreEntity, NetworkError>)
+    case fetchItems // 아이템 호출
+    case itemsFetched(Result<[ItemEntity], NetworkError>) // 아이템 호출 결과
     case tapEditButton // 좌측 상단의 연필 모양 눌렀을 경우
     case tapEditCountButton // 액션 시트 - 제품 수량 수정
     case tapAddItemButton // 액션 시트 - 제품 추가
@@ -36,30 +36,28 @@ enum ItemManageAction: Equatable {
 
 // MARK: TCA - Environment
 struct ItemManageEnvironment {
-    let fetchStoreUseCase: FetchStoreUseCase
-    let updateItemCountUseCase: UpdateItemCountUseCase
-    var store: (Int) -> EffectPublisher<Result<StoreEntity, NetworkError>, Never>
+    var items: () -> EffectPublisher<Result<[ItemEntity], NetworkError>, Never>
 }
 
 let itemManageReducer = AnyReducer<ItemManageState, ItemManageAction, ItemManageEnvironment> { state, action, environment in
     
     switch action {
-    case .fetchStore:
+    case .fetchItems: // 제품 리스트 호출
         state.isLoading = true
-        return environment.store(9)
-            .map(ItemManageAction.storeFetched)
+        return environment.items()
+            .map(ItemManageAction.itemsFetched)
             .eraseToEffect()
         
-    case let .storeFetched(.success(store)):
-        state.store = store
+    case let .itemsFetched(.success(items)): // 제품 리스트 호출 성공
+        state.items = items
         state.isLoading = false
         return .none
         
-    case let .storeFetched(.failure(error)):
-        print("제품 조회 API호출 실패")
+    case let .itemsFetched(.failure(error)): // 제품 리스트 호출 실패
+        // TODO: Error Handling
         return .none
         
-    case .tapEditButton:
+    case .tapEditButton: // 좌측 상단의 연필 모양 눌렀을 경우
         withAnimation { state.isEditable.toggle() }
         return .none
         

@@ -54,20 +54,29 @@ struct ContentView: View {
                                 initialState: ItemManageState(),
                                 reducer: itemManageReducer,
                                 environment: ItemManageEnvironment(
-                                    fetchStoreUseCase: FetchStoreUseCaseImpl(),
-                                    updateItemCountUseCase: UpdateItemCountUseCaseImpl(),
-                                    store: { id in
+                                    items: {
                                         return Future { promise in
-                                            FetchStoreUseCaseImpl().fetchStore(storeId: id) { result in
-                                                promise(.success(result))
-                                            }
+                                            FetchItemsUseCaseImpl()
+                                                .fetchItems { result in
+                                                    promise(.success(result))
+                                                }
                                         }
                                         .eraseToEffect()
                                     }
                                 )
                             )
                             ItemManagementView(store: store)
-                                .onAppear { ViewStore(store).send(.fetchStore) }
+                                .onAppear {
+                                    ViewStore(store).send(.fetchItems)
+                                    FetchItemsRepositoryImpl().fetchItems { result in
+                                        switch result {
+                                        case .success(let items):
+                                            dump(items)
+                                        case .failure(let error):
+                                            dump(error)
+                                        }
+                                    }
+                                }
                         default:
                             let store = StoreManagementStore()
                             StoreManagementView(store: store)

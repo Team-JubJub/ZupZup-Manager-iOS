@@ -15,7 +15,6 @@ struct ItemEntity: Hashable, Equatable {
     var priceDiscount: Int
     var amount: Int
     var imageUrl: String
-    var storeId: Int
 }
 
 extension ItemEntity {
@@ -27,7 +26,7 @@ extension ItemEntity {
             itemName: self.name,
             price: self.priceOrigin,
             stock: self.amount,
-            storeId: self.storeId
+            storeId: 1
         )
     }
 }
