@@ -65,13 +65,13 @@ struct ItemManagementView: View {
                     
                     ScrollView(showsIndicators: false) {
                         LazyVGrid(columns: columns) {
-                            ForEach(viewStore.store.items.indices, id: \.self) { index in
+                            ForEach(viewStore.items.indices, id: \.self) { index in
                                 ProductGridItem(
-                                    count: viewStore.state.store.items[index].amount,
-                                    url: viewStore.state.store.items[index].imageUrl,
-                                    title: viewStore.state.store.items[index].name,
-                                    originalPrice: viewStore.state.store.items[index].priceOrigin,
-                                    salePrice: viewStore.state.store.items[index].priceDiscount,
+                                    count: viewStore.state.items[index].amount,
+                                    url: viewStore.state.items[index].imageUrl,
+                                    title: viewStore.state.items[index].name,
+                                    originalPrice: viewStore.state.items[index].priceOrigin,
+                                    salePrice: viewStore.state.items[index].priceDiscount,
                                     type: .common
                                 )
                             }
