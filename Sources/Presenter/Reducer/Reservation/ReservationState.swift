@@ -15,7 +15,6 @@ struct ReservationState: Equatable {
     let tabBarNames = ["신규", "확정", "완료 및 취소"]
     var reservations: [ReservationEntity] = []
     var filteredReservations: [ReservationEntity] = []
-    var store: StoreEntity = StoreEntity()
     var selectedIndex = 0
     var isLoading = false
 }
@@ -23,8 +22,6 @@ struct ReservationState: Equatable {
 // Action
 enum ReservationAction: Equatable {
     case fetchReservation
-    case fetchStore
-    case storeFetched(Result<StoreEntity, NetworkError>)
     case reservationsFetched(Result<[ReservationEntity], NetworkError>)
     case tapTabbarItem(Int)
 }
@@ -32,8 +29,7 @@ enum ReservationAction: Equatable {
 // Environment
 struct ReservationEnvironment {
     var mainQueue: AnySchedulerOf<DispatchQueue>
-    var store: (Int) -> EffectPublisher<Result<StoreEntity, NetworkError>, Never>
-    var reservations: (Int) -> EffectPublisher<Result<[ReservationEntity], NetworkError>, Never>
+    var reservations: (FetchReservationsRequest?) -> EffectPublisher<Result<[ReservationEntity], NetworkError>, Never>
 }
 
 // Reducer
@@ -41,30 +37,13 @@ let reservationReducer = AnyReducer<ReservationState, ReservationAction, Reserva
     switch action {
     case .fetchReservation:
         state.isLoading = true
-        return environment.reservations(9)
+        return environment.reservations(nil)
             .map(ReservationAction.reservationsFetched)
             .eraseToEffect()
         
-    case .fetchStore:
-        state.isLoading = true
-        return environment.store(9)
-            .map(ReservationAction.storeFetched)
-            .eraseToEffect()
-        
-    case let .storeFetched(.success(store)):
-        state.store = store
-        state.isLoading = false
-        return .none
-        
-    case let .storeFetched(.failure(error)):
-        #if DEBUG
-        print("가게정보 조희 API 호출 실패 : ", error)
-        #endif
-        state.isLoading = false
-        return .none
-        
     case let .reservationsFetched(.success(reservations)):
         state.reservations = reservations
+        state.isLoading = false
         switch state.selectedIndex {
         case 0:
             state.filteredReservations = state.reservations.filter { $0.state == .new }

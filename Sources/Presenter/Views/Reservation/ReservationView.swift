@@ -54,8 +54,7 @@ struct ReservationView: View {
                                     store:
                                         Store<ReservationDetailState, ReservationDetailAction>(
                                             initialState: ReservationDetailState(
-                                                reservation: reservation,
-                                                store: viewStore.store
+                                                reservation: reservation
                                             ),
                                             reducer: reservationDetailReducer,
                                             environment: ReservationDetailEnvironment(changeState: { id, condition in
