@@ -47,12 +47,27 @@ struct ContentView: View {
                                 )
                             )
                             ReservationView(store: store)
-                                .onAppear {
-                                    ViewStore(store).send(.fetchReservation)
-                                }
+                                .onAppear { ViewStore(store).send(.fetchReservation) }
                         case 1:
-                            let store = ItemManageStore()
-                            ItemManagementView(itemManageStore: store)
+                            
+                            let store = Store<ItemManageState, ItemManageAction>(
+                                initialState: ItemManageState(),
+                                reducer: itemManageReducer,
+                                environment: ItemManageEnvironment(
+                                    fetchStoreUseCase: FetchStoreUseCaseImpl(),
+                                    updateItemCountUseCase: UpdateItemCountUseCaseImpl(),
+                                    store: { id in
+                                        return Future { promise in
+                                            FetchStoreUseCaseImpl().fetchStore(storeId: id) { result in
+                                                promise(.success(result))
+                                            }
+                                        }
+                                        .eraseToEffect()
+                                    }
+                                )
+                            )
+                            ItemManagementView(store: store)
+                                .onAppear { ViewStore(store).send(.fetchStore) }
                         default:
                             let store = StoreManagementStore()
                             StoreManagementView(store: store)

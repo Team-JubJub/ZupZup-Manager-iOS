@@ -11,11 +11,11 @@ import Kingfisher
 
 struct ProductGridItem: View {
     
-    @Binding var count: Int
-    @Binding var url: String
-    @Binding var title: String
-    @Binding var originalPrice: Int
-    @Binding var salePrice: Int
+    var count: Int
+    var url: String
+    var title: String
+    var originalPrice: Int
+    var salePrice: Int
     
     enum ItemType {
         case common

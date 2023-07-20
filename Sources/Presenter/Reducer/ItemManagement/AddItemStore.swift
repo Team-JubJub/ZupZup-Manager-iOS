@@ -10,8 +10,6 @@ import SwiftUI
 
 class AddItemStore: ObservableObject {
     
-    weak var manageStore: ItemManageStore?
-    
     private let itemId: Int
     @Published var count: Int = 0
     @Published var selectedImage: UIImage?
@@ -21,9 +19,8 @@ class AddItemStore: ObservableObject {
     @Published var isShowingImagePicker: Bool = false
     @Published var isShowingAlert: Bool = false
     
-    init(itemId: Int, manageStore: ItemManageStore) {
+    init(itemId: Int) {
         self.itemId = itemId
-        self.manageStore = manageStore
     }
 }
 
@@ -86,8 +83,6 @@ extension AddItemStore {
             imageUrl: "",
             storeId: 9
         )
-        
-        manageStore?.appendItem(item: item)
     }
     
     func tabAlertCancelButton() {
