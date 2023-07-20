@@ -28,7 +28,6 @@ final class FetchReservationsRepositoryImpl: FetchReservationsRepository {
         ) { (result: Result<FetchReservationsResponse, NetworkError>) in
             switch result {
             case .success(let response):
-                dump(response)
                 completion(.success(response))
             case .failure(let error):
                 completion(.failure(error))
