@@ -67,29 +67,12 @@ struct ItemManagementView: View {
                         LazyVGrid(columns: columns) {
                             ForEach(viewStore.store.items.indices, id: \.self) { index in
                                 ProductGridItem(
-                                    count: viewStore.binding(
-                                        get: { $0.store.items[index].amount },
-                                        send: ItemManageAction.tapMinusButton(index: index)
-                                    ),
-                                    url: viewStore.binding(
-                                        get: { $0.store.items[index].imageUrl },
-                                        send: ItemManageAction.tapItem(index: index)
-                                    ),
-                                    title: viewStore.binding(
-                                        get: { $0.store.items[index].name },
-                                        send: ItemManageAction.tapItem(index: index)
-                                    ),
-                                    originalPrice: viewStore.binding(
-                                        get: { $0.store.items[index].priceOrigin },
-                                        send: ItemManageAction.tapItem(index: index)
-                                    ),
-                                    salePrice: viewStore.binding(
-                                        get: { $0.store.items[index].priceDiscount },
-                                        send: ItemManageAction.tapItem(index: index)
-                                    ),
-                                    type: .common,
-                                    minusAction: { viewStore.send(.tapMinusButton(index: index)) },
-                                    plusAction: { viewStore.send(.tapPlusButton(index: index)) }
+                                    count: viewStore.state.store.items[index].amount,
+                                    url: viewStore.state.store.items[index].imageUrl,
+                                    title: viewStore.state.store.items[index].name,
+                                    originalPrice: viewStore.state.store.items[index].priceOrigin,
+                                    salePrice: viewStore.state.store.items[index].priceDiscount,
+                                    type: .common
                                 )
                             }
                         }

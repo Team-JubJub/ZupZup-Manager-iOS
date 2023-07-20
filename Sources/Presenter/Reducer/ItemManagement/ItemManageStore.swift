@@ -12,28 +12,26 @@ import ComposableArchitecture
 
 // MARK: TCA - State
 struct ItemManageState: Equatable {
+    
     var items: [ItemEntity] = []
     var store = StoreEntity()
-    var isEditable = false
-    var isAddable = false
-    var isLoading = false
-    var isEditCountVisible = false
-    var isAddItemVisible = false
-    var isEditInfoVisible = false
+    
+    var isEditable = false // 애션 시트 호출
+    var isLoading = false // 로딩 인디케이터 호출
+    
+    var isEditCountVisible = false // EditCountView호출
+    var isAddItemVisible = false // AddItemView 호출
+    var isEditInfoVisible = false // EditInfoView 호출
 }
 
 // MARK: TCA - Action
 enum ItemManageAction: Equatable {
     case fetchStore
     case storeFetched(Result<StoreEntity, NetworkError>)
-    case tapEditButton
-    case tapEditBottomButton
-    case tapPlusButton(index: Int)
-    case tapMinusButton(index: Int)
-    case tapItem(index: Int)
-    case tapEditCountButton
-    case tapAddItemButton
-    case tapEditInfoButton
+    case tapEditButton // 좌측 상단의 연필 모양 눌렀을 경우
+    case tapEditCountButton // 액션 시트 - 제품 수량 수정
+    case tapAddItemButton // 액션 시트 - 제품 추가
+    case tapEditInfoButton // 액션 시트 - 제품 정보 수정
 }
 
 // MARK: TCA - Environment
@@ -62,38 +60,19 @@ let itemManageReducer = AnyReducer<ItemManageState, ItemManageAction, ItemManage
         return .none
         
     case .tapEditButton:
-        withAnimation { state.isEditable = true }
+        withAnimation { state.isEditable.toggle() }
         return .none
         
-    case .tapEditBottomButton:
-        // TODO: Fix
+    case .tapEditCountButton: // 수량 수정을 눌렀을 경우
         state.isEditCountVisible.toggle()
-        withAnimation { state.isEditable = false }
         return .none
         
-    case let .tapPlusButton(index):
-        state.items[index].amount += 1
+    case .tapEditInfoButton: // 제품 정보 수정을 눌렀을 경우
+        state.isEditInfoVisible.toggle()
         return .none
         
-    case let .tapMinusButton(index):
-        if state.items[index].amount > 0 {
-            state.items[index].amount -= 1
-        }
-        return .none
-        
-    case .tapItem(index: let index): // TODO: Why?
-        return .none
-        
-    case .tapEditCountButton:
-        state.isEditCountVisible = true
-        return .none
-        
-    case .tapAddItemButton:
-        state.isAddItemVisible = true
-        return .none
-        
-    case .tapEditInfoButton:
-        state.isEditInfoVisible = true
+    case .tapAddItemButton: // 제품 추가를 눌렀을 경우
+        state.isAddItemVisible.toggle()
         return .none
     }
 }

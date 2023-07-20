@@ -33,11 +33,11 @@ struct EditItemInfoView: View {
                                 itemStore.reduce(action: .tapGridItem)
                             } label: {
                                 ProductGridItem(
-                                    count: $itemStore.items[idx].amount,
-                                    url: $itemStore.items[idx].imageUrl,
-                                    title: $itemStore.items[idx].name,
-                                    originalPrice: $itemStore.items[idx].priceOrigin,
-                                    salePrice: $itemStore.items[idx].priceDiscount,
+                                    count: itemStore.items[idx].amount,
+                                    url: itemStore.items[idx].imageUrl,
+                                    title: itemStore.items[idx].name,
+                                    originalPrice: itemStore.items[idx].priceOrigin,
+                                    salePrice: itemStore.items[idx].priceDiscount,
                                     type: .editInfo
                                 )
                             }
