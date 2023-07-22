@@ -13,7 +13,7 @@ final class LoginRepository {
     
     func login(request: LoginRequest, completion: @escaping (Result<LoginResponse, NetworkError>) -> Void) {
         NetworkManager.shared.sendRequest(
-            to: "https://zupzuptest.com:8080/seller/test/sign-in",
+            to: "https://zupzuptest.com:8080/mobile/sign-in",
             method: .post,
             parameters: request
         ) { (result: Result<LoginResponse, NetworkError>) in
@@ -21,6 +21,9 @@ final class LoginRepository {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
+                #if DEBUG
+                print("⭐️ 로그인 API 호출 실패 ⭐️")
+                #endif
                 completion(.failure(error))
             }
         }

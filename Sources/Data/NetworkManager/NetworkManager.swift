@@ -12,6 +12,8 @@ import Alamofire
 class NetworkManager {
     static let shared = NetworkManager()
     
+    let accessToken = LoginManager.shared.getAccessToken()
+    
     private init() {}
     
     func sendRequest<T: Decodable, P: Encodable>(
@@ -20,11 +22,14 @@ class NetworkManager {
         parameters: P? = nil,
         completion: @escaping (Result<T, NetworkError>) -> Void
     ) {
+        var headers: HTTPHeaders = ["accessToken": accessToken]
+        
         AF.request(
             url,
             method: method,
             parameters: parameters,
-            encoder: JSONParameterEncoder.default
+            encoder: JSONParameterEncoder.default,
+            headers: headers
         )
         .validate()
         .responseDecodable(of: T.self) { response in
@@ -32,6 +37,8 @@ class NetworkManager {
             case .success(let value):
                 completion(.success(value))
             case .failure(let error):
+                print(response.response?.statusCode)
+                dump(error.localizedDescription)
                 if error.underlyingError != nil {
                     completion(.failure(.requestFailed))
                 } else {
@@ -42,31 +49,34 @@ class NetworkManager {
     }
     
     func sendRequest<T: Decodable>(
-           to url: String,
-           method: HTTPMethod,
-           completion: @escaping (Result<T, NetworkError>) -> Void
-       ) {
-           let parameters: String? = nil
-           
-           AF.request(
-               url,
-               method: method,
-               parameters: parameters,
-               encoder: JSONParameterEncoder.default
-           )
-           .validate()
-           .responseDecodable(of: T.self) { response in
-               switch response.result {
-               case .success(let value):
-                   completion(.success(value))
-               case .failure(let error):
-                   print(error.localizedDescription)
-                   if error.underlyingError != nil {
-                       completion(.failure(.requestFailed))
-                   } else {
-                       completion(.failure(.invalidResponse))
-                   }
-               }
-           }
-       }
+        to url: String,
+        method: HTTPMethod,
+        completion: @escaping (Result<T, NetworkError>) -> Void
+    ) {
+        let parameters: String? = nil
+        var headers: HTTPHeaders = ["accessToken": accessToken]
+        
+        AF.request(
+            url,
+            method: method,
+            parameters: parameters,
+            encoder: JSONParameterEncoder.default,
+            headers: headers
+        )
+        .validate()
+        .responseDecodable(of: T.self) { response in
+            switch response.result {
+            case .success(let value):
+                completion(.success(value))
+            case .failure(let error):
+                print(response.response?.statusCode)
+                dump(error.localizedDescription)
+                if error.underlyingError != nil {
+                    completion(.failure(.requestFailed))
+                } else {
+                    completion(.failure(.invalidResponse))
+                }
+            }
+        }
+    }
 }
