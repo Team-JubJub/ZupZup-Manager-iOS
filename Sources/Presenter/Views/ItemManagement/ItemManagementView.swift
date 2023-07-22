@@ -50,8 +50,12 @@ struct ItemManagementView: View {
                                 get: { $0.isAddItemVisible },
                                 send: ItemManageAction.tapAddItemButton
                             )) {
-                                EmptyView()
-//                                AddItemView(addItemStore: AddItemStore(itemId: itemManageStore.getNewItemId(), manageStore: itemManageStore))
+                                let store = Store<AddItemState, AddItemAction>(
+                                    initialState: AddItemState(itemId: 1),
+                                    reducer: addItemReducer,
+                                    environment: AddItemEnvironment()
+                                )
+                                AddItemView(store: store)
                             }
                             .navigationDestination(isPresented: viewStore.binding(
                                 get: { $0.isEditInfoVisible },
