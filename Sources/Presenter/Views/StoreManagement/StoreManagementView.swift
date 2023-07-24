@@ -52,10 +52,10 @@ struct StoreManagementView: View {
                                     "\(viewStore.isToggleOn.description)",
                                     isOn: viewStore.binding(
                                         get: { $0.isToggleOn },
-                                        send: StoreManagementAction.isToggleOnBinding
+                                        send: StoreManagementAction.tapToggle
                                     )
                                 )
-                                    .toggleStyle(StoreStateToggle(action: { print("스위치 탭") }))
+                                .toggleStyle(StoreStateToggle())
                                     .cornerRadius(24)
                                     .frame(width: 52, height: 32)
                             }

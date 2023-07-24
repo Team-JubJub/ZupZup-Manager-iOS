@@ -10,8 +10,6 @@ import SwiftUI
 
 struct StoreStateToggle: ToggleStyle {
     
-    let action: () -> Void
-    
     func makeBody(configuration: Configuration) -> some View {
         RoundedRectangle(cornerRadius: 24)
             .stroke(configuration.isOn ? Color.clear : Color.designSystem(.ivoryGray400)!, lineWidth: 4)
@@ -38,7 +36,6 @@ struct StoreStateToggle: ToggleStyle {
             )
             .onTapGesture {
                 withAnimation { configuration.isOn.toggle() }
-                action()
             }
     }
 }

@@ -18,7 +18,6 @@ struct StoreManagementState: Equatable {
 enum StoreManagementAction: Equatable {
     case tapToggle // 가게 On / Off 토글
     case tapInfoButton // 가게 세부 정보 네비게이션
-    case isToggleOnBinding
     case isShowingEditStoreInfoBinding
 }
 
@@ -34,10 +33,6 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         
     case .tapInfoButton:
         state.isShowingEditStoreInfo = true
-        return .none
-        
-    case .isToggleOnBinding:
-        state.isToggleOn = false
         return .none
         
     case .isShowingEditStoreInfoBinding:
