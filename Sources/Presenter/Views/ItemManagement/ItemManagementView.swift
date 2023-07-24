@@ -20,6 +20,7 @@ struct ItemManagementView: View {
     
     // MARK: UseCase
     let addItemUseCase: AddItemUseCase = AddItemUseCaseImpl()
+    let updateItemCountUseCase: UpdateItemCountUseCase = UpdateItemCountUseCaseImpl()
     
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -47,8 +48,22 @@ struct ItemManagementView: View {
                                 get: { $0.isEditCountVisible },
                                 send: ItemManageAction.tapEditCountButton
                             )) {
-//                                EditItemCountView(itemManageStore: itemManageStore)
-                                EmptyView()
+                                let store = Store<EditItemCountState, EditItemCountAction>(
+                                    initialState: EditItemCountState(items: viewStore.state.items),
+                                    reducer: editItemCountReducer,
+                                    environment: EditItemCountEnvironment(
+                                        updateItemCount: { request in
+                                            return Future { promise in
+                                                updateItemCountUseCase.updateItemCount(request: request) { result in
+                                                    promise(.success(result))
+                                                }
+                                            }
+                                            .eraseToEffect()
+                                        }
+                                    )
+                                )
+                                
+                                EditItemCountView(store: store)
                             }
                             .navigationDestination(isPresented: viewStore.binding(
                                 get: { $0.isAddItemVisible },

@@ -8,47 +8,53 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 struct EditItemCountView: View {
+    
+    let store: Store<EditItemCountState, EditItemCountAction>
     
     let columns = [GridItem(), GridItem()]
     
     var body: some View {
-        VStack(spacing: 0) {
-            NavigationBarWithDismiss(label: "제품 관리")
-            
-            HStack(spacing: 0) {
-                LargeNavigationTitle(title: "수량 수정")
-                InfiniteSpacer()
-            }
-            .padding(EdgeInsets(top: 2, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
-            
-//            ScrollView(showsIndicators: false) {
-//                LazyVGrid(columns: columns) {
-//                    ForEach(itemManageStore.store.items.indices, id: \.self) { idx in
-//                        ProductGridItem(
-//                            count: $itemManageStore.store.items[idx].amount,
-//                            url: $itemManageStore.store.items[idx].imageUrl,
-//                            title: $itemManageStore.store.items[idx].name,
-//                            originalPrice: $itemManageStore.store.items[idx].priceOrigin,
-//                            salePrice: $itemManageStore.store.items[idx].priceDiscount,
-//                            type: .editCount,
-//                            minusAction: { itemManageStore.reduce(action: .tabMinusButton, idx: idx) },
-//                            plusAction: { itemManageStore.reduce(action: .tabPlusButton, idx: idx) }
-//                        )
-//                    }
-//                }
-//                .padding(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
-//                .frame(width: Device.WidthWithPadding)
-//            }
-            
+        WithViewStore(store) { viewStore in
             VStack(spacing: 0) {
-                VSpacer(height: 10)
-                BottomButton(height: 64, text: "수정 완료", textColor: .designSystem(.pureBlack)!) {
-//                    itemManageStore.reduce(action: .tabEditBottomButton)
+                NavigationBarWithDismiss(label: "제품 관리")
+                
+                HStack(spacing: 0) {
+                    LargeNavigationTitle(title: "수량 수정")
+                    InfiniteSpacer()
+                }
+                .padding(EdgeInsets(top: 2, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
+                
+                ScrollView(showsIndicators: false) {
+                    LazyVGrid(columns: columns) {
+                        ForEach(viewStore.items.indices, id: \.self) { idx in
+                            ProductGridItem(
+                                count: viewStore.state.items[idx].amount,
+                                url: viewStore.state.items[idx].imageUrl,
+                                title: viewStore.state.items[idx].name,
+                                originalPrice: viewStore.state.items[idx].priceOrigin,
+                                salePrice: viewStore.state.items[idx].priceDiscount,
+                                type: .editCount,
+                                minusAction: { viewStore.send(.tapMinusAction(idx)) },
+                                plusAction: { viewStore.send(.tapPlusAction(idx)) }
+                            )
+                        }
+                    }
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
+                    .frame(width: Device.WidthWithPadding)
+                }
+                
+                VStack(spacing: 0) {
+                    VSpacer(height: 10)
+                    BottomButton(height: 64, text: "수정 완료", textColor: .designSystem(.pureBlack)!) {
+                        viewStore.send(.tapBottomButton)
+                    }
                 }
             }
+            .navigationBarBackButtonHidden()
+            .navigationTitle("")
         }
-        .navigationBarBackButtonHidden()
-        .navigationTitle("")
     }
 }
