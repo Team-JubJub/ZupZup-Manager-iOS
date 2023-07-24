@@ -10,29 +10,24 @@ import Foundation
 
 protocol UpdateItemCountUseCase {
     func updateItemCount(
-        id: Int,
-        _ to: [ItemEntity],
-        completion: @escaping (Result<Void, Error>) -> Void
+        request: UpdateItemCountRequest,
+        completion: @escaping (Result<UpdateItemCountResponse, NetworkError>) -> Void
     )
 }
 
 class UpdateItemCountUseCaseImpl: UpdateItemCountUseCase {
     
-    private let updateItemCountRepository: UpdateItemCountRepository
+    let updateItemCountRepository: UpdateItemCountRepository
     
     init(updateItemCountRepository: UpdateItemCountRepository = UpdateItemCountRepositoryImpl()) {
         self.updateItemCountRepository = updateItemCountRepository
     }
     
     func updateItemCount(
-        id: Int,
-        _ to: [ItemEntity],
-        completion: @escaping (Result<Void, Error>) -> Void
+        request: UpdateItemCountRequest,
+        completion: @escaping (Result<UpdateItemCountResponse, NetworkError>) -> Void
     ) {
-        updateItemCountRepository.updateItemCount(
-            id: id,
-            to.map { $0.toMerchandiseDTO() }
-        ) { result in
+        updateItemCountRepository.updateItemCount(request: request) { result in
             switch result {
             case .success(let response):
                 completion(.success(response))
