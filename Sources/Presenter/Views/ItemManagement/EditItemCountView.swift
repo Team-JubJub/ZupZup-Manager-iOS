@@ -31,7 +31,7 @@ struct EditItemCountView: View {
                     LazyVGrid(columns: columns) {
                         ForEach(viewStore.items.indices, id: \.self) { idx in
                             ProductGridItem(
-                                count: viewStore.state.items[idx].amount,
+                                count: viewStore.state.items[idx].count,
                                 url: viewStore.state.items[idx].imageUrl,
                                 title: viewStore.state.items[idx].name,
                                 originalPrice: viewStore.state.items[idx].priceOrigin,
