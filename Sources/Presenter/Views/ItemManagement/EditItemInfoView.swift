@@ -17,6 +17,7 @@ struct EditItemInfoView: View {
     
     // MARK: UseCase
     let updateItemInfoUseCase: UpdateItemInfoUseCase = UpdateItemInfoUseCaseImpl()
+    let deleteItemUseCase: DeleteItemUseCase = DeleteItemUseCaseImpl()
     
     let columns = [GridItem(), GridItem()]
     
@@ -51,6 +52,15 @@ struct EditItemInfoView: View {
                                             updateItemInfo: { request in
                                                 return Future { promise in
                                                     updateItemInfoUseCase.updateItemInformation(
+                                                        request: request) { result in
+                                                            promise(.success(result))
+                                                    }
+                                                }
+                                                .eraseToEffect()
+                                            },
+                                            deleteItem: { request in
+                                                return Future { promise in
+                                                    deleteItemUseCase.deleteItem(
                                                         request: request) { result in
                                                             promise(.success(result))
                                                     }
