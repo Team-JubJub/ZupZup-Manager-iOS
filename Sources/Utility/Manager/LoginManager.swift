@@ -46,7 +46,7 @@ extension LoginManager {
     }
     
     func isLoginValid() -> Bool {
-        return getStoreId() != 0
+        return getStoreId() != 0 && getAccessToken().isEmpty && getRefreshToken().isEmpty
     }
     
     func removeStoreId() {

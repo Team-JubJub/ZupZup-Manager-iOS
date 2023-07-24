@@ -29,7 +29,7 @@ struct ContentView: View {
                         // 화면 부분
                         switch selectedIndex {
                         case 0:
-                            // MARK: 예약 상황 화면
+                            // MARK: 1본 탭 : 예약 상황 화면
                             let store = Store<ReservationState, ReservationAction>(
                                 initialState: ReservationState(),
                                 reducer: reservationReducer,
@@ -46,10 +46,13 @@ struct ContentView: View {
                                     }
                                 )
                             )
+                            // MARK: OnAppear 시점에 예약 조회 API 호출
                             ReservationView(store: store)
-                                .onAppear { ViewStore(store).send(.fetchReservation) }
+                                .onAppear {
+                                    ViewStore(store).send(.fetchReservation)
+                                }
                         case 1:
-                            
+                            // MARK: 2번 탭 : 제품 관리 화면
                             let store = Store<ItemManageState, ItemManageAction>(
                                 initialState: ItemManageState(),
                                 reducer: itemManageReducer,
@@ -65,19 +68,13 @@ struct ContentView: View {
                                     }
                                 )
                             )
+                            // MARK: OnAppear 시점에 API 호출
                             ItemManagementView(store: store)
                                 .onAppear {
                                     ViewStore(store).send(.fetchItems)
-                                    FetchItemsRepositoryImpl().fetchItems { result in
-                                        switch result {
-                                        case .success(let items):
-                                            dump(items)
-                                        case .failure(let error):
-                                            dump(error)
-                                        }
-                                    }
                                 }
                         default:
+                            // MARK: 3번 탭 : 매장 관리 화면
                             let store = StoreManagementStore()
                             StoreManagementView(store: store)
                         }

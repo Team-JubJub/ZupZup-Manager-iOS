@@ -12,6 +12,7 @@ typealias FetchItemsResponse = [FetchItemsDTO.Item]
 
 struct FetchItemsDTO: Decodable {
     struct Item: Decodable {
+        let itemId: Int
         let itemName: String
         let imageURL: String?
         let itemPrice: Int
@@ -20,7 +21,7 @@ struct FetchItemsDTO: Decodable {
         
         func toItem() -> ItemEntity {
             return ItemEntity(
-                itemId: 1,
+                itemId: self.itemId,
                 name: self.itemName,
                 priceOrigin: self.itemPrice,
                 priceDiscount: self.salePrice,

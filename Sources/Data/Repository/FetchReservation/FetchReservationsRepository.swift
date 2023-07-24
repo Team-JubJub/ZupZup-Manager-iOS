@@ -30,6 +30,9 @@ final class FetchReservationsRepositoryImpl: FetchReservationsRepository {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
+                #if DEBUG
+                print("⭐️ 예약조회 API 호출 실패 ⭐️")
+                #endif
                 completion(.failure(error))
             }
         }

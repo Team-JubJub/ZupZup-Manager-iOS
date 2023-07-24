@@ -9,6 +9,9 @@
 import Foundation
 
 struct LoginResponse: Codable, Equatable {
+    let result: String
     let message: String
+    let accessToken: String
+    let refreshToken: String
     let storeId: Int
 }

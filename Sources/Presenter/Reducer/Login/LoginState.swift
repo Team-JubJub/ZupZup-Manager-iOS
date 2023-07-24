@@ -14,8 +14,8 @@ import Alamofire
 
 // MARK: TCA - State
 struct LoginState: Equatable {
-    var id: String = ""
-    var password: String = ""
+    var id: String = "test123"
+    var password: String = "test1234"
 }
 
 // MARK: TCA - Action
@@ -62,6 +62,8 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
         
     case let .loginRequestResult(.success(response)):
         LoginManager.shared.setStoreId(id: response.storeId)
+        LoginManager.shared.setAccessToken(newToken: response.accessToken)
+        LoginManager.shared.setRefresh(newToken: response.refreshToken)
         return .none
         
     case let .loginRequestResult(.failure(error)):

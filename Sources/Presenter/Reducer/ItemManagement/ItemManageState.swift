@@ -16,7 +16,7 @@ struct ItemManageState: Equatable {
     
     var items: [ItemEntity] = [] // 제품 목록
     
-    var isEditable = false // 애션 시트 호출
+    var isEditable = false // 액션 시트 호출
     var isLoading = false // 로딩 인디케이터 호출
     
     var isEditCountVisible = false // EditCountView호출

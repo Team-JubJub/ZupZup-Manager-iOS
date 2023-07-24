@@ -10,8 +10,6 @@ import Foundation
 
 struct FetchReservationsResponse: Codable {
     let orderList: [Order]
-    let pageNo: Int
-    let hasNext: Bool
     
     struct Order: Codable {
         let orderId: Int
