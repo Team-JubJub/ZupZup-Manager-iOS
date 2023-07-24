@@ -31,27 +31,29 @@ struct EditItemInfoView: View {
                     
                     ScrollView(showsIndicators: false) {
                         LazyVGrid(columns: columns) {
-                            ForEach(viewStore.state.items.indices, id: \.self) { idx in
-                                Button {
-                                    viewStore.send(.tapGridItem)
+                            ForEach(viewStore.state.items, id: \.self) { item in
+                                NavigationLink {
+                                    let store = Store<EditItemDetailState, EditItemDetailAction>(
+                                    initialState: EditItemDetailState(
+                                        imageUrl: item.imageUrl,
+                                        count: item.amount,
+                                        name: item.name,
+                                        price: item.priceOrigin.toString(),
+                                        discountPrice: item.priceDiscount.toString()
+                                    ),
+                                    reducer: editItemDetailReducer,
+                                    environment: EditItemDetailEnvironment()
+                                    )
+                                    EditItemInfoDetailView(store: store)
                                 } label: {
                                     ProductGridItem(
-                                        count: viewStore.state.items[idx].amount,
-                                        url: viewStore.items[idx].imageUrl,
-                                        title: viewStore.state.items[idx].name,
-                                        originalPrice: viewStore.state.items[idx].priceOrigin,
-                                        salePrice: viewStore.state.items[idx].priceDiscount,
+                                        count: item.amount,
+                                        url: item.imageUrl,
+                                        title: item.name,
+                                        originalPrice: item.priceOrigin,
+                                        salePrice: item.priceDiscount,
                                         type: .editInfo
                                     )
-                                }
-                                .navigationDestination(
-                                    isPresented: viewStore.binding(
-                                        get: { $0.isShowingDetail },
-                                        send: EditItemInfoAction.dismissIsShowingDetail
-                                    )
-                                ) {
-                                    EmptyView()
-//                                    EditItemInfoDetailView(store: EditItemDetailStore(item: itemStore.items[idx]))
                                 }
                             }
                         }

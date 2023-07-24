@@ -51,22 +51,21 @@ struct ReservationView: View {
                         ForEach(viewStore.filteredReservations, id: \.self) { reservation in
                             NavigationLink(
                                 destination: ReserveDetailView(
-                                    store:
-                                        Store<ReservationDetailState, ReservationDetailAction>(
-                                            initialState: ReservationDetailState(
-                                                reservation: reservation
-                                            ),
-                                            reducer: reservationDetailReducer,
-                                            environment: ReservationDetailEnvironment(changeState: { id, condition in
-                                                return Future { promise in
-                                                    ChangeStateUseCaseImpl()
-                                                        .changeState(documentID: id, state: condition) { result in
-                                                            promise(.success(result))
-                                                        }
-                                                }
-                                                .eraseToEffect()
-                                            })
-                                        )
+                                    store: Store<ReservationDetailState, ReservationDetailAction>(
+                                        initialState: ReservationDetailState(
+                                            reservation: reservation
+                                        ),
+                                        reducer: reservationDetailReducer,
+                                        environment: ReservationDetailEnvironment(changeState: { id, condition in
+                                            return Future { promise in
+                                                ChangeStateUseCaseImpl()
+                                                    .changeState(documentID: id, state: condition) { result in
+                                                        promise(.success(result))
+                                                    }
+                                            }
+                                            .eraseToEffect()
+                                        })
+                                    )
                                 )
                             ) {
                                 ReservationItem(
