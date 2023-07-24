@@ -42,12 +42,11 @@ let editItemCountReducer = AnyReducer<EditItemCountState, EditItemCountAction, E
         let quantity = state.items.map { item in
             UpdateItemCountRequest.Quantity(itemId: item.itemId, itemCount: item.amount)
         }
-        dump(quantity)
         let request = UpdateItemCountRequest(quantity: quantity)
-//        return envrionment.updateItemCount(request)
-//            .map(EditItemCountAction.updateItemCountResponse)
-//            .eraseToEffect()
-        return .none
+        return envrionment.updateItemCount(request)
+            .map(EditItemCountAction.updateItemCountResponse)
+            .eraseToEffect()
+        
     case let .updateItemCountResponse(.success(response)): // 제품 수량 수정 API의 결과가 성공
         // TODO: Pop Action 추가
         return .none

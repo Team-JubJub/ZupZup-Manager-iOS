@@ -89,8 +89,12 @@ struct ItemManagementView: View {
                                 get: { $0.isEditInfoVisible },
                                 send: ItemManageAction.tapEditInfoButton
                             )) {
-                                EmptyView()
-//                                EditItemInfoView(itemStore: EditItemInfoStore(items: itemManageStore.store.items))
+                                let store = Store<EditItemInfoState, EditItemInfoAction>(
+                                    initialState: EditItemInfoState(items: viewStore.state.items),
+                                    reducer: editItemInfoReducer,
+                                    environment: EditItemInfoEnvironment()
+                                )
+                                EditItemInfoView(store: store)
                             }
                     }
                     .padding(EdgeInsets(top: 46, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))

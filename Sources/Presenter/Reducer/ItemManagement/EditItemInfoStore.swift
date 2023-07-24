@@ -8,41 +8,34 @@
 
 import SwiftUI
 
-class EditItemInfoStore: ObservableObject {
-    
-    @Environment(\.dismiss) private var dismiss
-    
-    @Published var items: [ItemEntity]
-    
-    @Published var isShowDetail: Bool = false
-    
-    init(items: [ItemEntity]) {
-        self.items = items
-    }
+import ComposableArchitecture
+
+struct EditItemInfoState: Equatable {
+    let items: [ItemEntity]
+    var isShowingDetail: Bool = false
 }
 
-extension EditItemInfoStore: StoreProtocol {
-    enum Action {
-        case tapGridItem
-        case tapBottomButton
-    }
-    
-    func reduce(action: Action) {
-        switch action {
-        case .tapGridItem:
-            self.tapGridItem()
-        case .tapBottomButton:
-            self.tapBottomButton()
-        }
-    }
+enum EditItemInfoAction: Equatable {
+    case tapBottomButton // 수정 완료 버튼을 눌렀을 경우
+    case tapGridItem // 그리드 아이템 1개를 눌렀을 경우
+    case dismissIsShowingDetail // isShowingDetail 변수 바인딩용
 }
+struct EditItemInfoEnvironment { }
 
-extension EditItemInfoStore {
-    func tapGridItem() {
-        self.isShowDetail = true
-    }
+let editItemInfoReducer = AnyReducer<EditItemInfoState, EditItemInfoAction, EditItemInfoEnvironment> { state, action, _ in
     
-    func tapBottomButton() {
-        dismiss()
+    switch action {
+    case .tapBottomButton: // 수정 완료 버튼을 눌렀을 경우
+        
+        // TODO: 뒤로 가기 구현
+        return .none
+        
+    case .tapGridItem: // 그리드 아이템 1개를 눌렀을 경우
+        state.isShowingDetail = true
+        return .none
+        
+    case .dismissIsShowingDetail:
+        state.isShowingDetail = false
+        return .none
     }
 }
