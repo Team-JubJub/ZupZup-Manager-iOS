@@ -7,12 +7,16 @@
 //
 
 import SwiftUI
+import Combine
 
 import ComposableArchitecture
 
 struct EditItemInfoView: View {
     
     let store: Store<EditItemInfoState, EditItemInfoAction>
+    
+    // MARK: UseCase
+    let updateItemInfoUseCase: UpdateItemInfoUseCase = UpdateItemInfoUseCaseImpl()
     
     let columns = [GridItem(), GridItem()]
     
@@ -34,15 +38,26 @@ struct EditItemInfoView: View {
                             ForEach(viewStore.state.items, id: \.self) { item in
                                 NavigationLink {
                                     let store = Store<EditItemDetailState, EditItemDetailAction>(
-                                    initialState: EditItemDetailState(
-                                        imageUrl: item.imageUrl,
-                                        count: item.amount,
-                                        name: item.name,
-                                        price: item.priceOrigin.toString(),
-                                        discountPrice: item.priceDiscount.toString()
-                                    ),
-                                    reducer: editItemDetailReducer,
-                                    environment: EditItemDetailEnvironment()
+                                        initialState: EditItemDetailState(
+                                            itemId: item.itemId,
+                                            imageUrl: item.imageUrl,
+                                            count: item.amount,
+                                            name: item.name,
+                                            price: item.priceOrigin.toString(),
+                                            discountPrice: item.priceDiscount.toString()
+                                        ),
+                                        reducer: editItemDetailReducer,
+                                        environment: EditItemDetailEnvironment(
+                                            updateItemInfo: { request in
+                                                return Future { promise in
+                                                    updateItemInfoUseCase.updateItemInformation(
+                                                        request: request) { result in
+                                                            promise(.success(result))
+                                                    }
+                                                }
+                                                .eraseToEffect()
+                                            }
+                                        )
                                     )
                                     EditItemInfoDetailView(store: store)
                                 } label: {

@@ -158,7 +158,7 @@ struct EditItemInfoDetailView: View {
                 ),
                 actions: {
                     Button("삭제", role: .destructive) {
-                        viewStore.send(.alertOkButton)
+                        viewStore.send(.alertDeleteButton)
                     }
                     Button("아니오", role: .cancel) {
                         viewStore.send(.alertCancelButton)
