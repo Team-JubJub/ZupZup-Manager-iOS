@@ -22,6 +22,7 @@ struct ContentView: View {
     let seletedImage: [AssetName] = [.tab_zero_on, .tab_one_on, .tab_two_on]
     // MARK: 유즈케이스
     let openStoreUseCase: OpenStoreUseCase = OpenStoreUseCaseImpl()
+    let fetchStoreUseCase: FetchStoreUseCase = FetchStoreUseCaseImpl()
     
     var body: some View {
         NavigationStack {
@@ -88,10 +89,21 @@ struct ContentView: View {
                                             }
                                         }
                                         .eraseToEffect()
+                                    },
+                                    fetchStore: {
+                                        return Future { promise in
+                                            fetchStoreUseCase.fetchStore { result in
+                                                promise(.success(result))
+                                            }
+                                        }
+                                        .eraseToEffect()
                                     }
                                 )
                             )
                             StoreManagementView(store: store)
+                                .onAppear {
+                                    ViewStore(store).send(.fetchStore)
+                                }
                         }
                     }
                     Spacer()

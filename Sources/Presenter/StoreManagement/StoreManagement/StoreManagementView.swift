@@ -85,7 +85,7 @@ struct StoreManagementView: View {
                                 InfiniteSpacer()
                                 
                                 HStack(spacing: 0) {
-                                    SuiteLabel(text: "갱얼쥐 주인", typo: .h3)
+                                    SuiteLabel(text: viewStore.state.storeEntity.name, typo: .h3)
                                     InfiniteSpacer()
                                 }
                                 
@@ -94,8 +94,8 @@ struct StoreManagementView: View {
                                 HStack(spacing: 0) {
                                     VStack(alignment: .leading, spacing: 0) {
                                         SystemLabel(text: "영업 시간", typo: .captionSmall, color: .designSystem(.orange400))
-                                        SuiteLabel(text: "09:00 ~ 21:00", typo: .headline)
-                                        SystemLabel(text: "영업 시간", typo: .captionSmall, color: .designSystem(.ivoryGray400))
+                                        SuiteLabel(text: "\(viewStore.storeEntity.openTime) ~ \(viewStore.storeEntity.closeTime)", typo: .headline)
+                                        SystemLabel(text: viewStore.storeEntity.closedDay.isEmpty ? "연중 무휴" : "", typo: .captionSmall, color: .designSystem(.ivoryGray400))
                                         InfiniteSpacer()
                                     }
                                     .frame(width: Device.Width * 159 / 390, height: 55, alignment: .leading)
@@ -104,7 +104,7 @@ struct StoreManagementView: View {
                                     
                                     VStack(alignment: .leading, spacing: 0) {
                                         SystemLabel(text: "할인 시간", typo: .captionSmall, color: .designSystem(.orange400))
-                                        SuiteLabel(text: "09:00 ~ 21:00", typo: .headline)
+                                        SuiteLabel(text: "\(viewStore.storeEntity.saleStartTime) ~ \(viewStore.storeEntity.saleEndTime)", typo: .headline)
                                         InfiniteSpacer()
                                     }
                                     .frame(width: Device.Width * 159 / 390, height: 55, alignment: .leading)
@@ -123,7 +123,7 @@ struct StoreManagementView: View {
                                 
                                 VStack(alignment: .leading, spacing: 4) {
                                     SystemLabel(text: "가게 소개", typo: .captionSmall, color: .designSystem(.orange400))
-                                    SystemLabel(text: "안녕하세요 저희는 150년간 안녕하세요 저희는 150년간...", typo: .subhead)
+                                    SystemLabel(text: viewStore.storeEntity.announcement, typo: .subhead)
                                 }
                                 .padding(8)
                                 

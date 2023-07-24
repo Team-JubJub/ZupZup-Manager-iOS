@@ -13,6 +13,7 @@ import ComposableArchitecture
 struct StoreManagementState: Equatable {
     var isToggleOn: Bool = false
     var isShowingEditStoreInfo = false
+    var storeEntity: StoreEntity = StoreEntity()
 }
 
 enum StoreManagementAction: Equatable {
@@ -20,10 +21,13 @@ enum StoreManagementAction: Equatable {
     case tapInfoButton // 가게 세부 정보 네비게이션
     case isShowingEditStoreInfoBinding
     case openStoreResponse(Result<OpenStoreResponse, NetworkError>)
+    case fetchStore
+    case fetchStoreResponse(Result<StoreEntity, NetworkError>)
 }
 
 struct StoreManagementEnvironment {
     let openStore: (OpenStoreRequest) -> EffectPublisher<Result<OpenStoreResponse, NetworkError>, Never>
+    let fetchStore: () -> EffectPublisher<Result<StoreEntity, NetworkError>, Never>
 }
 
 let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAction, StoreManagementEnvironment> { state, action, environment in
@@ -46,6 +50,19 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         return .none
         
     case let .openStoreResponse(.failure(error)):
+        return .none
+        
+    case .fetchStore:
+        return environment.fetchStore()
+            .map(StoreManagementAction.fetchStoreResponse)
+            .eraseToEffect()
+        
+    case let .fetchStoreResponse(.success(storeEntity)):
+        state.storeEntity = storeEntity
+        return .none
+        
+    case let .fetchStoreResponse(.failure(error)):
+        // TODO: Error Handling
         return .none
     }
 }
