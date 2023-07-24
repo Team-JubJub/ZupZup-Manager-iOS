@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-enum ReservationCondition: Equatable {
+enum ReservationCondition: Equatable, Encodable {
     case new
     case confirm
     case complete
@@ -66,6 +66,24 @@ enum ReservationCondition: Equatable {
             return .designSystem(.ivoryGray150)
         default:
             return .designSystem(.pureBlack)
+        }
+    }
+}
+
+extension ReservationCondition {
+    func toChangeStateCondition() -> ChangeStateRequest.State {
+        switch self {
+        case .confirm: return .confirm
+        case .cancel: return .cancel
+        default: return .cancel
+        }
+    }
+    
+    func toJustChangeStateCondition() -> ChangeJustStateRequest.State {
+        switch self {
+        case .cancel: return .cancel
+        case .complete: return .complete
+        default: return .cancel
         }
     }
 }

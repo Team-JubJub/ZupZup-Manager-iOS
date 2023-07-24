@@ -40,7 +40,7 @@ extension FetchReservationsResponse {
     func toReservations() -> [ReservationEntity] {
         return self.orderList.map { order in
             ReservationEntity(
-                id: order.orderId.toString(),
+                id: order.orderId,
                 customerName: order.userName,
                 phoneNumber: order.phoneNumber,
                 state: order.orderStatus.toReservationState,
