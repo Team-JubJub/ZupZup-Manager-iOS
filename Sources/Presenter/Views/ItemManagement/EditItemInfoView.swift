@@ -7,61 +7,98 @@
 //
 
 import SwiftUI
+import Combine
+
+import ComposableArchitecture
 
 struct EditItemInfoView: View {
     
-    @StateObject var itemStore: EditItemInfoStore
+    let store: Store<EditItemInfoState, EditItemInfoAction>
+    
+    // MARK: UseCase
+    let updateItemInfoUseCase: UpdateItemInfoUseCase = UpdateItemInfoUseCaseImpl()
+    let deleteItemUseCase: DeleteItemUseCase = DeleteItemUseCaseImpl()
     
     let columns = [GridItem(), GridItem()]
     
     var body: some View {
         
-        ZStack {
-            VStack(spacing: 0) {
-                NavigationBarWithDismiss(label: "제품 관리")
-                
-                HStack(spacing: 0) {
-                    LargeNavigationTitle(title: "정보 수정")
-                    InfiniteSpacer()
-                }
-                .padding(EdgeInsets(top: 2, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
-                
-                ScrollView(showsIndicators: false) {
-                    LazyVGrid(columns: columns) {
-                        ForEach(itemStore.items.indices, id: \.self) { idx in
-                            Button {
-                                itemStore.reduce(action: .tapGridItem)
-                            } label: {
-                                ProductGridItem(
-                                    count: itemStore.items[idx].amount,
-                                    url: itemStore.items[idx].imageUrl,
-                                    title: itemStore.items[idx].name,
-                                    originalPrice: itemStore.items[idx].priceOrigin,
-                                    salePrice: itemStore.items[idx].priceDiscount,
-                                    type: .editInfo
-                                )
-                            }
-                            .navigationDestination(isPresented: $itemStore.isShowDetail) {
-                                EditItemInfoDetailView(store: EditItemDetailStore(item: itemStore.items[idx]))
+        WithViewStore(store) { viewStore in
+            ZStack {
+                VStack(spacing: 0) {
+                    NavigationBarWithDismiss(label: "제품 관리")
+                    
+                    HStack(spacing: 0) {
+                        LargeNavigationTitle(title: "정보 수정")
+                        InfiniteSpacer()
+                    }
+                    .padding(EdgeInsets(top: 2, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
+                    
+                    ScrollView(showsIndicators: false) {
+                        LazyVGrid(columns: columns) {
+                            ForEach(viewStore.state.items, id: \.self) { item in
+                                NavigationLink {
+                                    let store = Store<EditItemDetailState, EditItemDetailAction>(
+                                        initialState: EditItemDetailState(
+                                            itemId: item.itemId,
+                                            imageUrl: item.imageUrl,
+                                            count: item.amount,
+                                            name: item.name,
+                                            price: item.priceOrigin.toString(),
+                                            discountPrice: item.priceDiscount.toString()
+                                        ),
+                                        reducer: editItemDetailReducer,
+                                        environment: EditItemDetailEnvironment(
+                                            updateItemInfo: { request in
+                                                return Future { promise in
+                                                    updateItemInfoUseCase.updateItemInformation(
+                                                        request: request) { result in
+                                                            promise(.success(result))
+                                                    }
+                                                }
+                                                .eraseToEffect()
+                                            },
+                                            deleteItem: { request in
+                                                return Future { promise in
+                                                    deleteItemUseCase.deleteItem(
+                                                        request: request) { result in
+                                                            promise(.success(result))
+                                                    }
+                                                }
+                                                .eraseToEffect()
+                                            }
+                                        )
+                                    )
+                                    EditItemInfoDetailView(store: store)
+                                } label: {
+                                    ProductGridItem(
+                                        count: item.amount,
+                                        url: item.imageUrl,
+                                        title: item.name,
+                                        originalPrice: item.priceOrigin,
+                                        salePrice: item.priceDiscount,
+                                        type: .editInfo
+                                    )
+                                }
                             }
                         }
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
+                        .frame(width: Device.WidthWithPadding)
+                        
+                        VSpacer(height: 64)
                     }
-                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
-                    .frame(width: Device.WidthWithPadding)
-                    
-                    VSpacer(height: 64)
+                    VSpacer(height: 50)
                 }
-                VSpacer(height: 50)
-            }
-            
-            VStack(spacing: 0) {
-                InfiniteSpacer()
-                BottomButton(height: 64, text: "수정 완료", textColor: .designSystem(.pureBlack)!) {
-                    itemStore.reduce(action: .tapBottomButton)
+                
+                VStack(spacing: 0) {
+                    InfiniteSpacer()
+                    BottomButton(height: 64, text: "수정 완료", textColor: .designSystem(.pureBlack)!) {
+                        viewStore.send(.tapBottomButton)
+                    }
                 }
             }
+            .navigationBarBackButtonHidden()
+            .navigationTitle("")
         }
-        .navigationBarBackButtonHidden()
-        .navigationTitle("")
     }
 }
