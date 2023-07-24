@@ -20,6 +20,7 @@ struct ItemManagementView: View {
     
     // MARK: UseCase
     let addItemUseCase: AddItemUseCase = AddItemUseCaseImpl()
+    let updateItemCountUseCase: UpdateItemCountUseCase = UpdateItemCountUseCaseImpl()
     
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -50,7 +51,16 @@ struct ItemManagementView: View {
                                 let store = Store<EditItemCountState, EditItemCountAction>(
                                     initialState: EditItemCountState(items: viewStore.state.items),
                                     reducer: editItemCountReducer,
-                                    environment: EditItemCountEnvironment()
+                                    environment: EditItemCountEnvironment(
+                                        updateItemCount: { request in
+                                            return Future { promise in
+                                                updateItemCountUseCase.updateItemCount(request: request) { result in
+                                                    promise(.success(result))
+                                                }
+                                            }
+                                            .eraseToEffect()
+                                        }
+                                    )
                                 )
                                 
                                 EditItemCountView(store: store)
