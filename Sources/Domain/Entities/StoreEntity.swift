@@ -10,8 +10,17 @@ import Foundation
 
 struct StoreEntity: Equatable {
     var name: String = ""
-    var time: String = ""
-    var event: String = ""
-    var discountTime: String = ""
-    var items: [ItemEntity] = []
+    var imageUrl: String = ""
+    var address: String = ""
+    var category: String = ""
+    var contact: String = ""
+    var latitude: Float = 0
+    var longitude: Float = 0
+    var openTime: String = ""
+    var closeTime: String = ""
+    var saleStartTime: String = ""
+    var saleEndTime: String = ""
+    var announcement: String = ""
+    var isOpen: Bool = false
+    var closedDay: [Bool] = []
 }

@@ -42,7 +42,7 @@ struct EditItemInfoView: View {
                                         initialState: EditItemDetailState(
                                             itemId: item.itemId,
                                             imageUrl: item.imageUrl,
-                                            count: item.amount,
+                                            count: item.count,
                                             name: item.name,
                                             price: item.priceOrigin.toString(),
                                             discountPrice: item.priceDiscount.toString()
@@ -72,7 +72,7 @@ struct EditItemInfoView: View {
                                     EditItemInfoDetailView(store: store)
                                 } label: {
                                     ProductGridItem(
-                                        count: item.amount,
+                                        count: item.count,
                                         url: item.imageUrl,
                                         title: item.name,
                                         originalPrice: item.priceOrigin,

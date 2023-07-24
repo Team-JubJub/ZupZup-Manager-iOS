@@ -13,6 +13,10 @@ struct UpdateItemCountRequest: Encodable, Equatable {
     
     struct Quantity: Codable, Equatable {
         let itemId: Int
+        let itemName: String
+        let imageURL: String
+        let itemPrice: Int
+        let salePrice: Int
         let itemCount: Int
     }
 }

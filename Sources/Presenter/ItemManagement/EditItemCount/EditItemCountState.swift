@@ -29,18 +29,25 @@ let editItemCountReducer = AnyReducer<EditItemCountState, EditItemCountAction, E
     
     switch action { 
     case let .tapPlusAction(idx): // 특정 제품 더하기 버튼을 누른 경우
-        state.items[idx].amount += 1
+        state.items[idx].count += 1
         return .none
         
     case let .tapMinusAction(idx): // 특정 제품 빼기 버튼을 누른 경우
-        if state.items[idx].amount > 0 {
-            state.items[idx].amount -= 1
+        if state.items[idx].count > 0 {
+            state.items[idx].count -= 1
         }
         return .none
         
     case .tapBottomButton: // 하단 수정 완료 버튼을 누른 경우
         let quantity = state.items.map { item in
-            UpdateItemCountRequest.Quantity(itemId: item.itemId, itemCount: item.amount)
+            UpdateItemCountRequest.Quantity(
+                itemId: item.itemId,
+                itemName: item.name,
+                imageURL: item.imageUrl,
+                itemPrice: item.priceOrigin,
+                salePrice: item.priceDiscount,
+                itemCount: item.count
+            )
         }
         let request = UpdateItemCountRequest(quantity: quantity)
         return envrionment.updateItemCount(request)

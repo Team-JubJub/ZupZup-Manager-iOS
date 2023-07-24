@@ -25,7 +25,7 @@ struct FetchItemsDTO: Decodable {
                 name: self.itemName,
                 priceOrigin: self.itemPrice,
                 priceDiscount: self.salePrice,
-                amount: self.itemCount,
+                count: self.itemCount,
                 imageUrl: self.imageURL ?? ""
             )
         }

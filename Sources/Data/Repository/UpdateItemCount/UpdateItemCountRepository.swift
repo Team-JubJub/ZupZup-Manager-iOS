@@ -7,9 +7,8 @@
 //
 
 import Foundation
-import FirebaseCore
-import FirebaseFirestore
-import FirebaseFirestoreSwift
+
+import Alamofire
 
 protocol UpdateItemCountRepository {
     func updateItemCount(
@@ -27,22 +26,37 @@ final class UpdateItemCountRepositoryImpl: UpdateItemCountRepository {
         
         let storeId = LoginManager.shared.getStoreId()
         
-        let url = "https://zupzuptest.com:8080/seller/\(String(describing: storeId))/quantity"
+        let accessToken = LoginManager.shared.getAccessToken()
         
-        NetworkManager.shared.sendRequest(
-            to: url,
-            method: .patch,
-            parameters: request
-        ) { (result: Result<UpdateItemCountResponse, NetworkError>) in
-            switch result {
-            case .success(let response):
-                completion(.success(response))
-            case .failure(let error):
-                #if DEBUG
-                print("⭐️ 제품 개수 변경 API 호출 실패 ⭐️")
-                #endif
-                completion(.failure(error))
+        let headers: HTTPHeaders = [
+            "accessToken": accessToken,
+            "Content-Type": "multipart/form-data; boundary=\(UUID().uuidString)"
+        ]
+        
+        let url = "https://zupzuptest.com:8080/seller/\(String(describing: storeId))/quantity"
+
+        AF.upload(multipartFormData: { multipartFormData in
+            do {
+                let jsonData = try JSONEncoder().encode(request.quantity)
+                multipartFormData.append(jsonData, withName: "quantity", fileName: "item.json", mimeType: "application/json")
+            } catch {
+                // TODO: Error Handling
+                completion(.failure(NetworkError.failToEncode))
+                return
+            }
+        },
+                  to: url,
+                  method: .patch,
+                  headers: headers
+        )
+        .responseString { response in
+            switch response.result {
+            case .success:
+                completion(.success(UpdateItemCountResponse()))
+            case .failure:
+                completion(.failure(NetworkError.invalidResponse))
             }
         }
+
     }
 }

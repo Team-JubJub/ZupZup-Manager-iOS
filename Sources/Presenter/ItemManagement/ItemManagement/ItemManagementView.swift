@@ -103,7 +103,7 @@ struct ItemManagementView: View {
                         LazyVGrid(columns: columns) {
                             ForEach(viewStore.items.indices, id: \.self) { index in
                                 ProductGridItem(
-                                    count: viewStore.state.items[index].amount,
+                                    count: viewStore.state.items[index].count,
                                     url: viewStore.state.items[index].imageUrl,
                                     title: viewStore.state.items[index].name,
                                     originalPrice: viewStore.state.items[index].priceOrigin,
