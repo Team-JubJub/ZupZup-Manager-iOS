@@ -15,6 +15,10 @@ struct ReservationView: View {
     
     let store: Store<ReservationState, ReservationAction>
     
+    // MARK: UseCase
+    let changeJustStateUseCase: ChangeJustStateUseCase = ChangeJustStateUseCaseImpl()
+    let changeStateUseCase: ChangeStateUseCase = ChangeStateUseCaseImpl()
+    
     var body: some View {
         WithViewStore(store) { viewStore in
             if viewStore.isLoading {
@@ -56,15 +60,24 @@ struct ReservationView: View {
                                             reservation: reservation
                                         ),
                                         reducer: reservationDetailReducer,
-                                        environment: ReservationDetailEnvironment(changeState: { id, condition in
-                                            return Future { promise in
-                                                ChangeStateUseCaseImpl()
-                                                    .changeState(documentID: id, state: condition) { result in
+                                        environment: ReservationDetailEnvironment(
+                                            changeState: { request in
+                                                return Future { promise in
+                                                    changeStateUseCase.changeState(request: request) { result in
                                                         promise(.success(result))
                                                     }
+                                                }
+                                                .eraseToEffect()
+                                            },
+                                            changeJustState: { request in
+                                                return Future { promise in
+                                                    changeJustStateUseCase.changeJustState(request: request) { result in
+                                                        promise(.success(result))
+                                                    }
+                                                }
+                                                .eraseToEffect()
                                             }
-                                            .eraseToEffect()
-                                        })
+                                        )
                                     )
                                 )
                             ) {

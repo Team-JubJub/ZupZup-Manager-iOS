@@ -2,18 +2,14 @@
 //  ChangeStateUseCase.swift
 //  ZupZupManager
 //
-//  Created by YeongJin Jeong on 2023/04/06.
+//  Created by YeongJin Jeong on 2023/07/24.
 //  Copyright © 2023 ZupZup. All rights reserved.
 //
 
 import Foundation
 
 protocol ChangeStateUseCase {
-    func changeState(
-        documentID: String,
-        state: ReservationCondition,
-        completion: @escaping (Result<ReservationCondition, NetworkError>) -> Void
-    )
+    func changeState(request: ChangeStateRequest, completion: @escaping (Result<ReservationCondition, NetworkError>) -> Void)
 }
 
 final class ChangeStateUseCaseImpl: ChangeStateUseCase {
@@ -26,20 +22,16 @@ final class ChangeStateUseCaseImpl: ChangeStateUseCase {
         self.changeStateRepository = changeStateRepository
     }
     
-    func changeState(
-        documentID: String,
-        state: ReservationCondition,
-        completion: @escaping (Result<ReservationCondition, NetworkError>) -> Void
-    ) {
+    func changeState(request: ChangeStateRequest, completion: @escaping (Result<ReservationCondition, NetworkError>) -> Void) {
         self.changeStateRepository.changeState(
-            documentID: documentID,
-            state: state) { result in
+            request: request) { result in
                 switch result {
-                case .success:
-                    completion(.success(state))
-                case .failure:
-                    completion(.failure(NetworkError.invalidResponse))
+                case .success(let response):
+                    completion(.success(response.toCondition()))
+                case .failure(let error):
+                    completion(.failure(error))
                 }
         }
     }
+    
 }

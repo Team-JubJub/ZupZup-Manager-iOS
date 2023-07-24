@@ -93,8 +93,9 @@ struct ReserveDetailView: View {
                         )
                     case .confirm:
                         HStack(spacing: Device.HPadding) {
+                            // 좌측 버튼
                             Button {
-                                viewStore.send(.tabCancelButton)
+                                viewStore.send(.tabRejectButton)
                             } label: {
                                 HalfSquareButton(
                                     backgroundColor: .neutralGray150,
@@ -105,6 +106,7 @@ struct ReserveDetailView: View {
                                 .padding(EdgeInsets(top: 0, leading: Device.HPadding, bottom: 0, trailing: 0))
                             }
                             
+                            // 우측 버튼
                             Button {
                                 viewStore.send(.tabCompleteButton)
                             } label: {

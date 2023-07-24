@@ -29,7 +29,8 @@ enum ReservationDetailAction: Equatable {
 }
 
 struct ReservationDetailEnvironment {
-    var changeState: (String, ReservationCondition) -> EffectPublisher<Result<ReservationCondition, NetworkError>, Never>
+    var changeState: (ChangeStateRequest) -> EffectPublisher<Result<ReservationCondition, NetworkError>, Never>
+    var changeJustState: (ChangeJustStateRequest) -> EffectPublisher<Result<ReservationCondition, NetworkError>, Never>
 }
 
 let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDetailAction, ReservationDetailEnvironment> { state, action, environment in
@@ -49,22 +50,30 @@ let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDet
         return .none
 
     case .tabCancelButton:
-        return environment.changeState(state.reservation.id, ReservationCondition.cancel)
+        // '상태만' 바꾸는 API호출
+        let request = state.reservation.toJustChangeStateRequest(state: .cancel)
+        return environment.changeJustState(request)
             .map(ReservationDetailAction.updatedCondition)
             .eraseToEffect()
-
+        
     case .tabCompleteButton:
-        return environment.changeState(state.reservation.id, ReservationCondition.complete)
+        // '상태만' 바꾸는 API호출
+        let request = state.reservation.toJustChangeStateRequest(state: .complete)
+        return environment.changeJustState(request)
             .map(ReservationDetailAction.updatedCondition)
             .eraseToEffect()
-
+        
     case .tabRejectButton:
-        return environment.changeState(state.reservation.id, ReservationCondition.cancel)
+        // 상테 + 개수 반영 API
+        let request = state.reservation.toChangeStateRequest(state: .cancel)
+        return environment.changeState(request)
             .map(ReservationDetailAction.updatedCondition)
             .eraseToEffect()
 
     case .tabConfirmButton:
-        return environment.changeState(state.reservation.id, ReservationCondition.confirm)
+        // 상테 + 개수 반영 API
+        let request = state.reservation.toChangeStateRequest(state: .confirm)
+        return environment.changeState(request)
             .map(ReservationDetailAction.updatedCondition)
             .eraseToEffect()
         

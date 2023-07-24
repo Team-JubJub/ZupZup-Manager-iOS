@@ -32,7 +32,7 @@ final class FetchStoreRepositoryImpl: FetchStoreRepository {
         let storeRef = database.collection("TestStore")
         
         storeRef.document(storeId.toString()).getDocument { document, error in
-            if let error = error {
+            if error != nil {
                 completion(.failure(NetworkError.requestFailed))
             } else {
                 if let document = document, document.exists {

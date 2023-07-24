@@ -14,3 +14,14 @@ struct CartEntity: Hashable, Equatable {
     var name: String
     var price: Int
 }
+
+extension CartEntity {
+    func toChangeStateOrder() -> ChangeStateRequest.Body.Order {
+        return ChangeStateRequest.Body.Order(
+            itemId: self.itemId,
+            itemName: self.name,
+            itemPrice: self.price,
+            itemCount: self.amount
+        )
+    }
+}
