@@ -22,7 +22,7 @@ class NetworkManager {
         parameters: P? = nil,
         completion: @escaping (Result<T, NetworkError>) -> Void
     ) {
-        var headers: HTTPHeaders = ["accessToken": accessToken]
+        let headers: HTTPHeaders = ["accessToken": accessToken]
         
         AF.request(
             url,
