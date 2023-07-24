@@ -47,8 +47,13 @@ struct ItemManagementView: View {
                                 get: { $0.isEditCountVisible },
                                 send: ItemManageAction.tapEditCountButton
                             )) {
-//                                EditItemCountView(itemManageStore: itemManageStore)
-                                EmptyView()
+                                let store = Store<EditItemCountState, EditItemCountAction>(
+                                    initialState: EditItemCountState(items: viewStore.state.items),
+                                    reducer: editItemCountReducer,
+                                    environment: EditItemCountEnvironment()
+                                )
+                                
+                                EditItemCountView(store: store)
                             }
                             .navigationDestination(isPresented: viewStore.binding(
                                 get: { $0.isAddItemVisible },
