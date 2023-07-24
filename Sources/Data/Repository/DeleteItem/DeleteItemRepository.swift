@@ -18,15 +18,16 @@ final class DeleteItemRepositoryImpl: DeleteItemRepository {
         
         let url = "https://zupzuptest.com:8080/seller/\(LoginManager.shared.getStoreId())/\(request.itemId)"
         
-        NetworkManager.shared.sendRequest(
+        NetworkManager.shared.justRequest(
             to: url,
-            method: .delete) { (result: Result<DeleteItemResponse, NetworkError>) in
-                switch result {
-                case .success(let response):
-                    completion(.success(response))
-                case .failure:
-                    completion(.failure(.invalidResponse))
-                }
+            method: .delete
+        ) { result in
+            switch result {
+            case .success:
+                completion(.success(DeleteItemResponse()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 }

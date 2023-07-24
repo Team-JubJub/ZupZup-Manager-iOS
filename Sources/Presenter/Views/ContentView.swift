@@ -20,6 +20,8 @@ struct ContentView: View {
     let tabBarImangeNames: [AssetName] = [ .tab_zero_off, .tab_one_off, .tab_two_off]
     // 탭바 아이콘의 이미지를 담고 있는 배열
     let seletedImage: [AssetName] = [.tab_zero_on, .tab_one_on, .tab_two_on]
+    // MARK: 유즈케이스
+    let openStoreUseCase: OpenStoreUseCase = OpenStoreUseCaseImpl()
     
     var body: some View {
         NavigationStack {
@@ -76,9 +78,18 @@ struct ContentView: View {
                         default:
                             // MARK: 3번 탭 : 매장 관리 화면
                             let store = Store<StoreManagementState, StoreManagementAction>(
-                            initialState: StoreManagementState(),
-                            reducer: storeManagementReducer,
-                            environment: StoreManagementEnvironment()
+                                initialState: StoreManagementState(),
+                                reducer: storeManagementReducer,
+                                environment: StoreManagementEnvironment(
+                                    openStore: { request in
+                                        return Future { promise in
+                                            openStoreUseCase.openStore(request: request) { result in
+                                                promise(.success(result))
+                                            }
+                                        }
+                                        .eraseToEffect()
+                                    }
+                                )
                             )
                             StoreManagementView(store: store)
                         }
