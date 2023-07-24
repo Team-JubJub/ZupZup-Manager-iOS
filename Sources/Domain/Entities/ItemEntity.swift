@@ -16,17 +16,3 @@ struct ItemEntity: Hashable, Equatable {
     var count: Int
     var imageUrl: String
 }
-
-extension ItemEntity {
-    func toMerchandiseDTO() -> StoreDTO.Merchandise {
-        return StoreDTO.Merchandise(
-            discounted: self.priceDiscount,
-            imgUrl: self.imageUrl,
-            itemId: self.itemId,
-            itemName: self.name,
-            price: self.priceOrigin,
-            stock: self.count,
-            storeId: 1
-        )
-    }
-}
