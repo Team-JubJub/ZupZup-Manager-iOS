@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 import ComposableArchitecture
 import Kingfisher
@@ -16,6 +17,9 @@ struct ItemManagementView: View {
     let store: Store<ItemManageState, ItemManageAction>
     
     let columns = [GridItem(), GridItem()]
+    
+    // MARK: UseCase
+    let addItemUseCase: AddItemUseCase = AddItemUseCaseImpl()
     
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -51,9 +55,18 @@ struct ItemManagementView: View {
                                 send: ItemManageAction.tapAddItemButton
                             )) {
                                 let store = Store<AddItemState, AddItemAction>(
-                                    initialState: AddItemState(itemId: 1),
+                                    initialState: AddItemState(),
                                     reducer: addItemReducer,
-                                    environment: AddItemEnvironment()
+                                    environment: AddItemEnvironment(
+                                        addItem: { request in
+                                            return Future { promise in
+                                                addItemUseCase.addItem(request: request) { result in
+                                                    promise(.success(result))
+                                                }
+                                            }
+                                            .eraseToEffect()
+                                        }
+                                    )
                                 )
                                 AddItemView(store: store)
                             }
