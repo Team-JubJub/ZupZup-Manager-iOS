@@ -35,23 +35,23 @@ struct StoreManagementView: View {
                             IvoryRoundedRectangle(width: Device.Width * 358 / 390, height: 76)
                             
                             HStack(spacing: 0) {
-                                switch viewStore.state.isToggleOn {
+                                switch viewStore.storeEntity.isOpen {
                                 case true: RectangleWithIcon(assetName: .ic_day, color: .designSystem(.ivoryGray400)!)
                                 case false: RectangleWithIcon(assetName: .ic_night, color: .designSystem(.ivoryGray400)!)
                                 }
                                 
                                 VStack(alignment: .leading, spacing: 4) {
                                     SystemLabel(text: "가게 영업", typo: .captionSmall, color: .designSystem(.orange400))
-                                    SystemLabel(text: viewStore.state.isToggleOn ? "지금 영업 중이에요!" : "지금은 문을 닫았어요", typo: .subhead)
+                                    SystemLabel(text: viewStore.storeEntity.isOpen ? "지금 영업 중이에요!" : "지금은 문을 닫았어요", typo: .subhead)
                                 }
                                 .padding(8)
                                 
                                 InfiniteSpacer()
                                 
                                 Toggle(
-                                    "\(viewStore.isToggleOn.description)",
+                                    "\(viewStore.storeEntity.isOpen.description)",
                                     isOn: viewStore.binding(
-                                        get: { $0.isToggleOn },
+                                        get: { $0.storeEntity.isOpen },
                                         send: StoreManagementAction.tapToggle
                                     )
                                 )
@@ -62,7 +62,7 @@ struct StoreManagementView: View {
                             .frame(width: Device.Width * 326 / 390, height: 44)
                         }
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
-                        
+
                         ZStack {
                             IvoryRoundedRectangle(width: Device.Width * 358 / 390, height: 192)
                             VStack {

@@ -11,7 +11,6 @@ import SwiftUI
 import ComposableArchitecture
 
 struct StoreManagementState: Equatable {
-    var isToggleOn: Bool = false
     var isShowingEditStoreInfo = false
     var storeEntity: StoreEntity = StoreEntity()
 }
@@ -33,7 +32,7 @@ struct StoreManagementEnvironment {
 let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAction, StoreManagementEnvironment> { state, action, environment in
     switch action {
     case .tapToggle:
-        return environment.openStore(OpenStoreRequest(openOrClose: !state.isToggleOn))
+        return environment.openStore(OpenStoreRequest(openOrClose: !state.storeEntity.isOpen))
             .map(StoreManagementAction.openStoreResponse)
             .eraseToEffect()
         
@@ -46,7 +45,7 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         return .none
         
     case let .openStoreResponse(.success(response)):
-        withAnimation { state.isToggleOn.toggle() }
+        state.storeEntity.isOpen.toggle()
         return .none
         
     case let .openStoreResponse(.failure(error)):
