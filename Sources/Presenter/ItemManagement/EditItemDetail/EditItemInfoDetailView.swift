@@ -95,8 +95,8 @@ struct EditItemInfoDetailView: View {
                             
                             PriceTextField(
                                 rightText: viewStore.binding(
-                                    get: { $0.price },
-                                    send: EditItemDetailAction.priceChanged
+                                    get: { $0.discountPrice },
+                                    send: EditItemDetailAction.discountChanged
                                 )
                             )
                             
@@ -105,8 +105,8 @@ struct EditItemInfoDetailView: View {
                             
                             PriceTextField(
                                 rightText: viewStore.binding(
-                                    get: { $0.discountPrice },
-                                    send: EditItemDetailAction.discountChanged
+                                    get: { $0.price },
+                                    send: EditItemDetailAction.priceChanged
                                 )
                             )
                         }
@@ -148,31 +148,37 @@ struct EditItemInfoDetailView: View {
                     viewStore.send(.tapBottomButton)
                 }
             }
-            .overlay {
-                if viewStore.isLoading {
-                    FullScreenProgressView()
-                }
-            }
             .navigationTitle("")
             .navigationBarHidden(true)
             .alert(
                 "제품 삭제",
                 isPresented: viewStore.binding(
                     get: { $0.isShowingAlert },
-                    send: EditItemDetailAction.dismissAlert
+                    send: EditItemDetailAction.dismissDeleteAlert
                 ),
                 actions: {
-                    Button("삭제", role: .destructive) {
-                        viewStore.send(.alertDeleteButton)
-                    }
-                    Button("아니오", role: .cancel) {
-                        viewStore.send(.alertCancelButton)
-                    }
+                    Button("삭제", role: .destructive) { viewStore.send(.deleteAlertOk) }
+                    Button("아니오", role: .cancel) { viewStore.send(.deleteAlertCancel) }
                 },
-                message: {
-                    Text("제품을 리스트에서 삭제합니다.")
-                }
+                message: { Text("제품을 리스트에서 삭제합니다.") }
             )
+            .alert(
+                "제품 정보 수정",
+                isPresented: viewStore.binding(
+                    get: { $0.isShowingEditAlert },
+                    send: EditItemDetailAction.dismissEditAlert
+                ),
+                actions: {
+                    Button("확인") { viewStore.send(.EditAlertOk) }
+                    Button("취소", role: .cancel) { viewStore.send(.EditAlertCancel) }
+                },
+                message: { Text("제품 수정을 완료합니다.") }
+            )
+            .overlay {
+                if viewStore.isLoading {
+                    FullScreenProgressView()
+                }
+            }
         }
     }
 }

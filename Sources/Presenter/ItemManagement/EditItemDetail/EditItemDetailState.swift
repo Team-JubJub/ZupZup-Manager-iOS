@@ -11,36 +11,68 @@ import SwiftUI
 import ComposableArchitecture
 
 struct EditItemDetailState: Equatable {
-    var isLoading: Bool = false
-    let itemId: Int
-    let imageUrl: String
-    var count: Int // 제품 개수
-    var selectedImage: UIImage? // 이미지 피커에서 선택된 이미니
+    // 텍스트 필드 관련
     var name: String // 제품 이름
     var price: String // 제품 가격
     var discountPrice: String // 재퓸 헐안 거굑
+    var count: Int // 제품 개수
+    
+    // Alert 관련
+    var isShowingAlert: Bool = false // 제품 삭제 Alert 트리거
+    var isShowingEditAlert: Bool = false // 제품 수정 Alert 관련 트리거
+    
+    // 이미지 피커 관련
     var isShowingImagePicker: Bool = false // 이미지 피커 트리거
-    var isShowingAlert: Bool = false // 경고 창 트리거
+    var selectedImage: UIImage? // 이미지 피커에서 선택된 이미지
+    
+    var isLoading: Bool = false
+    let itemId: Int
+    let imageUrl: String
+    
+    // 생성자
+    init(item: ItemEntity) {
+        self.name = item.name
+        self.price = item.priceOrigin.toString()
+        self.discountPrice = item.priceDiscount.toString()
+        self.count = item.count
+        self.itemId = item.itemId
+        self.imageUrl = item.imageUrl
+    }
 }
 
 enum EditItemDetailAction: Equatable {
+    // 텍스트 필드 관련
     case nameChanged(String) // 이름 텍스트 필드 업데이트
     case priceChanged(String) // 가격 텍스트 필드 업데이트
     case discountChanged(String) // 할인 가격 텍스트 필드 업데이트
     case countChanged(Int) // 개수 텍스트 필드 업데이트
+    
+    // 버튼 관련
     case tabImagePickerButton // 이미지 피커를 누른 경우
     case tabMinusButton // 제품 개수 - 버튼 누른 경우
     case tabPlusButton // 제품 개수 + 버튼 누른 경우
     case tapBottomButton // 하단 제품 등록 버튼을 누른 경우
-    case alertDeleteButton // Alert - 네 누른 경우
-    case alertCancelButton // Alert - 아니오 누른 경우
     case tapEmptySpace // 빈 공간을 눌렀을 경우
     case tapTrashTongButton // 우측 상단 쓰레기통 버튼을 누른 경우
-    case dismissAlert // isShowingAlert 바인딩
+    
+    // 이미지 피커 관련
     case dismissImagePicker // isShowingImagePicker 바인딩
     case selectedImageChanged(UIImage?) // 이미지 피커에서 선택된 이미지 바인딩
+    
+    // API 관련
     case updateItemInfoResponse(Result<UpdateItemInfoResponse, NetworkError>) // 제품 업데이트 API 호출의 결과
-    case deleteItemResponse(Result<DeleteItemResponse, NetworkError>)
+    case deleteItemResponse(Result<DeleteItemResponse, NetworkError>) // 제품 삭제 API 호출의 결과
+    
+    // 제품 삭제 Alert 관련
+    case dismissDeleteAlert // isShowingAlert 바인딩
+    case deleteAlertOk // Alert - 네 누른 경우
+    case deleteAlertCancel // Alert - 아니오 누른 경우
+    
+    // 제품 정보 수정 Alert 관련
+    case dismissEditAlert // isShowingEditAlert 바인딩
+    case EditAlertOk // Alert - 네 누른 경우
+    case EditAlertCancel // Alert - 아니오 누른 경우
+    
 }
 
 struct EditItemDetailEnvironment {
@@ -79,33 +111,14 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         return .none
         
     case .tapBottomButton: // 하단 제품 등록 버튼을 누른 경우
-        
-        state.isLoading = true
-        
-        guard let itemPrice = Int(state.price) else { return .none }
-        guard let salePrice = Int(state.discountPrice) else { return .none }
-        
-        let items = UpdateItemInfoRequest.Item(
-            itemName: state.name,
-            imageUrl: state.imageUrl,
-            itemPrice: itemPrice,
-            salePrice: salePrice,
-            itemCount: state.count
-        )
-        let request = UpdateItemInfoRequest(
-            itemid: state.itemId,
-            item: items,
-            image: state.selectedImage
-        )
-        return environment.updateItemInfo(request)
-            .map(EditItemDetailAction.updateItemInfoResponse)
-            .eraseToEffect()
+        state.isShowingEditAlert = true
+        return .none
         
     case .tapTrashTongButton: // 우측 상단 쓰레기통 버튼을 누른 경우
         state.isShowingAlert = true
         return .none
         
-    case .alertDeleteButton: // Alert - 삭제 누른 경우
+    case .deleteAlertOk: // Alert - 삭제 누른 경우
         state.isLoading = true
         
         let request = DeleteItemRequest(itemId: state.itemId)
@@ -114,7 +127,7 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
             .map(EditItemDetailAction.deleteItemResponse)
             .eraseToEffect()
         
-    case .alertCancelButton: // Alert - 취소 누른 경우
+    case .deleteAlertCancel: // Alert - 취소 누른 경우
         return .none
         
     case .tapEmptySpace: // 빈 공간을 눌렀을 경우
@@ -126,7 +139,7 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         )
         return .none
         
-    case .dismissAlert: // isShowingAlert 바인딩
+    case .dismissDeleteAlert: // isShowingAlert 바인딩
         state.isShowingAlert = false
         return .none
         
@@ -154,6 +167,38 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
     case let .deleteItemResponse(.failure(error)): // 제품 삭제 API 호출 실패
         // TODO: Error Handling
         state.isLoading = false
+        return .none
+         
+    case .dismissEditAlert: // isShowingEditAlert 바인딩
+        state.isShowingEditAlert = false
+        return .none
+        
+    case .EditAlertOk: // Alert - 네 누른 경우
+        state.isLoading = true
+        
+        guard let itemPrice = Int(state.price) else { return .none }
+        guard let salePrice = Int(state.discountPrice) else { return .none }
+        
+        let items = UpdateItemInfoRequest.Item(
+            itemName: state.name,
+            imageUrl: state.imageUrl,
+            itemPrice: itemPrice,
+            salePrice: salePrice,
+            itemCount: state.count
+        )
+        
+        let request = UpdateItemInfoRequest(
+            itemid: state.itemId,
+            item: items,
+            image: state.selectedImage
+        )
+        
+        return environment.updateItemInfo(request)
+            .map(EditItemDetailAction.updateItemInfoResponse)
+            .eraseToEffect()
+        
+    case .EditAlertCancel: // Alert - 아니오 누른 경우
+        state.isShowingEditAlert = false
         return .none
     }
 }
