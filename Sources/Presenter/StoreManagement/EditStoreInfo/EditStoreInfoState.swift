@@ -45,6 +45,8 @@ struct EditStoreInfoState: Equatable {
     var discountEndMinute: String // 할인 종료 시간 (분)
     
     var daysOfWeek: [Bool]
+    
+    var isShowingAlert: Bool = false
 }
 
 enum EditStoreInfoAction: Equatable {
@@ -81,6 +83,10 @@ enum EditStoreInfoAction: Equatable {
     
     case editStoreInfoResponse(Result<EditStoreInfoResponse, NetworkError>)
     
+    // Alert 관련
+    case dismissAlert // isShowing Alert 바인딩 함수
+    case tapAlertOK // Alert - 확인
+    case tapAlertCancel // Alert - 취소
 }
 
 struct EditStoreInfoEnvironment {
@@ -123,26 +129,8 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
         return .none
         
     case .tapBottomButton: // 수정 완료 버튼을 눌렀을 경우
-        
-        state.isLoading = true
-        
-        let data = EditStoreInfoRequest.StoreInfo(
-            storeImageUrl: state.storeImageUrl,
-            openTime: state.openTime + ":" + state.openMinute,
-            closeTime: state.closeTime + ":" + state.closeMinute,
-            saleTimeStart: state.discountStartTime + ":" + state.discountStartMinute,
-            saleTimeEnd: state.discountEndTime + ":" + state.discountEndMinute,
-            closedDay: nil
-        )
-        
-        let request = EditStoreInfoRequest(
-            data: data,
-            image: state.selectedImage
-        )
-        
-        return environment.editStoreInfo(request)
-            .map(EditStoreInfoAction.editStoreInfoResponse)
-            .eraseToEffect()
+        state.isShowingAlert = true
+        return .none
         
     case let .tapDaysButton(idx): // 요일 버튼을 눌렀을 경우
         state.daysOfWeek[idx].toggle()
@@ -214,6 +202,36 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
     case let .editStoreInfoResponse(.failure(error)):
         // TODO: Error Handling
         state.isLoading = false
+        return .none
+    
+    // Alert 관련
+    case .dismissAlert:
+        state.isShowingAlert = false
+        return .none
+        
+    case .tapAlertOK:
+        state.isLoading = true
+        
+        let data = EditStoreInfoRequest.StoreInfo(
+            storeImageUrl: state.storeImageUrl,
+            openTime: state.openTime + ":" + state.openMinute,
+            closeTime: state.closeTime + ":" + state.closeMinute,
+            saleTimeStart: state.discountStartTime + ":" + state.discountStartMinute,
+            saleTimeEnd: state.discountEndTime + ":" + state.discountEndMinute,
+            closedDay: nil
+        )
+        
+        let request = EditStoreInfoRequest(
+            data: data,
+            image: state.selectedImage
+        )
+        
+        return environment.editStoreInfo(request)
+            .map(EditStoreInfoAction.editStoreInfoResponse)
+            .eraseToEffect()
+        
+    case .tapAlertCancel:
+        state.isShowingAlert = false
         return .none
     }
 }

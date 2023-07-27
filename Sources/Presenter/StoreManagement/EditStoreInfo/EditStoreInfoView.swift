@@ -180,6 +180,18 @@ struct EditStoreInfoView: View {
             }
             .navigationTitle("")
             .navigationBarBackButtonHidden()
+            .alert(
+                "가게 정보 수정",
+                isPresented: viewStore.binding(
+                    get: { $0.isShowingAlert },
+                    send: EditStoreInfoAction.dismissAlert
+                ),
+                actions: {
+                    Button("취소", role: .destructive) { viewStore.send(.tapAlertCancel) }
+                    Button("확인", role: .cancel) { viewStore.send(.tapAlertOK) }
+                },
+                message: { Text("가게 정보를 수정합니다.") }
+            )
             .overlay {
                 if viewStore.isLoading {
                     FullScreenProgressView()
