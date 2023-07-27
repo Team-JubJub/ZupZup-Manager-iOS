@@ -19,7 +19,7 @@ enum EditItemInfoAction: Equatable {
 }
 struct EditItemInfoEnvironment { }
 
-let editItemInfoReducer = AnyReducer<EditItemInfoState, EditItemInfoAction, EditItemInfoEnvironment> { state, action, _ in
+let editItemInfoReducer = AnyReducer<EditItemInfoState, EditItemInfoAction, EditItemInfoEnvironment> { _, action, _ in
     
     switch action {
     case .tapBottomButton: // 수정 완료 버튼을 눌렀을 경우

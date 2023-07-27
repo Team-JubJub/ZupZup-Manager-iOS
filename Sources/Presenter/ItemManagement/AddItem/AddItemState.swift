@@ -13,6 +13,7 @@ import Combine
 
 // MARK: TCA - State
 struct AddItemState: Equatable {
+    var isLoading: Bool = false
     var count: Int = 0 // 제품 개수
     var selectedImage: UIImage? // 이미지 피커에서 선택된 이미니
     var name: String = "" // 제품 이름
@@ -83,6 +84,7 @@ let addItemReducer = AnyReducer<AddItemState, AddItemAction, AddItemEnvironment>
         return .none
         
     case .alertOkButton: // Alert - 네 버튼을 누른 경우
+        state.isLoading = true
         
         guard let image = state.selectedImage else { return .none }
         guard let itemPrice = Int(state.price) else { return .none }
@@ -102,9 +104,11 @@ let addItemReducer = AnyReducer<AddItemState, AddItemAction, AddItemEnvironment>
             .eraseToEffect()
         
     case let .addItemResponse(.success(response)): // 제품 추가 API의 Response
+        state.isLoading = false
         return .none
         
     case let .addItemResponse(.failure(error)): // 제품 추가 API의 Response
+        state.isLoading = false
         return .none
         
     case .alertCancelButton: // Alert - 아니오 누른 경우

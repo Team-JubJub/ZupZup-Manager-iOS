@@ -139,6 +139,9 @@ struct AddItemView: View {
                     viewStore.send(.tapBottomButton)
                 }
             }
+            .overlay {
+                LoginProgress()
+            }
             .navigationTitle("")
             .navigationBarHidden(true)
             .alert(

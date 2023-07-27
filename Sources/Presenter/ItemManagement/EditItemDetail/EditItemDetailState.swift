@@ -11,6 +11,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct EditItemDetailState: Equatable {
+    var isLoading: Bool = false
     let itemId: Int
     let imageUrl: String
     var count: Int // 제품 개수
@@ -78,6 +79,9 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         return .none
         
     case .tapBottomButton: // 하단 제품 등록 버튼을 누른 경우
+        
+        state.isLoading = true
+        
         guard let itemPrice = Int(state.price) else { return .none }
         guard let salePrice = Int(state.discountPrice) else { return .none }
         
@@ -102,6 +106,8 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         return .none
         
     case .alertDeleteButton: // Alert - 삭제 누른 경우
+        state.isLoading = true
+        
         let request = DeleteItemRequest(itemId: state.itemId)
         
         return environment.deleteItem(request)
@@ -133,17 +139,21 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         return .none
         
     case let .updateItemInfoResponse(.success(response)): // 제품 업데이트 API 호출 성공
+        state.isLoading = false
         return .none
         
     case let .updateItemInfoResponse(.failure(error)): // 제품 업데이트 API 호출 실패
         // TODO: Error Handling
+        state.isLoading = false
         return .none
         
     case let .deleteItemResponse(.success(response)): // 제품 삭제 API 호출 성공
+        state.isLoading = false
         return .none
         
     case let .deleteItemResponse(.failure(error)): // 제품 삭제 API 호출 실패
         // TODO: Error Handling
+        state.isLoading = false
         return .none
     }
 }

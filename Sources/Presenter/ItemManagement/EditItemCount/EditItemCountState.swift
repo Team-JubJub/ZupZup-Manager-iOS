@@ -11,6 +11,7 @@ import Foundation
 import ComposableArchitecture
 
 struct EditItemCountState: Equatable {
+    var isLoading: Bool = false
     var items: [ItemEntity] // 제품 목록
 }
 
@@ -39,6 +40,9 @@ let editItemCountReducer = AnyReducer<EditItemCountState, EditItemCountAction, E
         return .none
         
     case .tapBottomButton: // 하단 수정 완료 버튼을 누른 경우
+        
+        state.isLoading = true
+        
         let quantity = state.items.map { item in
             UpdateItemCountRequest.Quantity(
                 itemId: item.itemId,
@@ -56,10 +60,12 @@ let editItemCountReducer = AnyReducer<EditItemCountState, EditItemCountAction, E
         
     case let .updateItemCountResponse(.success(response)): // 제품 수량 수정 API의 결과가 성공
         // TODO: Pop Action 추가
+        state.isLoading = false
         return .none
         
     case let .updateItemCountResponse(.failure(error)): // 제품 수량 수정 API의 결과가 실패
         // TODO: Error Handling
+        state.isLoading = false
         return .none
     }
 }
