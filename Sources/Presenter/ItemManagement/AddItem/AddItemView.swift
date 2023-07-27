@@ -132,7 +132,7 @@ struct AddItemView: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
                 
                 BottomButton(
-                    height: Device.Height * 64 / 844,
+                    height: 64,
                     text: "제품 등록",
                     textColor: .designSystem(.pureBlack)!
                 ) {

@@ -141,7 +141,7 @@ struct EditItemInfoDetailView: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
                 
                 BottomButton(
-                    height: Device.Height * 64 / 844,
+                    height: 64,
                     text: "등록하기",
                     textColor: .designSystem(.pureBlack)!
                 ) {

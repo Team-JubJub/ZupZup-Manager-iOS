@@ -209,7 +209,14 @@ struct StoreManagementView: View {
                     send: StoreManagementAction.isShowingStoreIntroduceBinding
                 )
             ) {
-                Rectangle()
+                
+                let store = Store<StoreIntroduceState, StoreIntroduceAction>(
+                    initialState: StoreIntroduceState(viewStore.storeEntity),
+                    reducer: storeIntroduceReducer,
+                    environment: StoreIntroduceEnvironment()
+                )
+                    
+                StoreIntroduceView(store: store)
             }
         }
     }
