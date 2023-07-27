@@ -18,51 +18,58 @@ struct LoginView: View {
     
     var body: some View {
         WithViewStore(store) { viewStore in
-            VStack(spacing: 0) {
-                InfiniteSpacer()
-                
-                BoxHighlighted()
-                
-                InfiniteSpacer()
-                
-                IdTextField(
-                    idString: viewStore.binding(
-                        get: { $0.id },
-                        send: LoginAction.idChanged
+            ZStack {
+                VStack(spacing: 0) {
+                    InfiniteSpacer()
+                    
+                    BoxHighlighted()
+                    
+                    InfiniteSpacer()
+                    
+                    IdTextField(
+                        idString: viewStore.binding(
+                            get: { $0.id },
+                            send: LoginAction.idChanged
+                        )
                     )
-                )
-                
-                VSpacer(height: 20)
-                
-                PasswordTextField(
-                    password: viewStore.binding(
-                        get: { $0.password },
-                        send: LoginAction.passwordChanged
+                    
+                    VSpacer(height: 20)
+                    
+                    PasswordTextField(
+                        password: viewStore.binding(
+                            get: { $0.password },
+                            send: LoginAction.passwordChanged
+                        )
                     )
-                )
-                
-                BottomButton(
-                    height: 56,
-                    text: "로그인",
-                    textColor: .designSystem(.neutralGray400)!
-                ) {
-                    viewStore.send(.tapLoginButton)
+                    
+                    BottomButton(
+                        height: 56,
+                        text: "로그인",
+                        textColor: .designSystem(.neutralGray400)!
+                    ) {
+                        viewStore.send(.tapLoginButton)
+                    }
+                    .padding(
+                        EdgeInsets(
+                            top: 20,
+                            leading: 0,
+                            bottom: 0,
+                            trailing: 0
+                        )
+                    )
+                    
+                    VSpacer(height: Device.Height * 128 / 844)
                 }
-                .padding(
-                    EdgeInsets(
-                        top: 20,
-                        leading: 0,
-                        bottom: 0,
-                        trailing: 0
-                    )
-                )
+                .background(Color.designSystem(.pureWhite))
+                .onTapGesture {
+                    viewStore.send(.tapEmptySpace)
+                }
                 
-                VSpacer(height: Device.Height * 128 / 844)
+                if viewStore.isLoading {
+                    LoginProgress()
+                }
             }
-            .background(Color.designSystem(.pureWhite))
-            .onTapGesture {
-                viewStore.send(.tapEmptySpace)
-            }
+            .ignoresSafeArea()
         }
     }
 }
