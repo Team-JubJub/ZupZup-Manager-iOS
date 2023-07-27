@@ -7,12 +7,15 @@
 //
 
 import SwiftUI
+import Combine
 
 import ComposableArchitecture
 
 struct StoreManagementView: View {
     
     let store: Store<StoreManagementState, StoreManagementAction>
+    // MARK: 유즈 케이스
+    let editStoreInfoUseCase: EditStoreInfoUseCase = EditStoreInfoUseCaseImpl()
     
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -83,7 +86,16 @@ struct StoreManagementView: View {
                                                 storeEntity: viewStore.storeEntity
                                             ),
                                             reducer: editStoreInfoReducer,
-                                            environment: EditStoreInfoEnvironment()
+                                            environment: EditStoreInfoEnvironment(
+                                                editStoreInfo: { request in
+                                                    return Future { promise in
+                                                        editStoreInfoUseCase.editStoreInfo(request: request) { result in
+                                                            promise(.success(result))
+                                                        }
+                                                    }
+                                                    .eraseToEffect()
+                                                }
+                                            )
                                         )
                                         EditStoreInfoView(store: store)
                                     }
