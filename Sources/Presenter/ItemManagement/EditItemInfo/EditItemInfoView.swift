@@ -39,14 +39,7 @@ struct EditItemInfoView: View {
                             ForEach(viewStore.state.items, id: \.self) { item in
                                 NavigationLink {
                                     let store = Store<EditItemDetailState, EditItemDetailAction>(
-                                        initialState: EditItemDetailState(
-                                            itemId: item.itemId,
-                                            imageUrl: item.imageUrl,
-                                            count: item.count,
-                                            name: item.name,
-                                            price: item.priceOrigin.toString(),
-                                            discountPrice: item.priceDiscount.toString()
-                                        ),
+                                        initialState: EditItemDetailState(item: item),
                                         reducer: editItemDetailReducer,
                                         environment: EditItemDetailEnvironment(
                                             updateItemInfo: { request in

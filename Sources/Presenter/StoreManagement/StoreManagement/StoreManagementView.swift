@@ -174,14 +174,37 @@ struct StoreManagementView: View {
                             }
                             
                             StoreManageViewItem(title: "로그아웃") {
-                                // TODO: 가게 위치 이전 화면 전환
-                                print("로그아웃 버튼")
+                                viewStore.send(.tapLogoutButton)
                             }
                         }
                     }
                     .navigationTitle("")
                 }
             }
+            .alert(
+                viewStore.storeEntity.isOpen ? "가게 문 닫기" : "가게 문 열기",
+                isPresented: viewStore.binding(
+                    get: { $0.isShowingStoreOpenAlert },
+                    send: StoreManagementAction.dismissStoreOpenAlert
+                ),
+                actions: {
+                    Button("아니오", role: .destructive) { viewStore.send(.tapStoreAlertCancel) }
+                    Button("네", role: .cancel) { viewStore.send(.tapStoreAlertOk) }
+                },
+                message: { Text(viewStore.storeEntity.isOpen ? "가게 문을 닫을까요?." : "가게 문을 열까요?") }
+            )
+            .alert(
+                "로그아웃 할까요?",
+                isPresented: viewStore.binding(
+                    get: { $0.isShowingLogoutAlert },
+                    send: StoreManagementAction.dismissLogoutAlert
+                ),
+                actions: {
+                    Button("아니오", role: .destructive) { viewStore.send(.tapLogoutAlertCancel) }
+                    Button("네", role: .cancel) { viewStore.send(.tapLogoutAlertOK) }
+                },
+                message: { Text("로그아웃 하시겠습니까?") }
+            )
             .overlay {
                 if viewStore.isLoading {
                     FullScreenProgressView()

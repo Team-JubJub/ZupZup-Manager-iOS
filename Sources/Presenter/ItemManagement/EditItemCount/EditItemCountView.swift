@@ -60,6 +60,18 @@ struct EditItemCountView: View {
             }
             .navigationBarBackButtonHidden()
             .navigationTitle("")
+            .alert(
+                "수량 수정",
+                isPresented: viewStore.binding(
+                    get: { $0.isShowingAlert },
+                    send: EditItemCountAction.dismissAlert
+                ),
+                actions: {
+                    Button("취소", role: .destructive) { viewStore.send(.alertCancelButton) }
+                    Button("확인", role: .cancel) { viewStore.send(.alertOkButton) }
+                },
+                message: { Text("제품 수량 수정을 완료합니다.") }
+            )
         }
     }
 }
