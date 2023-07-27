@@ -11,20 +11,34 @@ import SwiftUI
 import ComposableArchitecture
 
 struct StoreManagementState: Equatable {
-    var isLoading = false
-    var isShowingEditStoreInfo = false
-    var isShowingCustomerCenter = false
-    var storeEntity: StoreEntity = StoreEntity()
+    var isLoading = false // API 호출 사이 인디케이터 트리거
+    var isShowingEditStoreInfo = false // 가게 정보 수정 화면 이동 트리거
+    var isShowingCustomerCenter = false // 고객센터 웹페이지 이동 트리거
+    var storeEntity: StoreEntity = StoreEntity() // 가게 정보 Entity
+    
+    var isShowingStoreOpenAlert: Bool = false // 가게 ON/OFF 스위치 눌렀을 때, Alert
+    var isShowingLogoutAlert: Bool = false // 로그아웃 버튼을 눌렀을 때, Alert
 }
 
 enum StoreManagementAction: Equatable {
-    case tapToggle // 가게 On / Off 토글
     case tapInfoButton // 가게 세부 정보 네비게이션
     case isShowingEditStoreInfoBinding // isShowingEditStoreInfo 변수 바인딩
     case openStoreResponse(Result<OpenStoreResponse, NetworkError>) // 가게 ON/OFF API 호출의 결과
     case fetchStore // 가게 정보 조희 API 호출
     case fetchStoreResponse(Result<StoreEntity, NetworkError>) // 가게 정보 조희 API 호출의 결과
-    case tapCustomerCenterButton
+    case tapCustomerCenterButton // 고객센터 버튼을 눌렀을 경우
+    
+    // 가게 ON/OFF Alert 관련
+    case tapToggle // 가게 On / Off 토글
+    case dismissStoreOpenAlert // isShowingStoreOpenAlert 변수 바인딩
+    case tapStoreAlertOk // 가게 ON/OFF Alert - 네 누른 경우
+    case tapStoreAlertCancel // 가게 ON/OFF Alert - 취소 누른 경우
+    
+    // 로그아웃 Alert 관련
+    case tapLogoutButton // 로그아웃 버튼을 눌렀을 경우
+    case dismissLogoutAlert // isShowingLogoutAlert 변수 바인딩
+    case tapLogoutAlertOK // 로그아웃 Alert - 네 누른 경우
+    case tapLogoutAlertCancel // 로그아웃 Alert - 취소 누른 경우
 }
 
 struct StoreManagementEnvironment {
@@ -36,10 +50,8 @@ struct StoreManagementEnvironment {
 let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAction, StoreManagementEnvironment> { state, action, environment in
     switch action {
     case .tapToggle: // 가게 On / Off 토글
-        state.isLoading = true
-        return environment.openStore(OpenStoreRequest(openOrClose: !state.storeEntity.isOpen))
-            .map(StoreManagementAction.openStoreResponse)
-            .eraseToEffect()
+        state.isShowingStoreOpenAlert = true
+        return .none
         
     case .tapInfoButton: // 가게 세부 정보 네비게이션
         state.isShowingEditStoreInfo = true
@@ -76,6 +88,36 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         
     case .tapCustomerCenterButton: // 고객센터 버튼을 누른 경우
         environment.openCustomerCenterURL()
+        return .none
+        
+    case .dismissStoreOpenAlert: // 가게 ON/OFF 스위치 눌렀을 때, Alert 바인딩 함수
+        state.isShowingStoreOpenAlert = false
+        return .none
+        
+    case .tapStoreAlertOk: // 가게 ON/OFF Alert - 네 누른 경우
+        state.isLoading = true
+        return environment.openStore(OpenStoreRequest(openOrClose: !state.storeEntity.isOpen))
+            .map(StoreManagementAction.openStoreResponse)
+            .eraseToEffect()
+        
+    case .tapStoreAlertCancel: // 가게 ON/OFF Alert - 취소 누른 경우
+        state.isShowingStoreOpenAlert = false
+        return .none
+        
+    case .tapLogoutButton:
+        state.isShowingLogoutAlert = true
+        return .none
+        
+    case .dismissLogoutAlert: // isShowingLogoutAlert 변수 바인딩
+        state.isShowingLogoutAlert = false
+        return .none
+        
+    case .tapLogoutAlertOK: // 로그아웃 Alert - 네 누른 경우
+        // TODO: Logout API 연동
+        return .none
+        
+    case .tapLogoutAlertCancel: // 로그아웃 Alert - 취소 누른 경우
+        state.isShowingLogoutAlert = false
         return .none
     }
 }
