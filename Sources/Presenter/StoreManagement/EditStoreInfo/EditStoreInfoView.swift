@@ -8,102 +8,178 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 struct EditStoreInfoView: View {
     
-    @StateObject var store: EditStoreInfoStore
+    var store: Store<EditStoreInfoState, EditStoreInfoAction>
     
     var body: some View {
-        ZStack {
-            VStack(spacing: 0) {
-                ZStack {
-                    HStack(spacing: 0) {
-                        NavigationBarWithDismiss(label: "설정")
-                        InfiniteSpacer()
+        WithViewStore(store) { viewStore in
+            ZStack {
+                VStack(spacing: 0) {
+                    ZStack {
+                        HStack(spacing: 0) {
+                            NavigationBarWithDismiss(label: "설정")
+                            InfiniteSpacer()
+                        }
+                        .frame(height: 42)
+                        
+                        HStack(spacing: 0) {
+                            InfiniteSpacer()
+                            SuiteLabel(text: "가게 정보", typo: .headline)
+                            InfiniteSpacer()
+                        }
+                        .frame(height: 42)
                     }
-                    .frame(height: 42)
                     
-                    HStack(spacing: 0) {
-                        InfiniteSpacer()
-                        SuiteLabel(text: "가게 정보", typo: .headline)
-                        InfiniteSpacer()
+                    ScrollView {
+                        VStack(spacing: 16) {
+                            VStack(spacing: 0) {
+                                
+                                ImagePickerView(
+                                    // MARK: 이미지 피커 변수 바인딩
+                                    image: viewStore.binding(
+                                        get: { $0.selectedImage },
+                                        send: EditStoreInfoAction.selectedImageChanged
+                                    )
+                                ) {
+                                    viewStore.send(.tapImagePicker)  // MARK: Action - 이미지 피커를 누른 경우
+                                }
+                                .frame(height: 192)
+                                .sheet(
+                                    // MARK: 이미지 피커 변수 바인딩
+                                    isPresented: viewStore.binding(
+                                        get: { $0.isShowingImagePicker },
+                                        send: EditStoreInfoAction.dismissImagePicker
+                                    )
+                                ) {
+                                    // MARK: 이미지 피커 호출
+                                    ImagePicker(
+                                        selectedImage: viewStore.binding(
+                                            get: { $0.selectedImage },
+                                            send: EditStoreInfoAction.selectedImageChanged
+                                        )
+                                    )
+                                }
+                                .frame(height: 235)
+                            }
+                            
+                            VStack(spacing: 8) {
+                                HStack(spacing: 0) {
+                                    SuitLabel(text: "영업 시간", typo: .h3)
+                                    InfiniteSpacer()
+                                }
+                                // MARK: 가게 영업 시작 시간, 종료 시간 Time-Picker
+                                AdjustTimeView(
+                                    isShowingStartPicker: viewStore.binding(
+                                        get: { $0.isShowingOpenTimePicker },
+                                        send: EditStoreInfoAction.dismissOpenTimePicker
+                                    ),
+                                    isShowingEndPicker: viewStore.binding(
+                                        get: { $0.isShowingCloseTimePicker },
+                                        send: EditStoreInfoAction.dismissCloseTimePicker
+                                    ),
+                                    // 영업 시작(시간)
+                                    startTime: viewStore.binding(
+                                        get: { $0.openTime },
+                                        send: EditStoreInfoAction.opneTimeChanged
+                                    ),
+                                    // 영업 시작(분)
+                                    startMinute: viewStore.binding(
+                                        get: { $0.openMinute },
+                                        send: EditStoreInfoAction.openMinuteChanged
+                                    ),
+                                    // 영업 종료(시간)
+                                    endTime: viewStore.binding(
+                                        get: { $0.closeTime },
+                                        send: EditStoreInfoAction.closeTimeChanged
+                                    ),
+                                    // 영업 종료(분)
+                                    endMinute: viewStore.binding(
+                                        get: { $0.closeMinute },
+                                        send: EditStoreInfoAction.closeMinuteChanged
+                                    ),
+                                    mode: .open,
+                                    startAction: { viewStore.send(.tapOpenStartTime, animation: .default) },
+                                    endAction: { viewStore.send(.tapOpenEndTime, animation: .default) }
+                                )
+                            }
+                            .frame(width: Device.WidthWithPadding)
+                            
+                            VStack(spacing: 8) {
+                                HStack(spacing: 0) {
+                                    SuitLabel(text: "할인 시간", typo: .h3)
+                                    InfiniteSpacer()
+                                }
+                                // MARK: 마감 할인 시작 시간, 종료 시간 Time-Picker
+                                AdjustTimeView(
+                                    isShowingStartPicker: viewStore.binding(
+                                        get: { $0.isShowingDiscountStartTimePicker },
+                                        send: EditStoreInfoAction.dismissDiscountStartTimePicker
+                                    ),
+                                    isShowingEndPicker: viewStore.binding(
+                                        get: { $0.isShowingDiscountEndTimePicker },
+                                        send: EditStoreInfoAction.dismissDiscountEndTimePicker
+                                    ),
+                                    // 마감 할인 시작(시간)
+                                    startTime: viewStore.binding(
+                                        get: { $0.discountStartTime },
+                                        send: EditStoreInfoAction.discountStartTimeChanged
+                                    ),
+                                    // 마감 할인 시작(분)
+                                    startMinute: viewStore.binding(
+                                        get: { $0.discountStartMinute },
+                                        send: EditStoreInfoAction.discountStartMinuteChanged
+                                    ),
+                                    // 마감 할인 종료 (시간)
+                                    endTime: viewStore.binding(
+                                        get: { $0.discountEndTime },
+                                        send: EditStoreInfoAction.discountEndTimeChanged
+                                    ),
+                                    // 마감 할인 종료(분)
+                                    endMinute: viewStore.binding(
+                                        get: { $0.discountEndMinute },
+                                        send: EditStoreInfoAction.discountEndMinuteChanged
+                                    ),
+                                    mode: .discount,
+                                    startAction: { viewStore.send(.tapDiscountStartTime, animation: .default) },
+                                    endAction: { viewStore.send(.tapDiscountEndTime, animation: .default) }
+                                )
+                            }
+                            .frame(width: Device.WidthWithPadding)
+                            
+                            VStack(spacing: 8) {
+                                HStack(spacing: 0) {
+                                    SuitLabel(text: "휴무일", typo: .h3)
+                                    InfiniteSpacer()
+                                }
+                                SelectDaysView(
+                                    // MARK: State - 휴무일 바인딩
+                                    days: viewStore.binding(
+                                        get: { $0.daysOfWeek },
+                                        send: EditStoreInfoAction.daysOfWeekBinding
+                                    )
+                                ) { idx in
+                                    viewStore.send(.tapDaysButton(idx))
+                                }
+                            }
+                            .frame(width: Device.WidthWithPadding)
+                        }
+                        VSpacer(height: 136)
                     }
-                    .frame(height: 42)
                 }
                 
-                ScrollView {
-                    VStack(spacing: 16) {
-                        VStack(spacing: 0) {
-                            ImagePickerView(image: $store.selectedImage) {
-                                store.reduce(action: .tapImagePicker)
-                            }
-                            .frame(height: 192)
-                            .sheet(isPresented: $store.isShowingImagePicker) {
-                                ImagePicker(selectedImage: $store.selectedImage)
-                            }
-                            .frame(height: 235)
-                        }
-                        
-                        VStack(spacing: 8) {
-                            HStack(spacing: 0) {
-                                SuitLabel(text: "영업 시간", typo: .h3)
-                                InfiniteSpacer()
-                            }
-                            AdjustTimeView(
-                                isShowingStartPicker: $store.isShowingOpenTimePicker,
-                                isShowingEndPicker: $store.isShowingCloseTimePicker,
-                                startTime: $store.openTime,
-                                startMinute: $store.openMinute,
-                                endTime: $store.closeTime,
-                                endMinute: $store.closeMinute,
-                                mode: .open,
-                                startAction: { store.reduce(action: .tapOpenStartTime) },
-                                endAction: { store.reduce(action: .tapOpenEndTime) }
-                            )
-                        }
-                        .frame(width: Device.WidthWithPadding)
-                        
-                        VStack(spacing: 8) {
-                            HStack(spacing: 0) {
-                                SuitLabel(text: "할인 시간", typo: .h3)
-                                InfiniteSpacer()
-                            }
-                            AdjustTimeView(
-                                isShowingStartPicker: $store.isShowingDiscountStartTimePicker,
-                                isShowingEndPicker: $store.isShowingDiscountEndTimePicker,
-                                startTime: $store.discountStartTime,
-                                startMinute: $store.discountStartMinute,
-                                endTime: $store.discountEndTime,
-                                endMinute: $store.discountEndMinute,
-                                mode: .discount,
-                                startAction: { store.reduce(action: .tapDiscountStartTime) },
-                                endAction: { store.reduce(action: .tapDiscountEndTime) }
-                            )
-                        }
-                        .frame(width: Device.WidthWithPadding)
-                        
-                        VStack(spacing: 8) {
-                            HStack(spacing: 0) {
-                                SuitLabel(text: "휴무일", typo: .h3)
-                                InfiniteSpacer()
-                            }
-                            SelectDaysView(days: $store.daysOfWeek) { idx in
-                                store.reduce(action: .tapDaysButton, idx: idx)
-                            }
-                        }
-                        .frame(width: Device.WidthWithPadding)
+                VStack(spacing: 0) {
+                    InfiniteSpacer()
+                    BottomButton(height: 64, text: "수정 완료", textColor: .designSystem(.pureBlack)!) {
+                        // MARK: Action - '수정완료' 버튼을 누른 경우
+                        viewStore.send(.tapBottomButton)
                     }
-                    VSpacer(height: 136)
                 }
             }
-            
-            VStack(spacing: 0) {
-                InfiniteSpacer()
-                BottomButton(height: 64, text: "수정 완료", textColor: .designSystem(.pureBlack)!) {
-                    store.reduce(action: .tapBottomButton)
-                }
-            }
+            .navigationTitle("")
+            .navigationBarBackButtonHidden()
         }
-        .navigationTitle("")
-        .navigationBarBackButtonHidden()
     }
 }
