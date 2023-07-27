@@ -139,13 +139,9 @@ struct AddItemView: View {
                     viewStore.send(.tapBottomButton)
                 }
             }
-            .overlay {
-                if viewStore.isLoading {
-                    FullScreenProgressView()
-                }
-            }
             .navigationTitle("")
             .navigationBarHidden(true)
+            
             .alert(
                 "제품 추가",
                 isPresented: viewStore.binding(
@@ -158,6 +154,23 @@ struct AddItemView: View {
                 },
                 message: { Text("제품을 추가하시겠습니까?") }
             )
+            
+            .alert(
+                "텍스트 초과",
+                isPresented: viewStore.binding(
+                    get: { $0.isShowingTitleMaxLengthAlert },
+                    send: AddItemAction.dismissMaxLengthAlert
+                ),
+                actions: {
+                    Button("확인", role: .cancel) { }
+                },
+                message: { Text("입력 가능한 제품명은 최대 20자 입니다.") }
+            )
+            .overlay {
+                if viewStore.isLoading {
+                    FullScreenProgressView()
+                }
+            }
         }
     }
 }

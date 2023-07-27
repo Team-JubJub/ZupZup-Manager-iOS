@@ -150,6 +150,7 @@ struct EditItemInfoDetailView: View {
             }
             .navigationTitle("")
             .navigationBarHidden(true)
+            
             .alert(
                 "제품 삭제",
                 isPresented: viewStore.binding(
@@ -162,6 +163,7 @@ struct EditItemInfoDetailView: View {
                 },
                 message: { Text("제품을 리스트에서 삭제합니다.") }
             )
+            
             .alert(
                 "제품 정보 수정",
                 isPresented: viewStore.binding(
@@ -173,6 +175,18 @@ struct EditItemInfoDetailView: View {
                     Button("취소", role: .cancel) { viewStore.send(.EditAlertCancel) }
                 },
                 message: { Text("제품 수정을 완료합니다.") }
+            )
+            
+            .alert(
+                "텍스트 초과",
+                isPresented: viewStore.binding(
+                    get: { $0.isShowingTitleMaxLengthAlert },
+                    send: EditItemDetailAction.dismissMaxLengthAlert
+                ),
+                actions: {
+                    Button("확인", role: .cancel) { }
+                },
+                message: { Text("입력 가능한 제품명은 최대 20자 입니다.") }
             )
             .overlay {
                 if viewStore.isLoading {

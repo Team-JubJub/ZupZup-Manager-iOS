@@ -21,6 +21,8 @@ struct AddItemState: Equatable {
     var discountPrice: String = "" // 재퓸 헐안 거굑
     var isShowingImagePicker: Bool = false // 이미지 피커 트리거
     var isShowingAlert: Bool = false // 경고 창 트리거
+    
+    var isShowingTitleMaxLengthAlert: Bool = false // 제품명 20자 제한
 }
 
 // MARK: TCA - Action
@@ -45,6 +47,8 @@ enum AddItemAction: Equatable {
     
     case selectedImageChanged(UIImage?) // 이미지 피커에서 선택된 이미지 바인딩
     case addItemResponse(Result<AddItemResponse, NetworkError>) // 아이템 추가 API 호출의 결과
+    
+    case dismissMaxLengthAlert // isShowingTitleMaxLengthAlert 바인딩
 }
 
 // MARK: TCA - Environment
@@ -58,6 +62,12 @@ let addItemReducer = AnyReducer<AddItemState, AddItemAction, AddItemEnvironment>
     switch action {
     case let .nameChanged(name): // 이름 텍스트 필드 업데이트
         state.name = name
+        if state.name.count > 20 {
+            state.isShowingTitleMaxLengthAlert = true
+            state.name = ""
+        } else {
+            state.isShowingTitleMaxLengthAlert = false
+        }
         return .none
         
     case let .priceChanged(price): // 가격 텍스트 필드 업데이트
@@ -139,6 +149,10 @@ let addItemReducer = AnyReducer<AddItemState, AddItemAction, AddItemEnvironment>
         
     case let .selectedImageChanged(image): // SelectedImage 바인딩
         state.selectedImage = image
+        return .none
+        
+    case .dismissMaxLengthAlert:
+        state.isShowingTitleMaxLengthAlert = false
         return .none
     }
 }

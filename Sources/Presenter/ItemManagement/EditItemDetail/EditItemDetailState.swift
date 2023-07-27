@@ -20,6 +20,7 @@ struct EditItemDetailState: Equatable {
     // Alert 관련
     var isShowingAlert: Bool = false // 제품 삭제 Alert 트리거
     var isShowingEditAlert: Bool = false // 제품 수정 Alert 관련 트리거
+    var isShowingTitleMaxLengthAlert: Bool = false // 제품명 20자 제한
     
     // 이미지 피커 관련
     var isShowingImagePicker: Bool = false // 이미지 피커 트리거
@@ -73,6 +74,9 @@ enum EditItemDetailAction: Equatable {
     case EditAlertOk // Alert - 네 누른 경우
     case EditAlertCancel // Alert - 아니오 누른 경우
     
+    // 이름 최대 입력 개수 초과 Alert
+    case dismissMaxLengthAlert // isShowingTitleMaxLengthAlert 바인딩
+    
 }
 
 struct EditItemDetailEnvironment {
@@ -84,6 +88,12 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
     switch action {
     case let .nameChanged(name): // 이름 텍스트 필드 업데이트
         state.name = name
+        if state.name.count > 20 {
+            state.isShowingTitleMaxLengthAlert = true
+            state.name = ""
+        } else {
+            state.isShowingTitleMaxLengthAlert = false
+        }
         return .none
         
     case let .priceChanged(price): // 가격 텍스트 필드 업데이트
@@ -199,6 +209,10 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         
     case .EditAlertCancel: // Alert - 아니오 누른 경우
         state.isShowingEditAlert = false
+        return .none
+        
+    case .dismissMaxLengthAlert:
+        state.isShowingTitleMaxLengthAlert = false
         return .none
     }
 }
