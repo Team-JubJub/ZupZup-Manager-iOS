@@ -25,98 +25,99 @@ struct ItemManagementView: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack(spacing: 0) {
-                if viewStore.isLoading {
-                    RoundCircleProgress()
-                } else {
-                    HStack(spacing: 0) {
-                        LargeNavigationTitle(title: "제품 관리")
-                        InfiniteSpacer()
-                        EditButton { viewStore.send(.tapEditButton) }
-                            .confirmationDialog(
-                                "Title",
-                                isPresented: viewStore.binding(
-                                    get: { $0.isEditable },
-                                    send: ItemManageAction.tapEditButton
-                                )
-                            ) {
-                                Button("수량 수정") { viewStore.send(.tapEditCountButton) }
-                                Button("제품 정보 수정") { viewStore.send(.tapEditInfoButton) }
-                                Button("제품 추가") { viewStore.send(.tapAddItemButton) }
-                                Button("취소", role: .cancel) {}
-                            }
-                            .navigationDestination(isPresented: viewStore.binding(
-                                get: { $0.isEditCountVisible },
-                                send: ItemManageAction.tapEditCountButton
-                            )) {
-                                let store = Store<EditItemCountState, EditItemCountAction>(
-                                    initialState: EditItemCountState(items: viewStore.state.items),
-                                    reducer: editItemCountReducer,
-                                    environment: EditItemCountEnvironment(
-                                        updateItemCount: { request in
-                                            return Future { promise in
-                                                updateItemCountUseCase.updateItemCount(request: request) { result in
-                                                    promise(.success(result))
-                                                }
-                                            }
-                                            .eraseToEffect()
-                                        }
-                                    )
-                                )
-                                
-                                EditItemCountView(store: store)
-                            }
-                            .navigationDestination(isPresented: viewStore.binding(
-                                get: { $0.isAddItemVisible },
-                                send: ItemManageAction.tapAddItemButton
-                            )) {
-                                let store = Store<AddItemState, AddItemAction>(
-                                    initialState: AddItemState(),
-                                    reducer: addItemReducer,
-                                    environment: AddItemEnvironment(
-                                        addItem: { request in
-                                            return Future { promise in
-                                                addItemUseCase.addItem(request: request) { result in
-                                                    promise(.success(result))
-                                                }
-                                            }
-                                            .eraseToEffect()
-                                        }
-                                    )
-                                )
-                                AddItemView(store: store)
-                            }
-                            .navigationDestination(isPresented: viewStore.binding(
-                                get: { $0.isEditInfoVisible },
-                                send: ItemManageAction.tapEditInfoButton
-                            )) {
-                                let store = Store<EditItemInfoState, EditItemInfoAction>(
-                                    initialState: EditItemInfoState(items: viewStore.state.items),
-                                    reducer: editItemInfoReducer,
-                                    environment: EditItemInfoEnvironment()
-                                )
-                                EditItemInfoView(store: store)
-                            }
-                    }
-                    .padding(EdgeInsets(top: 46, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
-                    
-                    ScrollView(showsIndicators: false) {
-                        LazyVGrid(columns: columns) {
-                            ForEach(viewStore.items.indices, id: \.self) { index in
-                                ProductGridItem(
-                                    count: viewStore.state.items[index].count,
-                                    url: viewStore.state.items[index].imageUrl,
-                                    title: viewStore.state.items[index].name,
-                                    originalPrice: viewStore.state.items[index].priceOrigin,
-                                    salePrice: viewStore.state.items[index].priceDiscount,
-                                    type: .common
-                                )
-                            }
+                HStack(spacing: 0) {
+                    LargeNavigationTitle(title: "제품 관리")
+                    InfiniteSpacer()
+                    EditButton { viewStore.send(.tapEditButton) }
+                        .confirmationDialog(
+                            "Title",
+                            isPresented: viewStore.binding(
+                                get: { $0.isEditable },
+                                send: ItemManageAction.tapEditButton
+                            )
+                        ) {
+                            Button("수량 수정") { viewStore.send(.tapEditCountButton) }
+                            Button("제품 정보 수정") { viewStore.send(.tapEditInfoButton) }
+                            Button("제품 추가") { viewStore.send(.tapAddItemButton) }
+                            Button("취소", role: .cancel) {}
                         }
-                        .frame(width: Device.WidthWithPadding)
+                        .navigationDestination(isPresented: viewStore.binding(
+                            get: { $0.isEditCountVisible },
+                            send: ItemManageAction.tapEditCountButton
+                        )) {
+                            let store = Store<EditItemCountState, EditItemCountAction>(
+                                initialState: EditItemCountState(items: viewStore.state.items),
+                                reducer: editItemCountReducer,
+                                environment: EditItemCountEnvironment(
+                                    updateItemCount: { request in
+                                        return Future { promise in
+                                            updateItemCountUseCase.updateItemCount(request: request) { result in
+                                                promise(.success(result))
+                                            }
+                                        }
+                                        .eraseToEffect()
+                                    }
+                                )
+                            )
+                            
+                            EditItemCountView(store: store)
+                        }
+                        .navigationDestination(isPresented: viewStore.binding(
+                            get: { $0.isAddItemVisible },
+                            send: ItemManageAction.tapAddItemButton
+                        )) {
+                            let store = Store<AddItemState, AddItemAction>(
+                                initialState: AddItemState(),
+                                reducer: addItemReducer,
+                                environment: AddItemEnvironment(
+                                    addItem: { request in
+                                        return Future { promise in
+                                            addItemUseCase.addItem(request: request) { result in
+                                                promise(.success(result))
+                                            }
+                                        }
+                                        .eraseToEffect()
+                                    }
+                                )
+                            )
+                            AddItemView(store: store)
+                        }
+                        .navigationDestination(isPresented: viewStore.binding(
+                            get: { $0.isEditInfoVisible },
+                            send: ItemManageAction.tapEditInfoButton
+                        )) {
+                            let store = Store<EditItemInfoState, EditItemInfoAction>(
+                                initialState: EditItemInfoState(items: viewStore.state.items),
+                                reducer: editItemInfoReducer,
+                                environment: EditItemInfoEnvironment()
+                            )
+                            EditItemInfoView(store: store)
+                        }
+                }
+                .padding(EdgeInsets(top: 46, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
+                
+                ScrollView(showsIndicators: false) {
+                    LazyVGrid(columns: columns) {
+                        ForEach(viewStore.items.indices, id: \.self) { index in
+                            ProductGridItem(
+                                count: viewStore.state.items[index].count,
+                                url: viewStore.state.items[index].imageUrl,
+                                title: viewStore.state.items[index].name,
+                                originalPrice: viewStore.state.items[index].priceOrigin,
+                                salePrice: viewStore.state.items[index].priceDiscount,
+                                type: .common
+                            )
+                        }
                     }
+                    .frame(width: Device.WidthWithPadding)
                 }
             }
             .navigationTitle("")
+            .overlay {
+                if viewStore.isLoading {
+                    LoginProgress()
+                }
+            }
         }
     }
 }

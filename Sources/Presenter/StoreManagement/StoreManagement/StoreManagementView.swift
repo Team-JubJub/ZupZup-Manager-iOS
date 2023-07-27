@@ -182,6 +182,11 @@ struct StoreManagementView: View {
                     .navigationTitle("")
                 }
             }
+            .overlay {
+                if viewStore.isLoading {
+                    LoginProgress()
+                }
+            }
         }
     }
 }
