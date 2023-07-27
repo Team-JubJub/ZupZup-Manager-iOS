@@ -12,6 +12,7 @@ import ComposableArchitecture
 
 struct StoreManagementState: Equatable {
     var isShowingEditStoreInfo = false
+    var isShowingCustomerCenter = false
     var storeEntity: StoreEntity = StoreEntity()
 }
 
@@ -22,11 +23,13 @@ enum StoreManagementAction: Equatable {
     case openStoreResponse(Result<OpenStoreResponse, NetworkError>) // 가게 ON/OFF API 호출의 결과
     case fetchStore // 가게 정보 조희 API 호출
     case fetchStoreResponse(Result<StoreEntity, NetworkError>) // 가게 정보 조희 API 호출의 결과
+    case tapCustomerCenterButton
 }
 
 struct StoreManagementEnvironment {
     let openStore: (OpenStoreRequest) -> EffectPublisher<Result<OpenStoreResponse, NetworkError>, Never> // 가게 ON/OFF
     let fetchStore: () -> EffectPublisher<Result<StoreEntity, NetworkError>, Never> // 가게 정보 조희
+    let openCustomerCenterURL: () -> Void // 고객센터 URL로 전환
 }
 
 let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAction, StoreManagementEnvironment> { state, action, environment in
@@ -62,6 +65,10 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         
     case let .fetchStoreResponse(.failure(error)): // 가게 정보 조희 API 호출의 결과 - 실패
         // TODO: Error Handling
+        return .none
+        
+    case .tapCustomerCenterButton: // 고객센터 버튼을 누른 경우
+        environment.openCustomerCenterURL()
         return .none
     }
 }
