@@ -153,8 +153,7 @@ struct StoreManagementView: View {
                         
                         VStack(spacing: 0) {
                             StoreManageViewItem(title: "고객 센터") {
-                                // TODO: 고객센터 화면 전환
-                                print("고객센터 화면 전환")
+                                viewStore.send(.tapCustomerCenterButton)
                             }
                             
                             StoreManageViewItem(title: "가게 위치 이전") {

@@ -97,6 +97,9 @@ struct ContentView: View {
                                             }
                                         }
                                         .eraseToEffect()
+                                    },
+                                    openCustomerCenterURL: {
+                                        UrlManager.shared.openCustomerCenter()
                                     }
                                 )
                             )
