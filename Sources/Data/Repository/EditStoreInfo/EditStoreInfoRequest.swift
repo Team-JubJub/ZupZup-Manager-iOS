@@ -6,17 +6,18 @@
 //  Copyright © 2023 ZupZup. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct EditStoreInfoRequest: Equatable {
     let data: StoreInfo
-    let image: UIImage
+    let image: UIImage?
     
     struct StoreInfo: Encodable, Equatable {
         let storeImageUrl: String
-        let openTime: Int
-        let closeTime: Int
-        let saleTimeStart: Int
+        let openTime: String
+        let closeTime: String
+        let saleTimeStart: String
+        let saleTimeEnd: String
         let closedDay: String?
     }
 }

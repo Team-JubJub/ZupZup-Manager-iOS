@@ -10,7 +10,11 @@ import UIKit
 
 import Alamofire
 
-final class EditStoreInfoRepository {
+protocol EditStoreInfoRepository {
+    func editStoreInfo(request: EditStoreInfoRequest, completion: @escaping (Result<EditStoreInfoResponse, NetworkError>) -> Void)
+}
+
+final class EditStoreInfoRepositoryImpl: EditStoreInfoRepository {
     
     let url = "https://zupzuptest.com:8080/seller/modification/\(LoginManager.shared.getStoreId())"
     
@@ -32,7 +36,7 @@ final class EditStoreInfoRepository {
                 return
             }
             
-            if let imageData = request.image.jpegData(compressionQuality: 0.8) {
+            if let imageData = request.image?.jpegData(compressionQuality: 0.8) {
                 multipartFormData.append(imageData, withName: "image", fileName: "image.jpg", mimeType: "image/jpeg")
             } else {
                 completion(.failure(NetworkError.failToEncode))
@@ -40,6 +44,7 @@ final class EditStoreInfoRepository {
             }
         },
                   to: url,
+                  method: .patch,
                   headers: headers
         )
         .responseString { response in
