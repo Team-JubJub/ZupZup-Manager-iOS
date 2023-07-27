@@ -13,12 +13,15 @@ import ComposableArchitecture
 struct EditStoreInfoState: Equatable {
     
     init(storeEntity: StoreEntity) {
+        self.storeImageUrl = storeEntity.imageUrl
         self.daysOfWeek = storeEntity.closedDay
         (self.openTime, self.openMinute) = splitTime(storeEntity.openTime)
         (self.closeTime, self.closeMinute) = splitTime(storeEntity.closeTime)
         (self.discountStartTime, self.discountStartMinute) = splitTime(storeEntity.saleStartTime)
         (self.discountEndTime, self.discountEndMinute) = splitTime(storeEntity.saleEndTime)
     }
+    
+    let storeImageUrl: String // 가게의 이미지 URL
     
     var isShowingImagePicker = false // 이미지 피커 상태 변수
     var selectedImage: UIImage? // 이미지 피커에서 선택된 이미지 변수
@@ -74,10 +77,12 @@ enum EditStoreInfoAction: Equatable {
     case dismissDiscountStartTimePicker
     case dismissDiscountEndTimePicker
     
+    case editStoreInfoResponse(Result<EditStoreInfoResponse, NetworkError>)
+    
 }
 
 struct EditStoreInfoEnvironment {
-    
+    let editStoreInfo: (EditStoreInfoRequest) -> EffectPublisher<Result<EditStoreInfoResponse, NetworkError>, Never>
 }
 
 let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, EditStoreInfoEnvironment> { state, action, environment in
@@ -117,7 +122,23 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
         
     case .tapBottomButton: // 수정 완료 버튼을 눌렀을 경우
         // TODO: 통신 - 수정 완료
-        return .none
+        let data = EditStoreInfoRequest.StoreInfo(
+            storeImageUrl: state.storeImageUrl,
+            openTime: state.openTime + ":" + state.openMinute,
+            closeTime: state.closeTime + ":" + state.closeMinute,
+            saleTimeStart: state.discountStartTime + ":" + state.discountStartMinute,
+            saleTimeEnd: state.discountEndTime + ":" + state.discountEndMinute,
+            closedDay: nil
+        )
+        
+        let request = EditStoreInfoRequest(
+            data: data,
+            image: state.selectedImage
+        )
+        
+        return environment.editStoreInfo(request)
+            .map(EditStoreInfoAction.editStoreInfoResponse)
+            .eraseToEffect()
         
     case let .tapDaysButton(idx): // 요일 버튼을 눌렀을 경우
         state.daysOfWeek[idx].toggle()
@@ -180,6 +201,13 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
         return .none
         
     case .daysOfWeekBinding:
+        return .none
+        
+    case let .editStoreInfoResponse(.success(response)):
+        return .none
+        
+    case let .editStoreInfoResponse(.failure(error)):
+        // TODO: Error Handling
         return .none
     }
 }
