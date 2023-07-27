@@ -87,35 +87,35 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
         state.isShowingImagePicker = true
         return .none
         
-    case .tapOpenStartTime:
+    case .tapOpenStartTime: // 영업 시간 시작 버튼을 눌렀을 경우
         state.isShowingCloseTimePicker = false
         if !state.isShowingCloseTimePicker {
             state.isShowingOpenTimePicker.toggle()
         }
         return .none
         
-    case .tapOpenEndTime:
+    case .tapOpenEndTime: // 영업 시간 종료 버튼을 눌렀을 경우
         state.isShowingOpenTimePicker = false
         if !state.isShowingOpenTimePicker {
             state.isShowingCloseTimePicker.toggle()
         }
         return .none
         
-    case .tapDiscountStartTime:
+    case .tapDiscountStartTime: // 마감 할인 시작 시간을 눌렀을 경우
         state.isShowingDiscountEndTimePicker = false
         if !state.isShowingDiscountEndTimePicker {
             state.isShowingDiscountStartTimePicker.toggle()
         }
         return .none
         
-    case .tapDiscountEndTime:
+    case .tapDiscountEndTime: // 마감 할인 시작 시간을 눌렀을 경우
         state.isShowingDiscountStartTimePicker = false
         if !state.isShowingDiscountStartTimePicker {
             state.isShowingDiscountEndTimePicker.toggle()
         }
         return .none
         
-    case .tapBottomButton:
+    case .tapBottomButton: // 수정 완료 버튼을 눌렀을 경우
         // TODO: 통신 - 수정 완료
         return .none
         
@@ -131,35 +131,35 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
         state.isShowingImagePicker = false
         return .none
         
-    case let .opneTimeChanged(time):
+    case let .opneTimeChanged(time): // 영업 시작(시간) 바인딩
         state.openTime = time
         return .none
         
-    case let .openMinuteChanged(minute):
+    case let .openMinuteChanged(minute): // 영업 시작(분) 바인딩
         state.openMinute = minute
         return .none
         
-    case let .closeTimeChanged(time):
+    case let .closeTimeChanged(time): // 영업 종료(시간) 바인딘
         state.closeTime = time
         return .none
         
-    case let .closeMinuteChanged(minute):
+    case let .closeMinuteChanged(minute): // 영업 종료(분) 바인딩
         state.closeMinute = minute
         return .none
         
-    case let .discountStartTimeChanged(time):
+    case let .discountStartTimeChanged(time): // 마감 할인 시작(시간) 바인딩
         state.discountStartTime = time
         return .none
         
-    case let .discountStartMinuteChanged(minute):
+    case let .discountStartMinuteChanged(minute): // 마감 할인 시작(분) 바인딩
         state.discountStartMinute = minute
         return .none
         
-    case let .discountEndTimeChanged(time):
+    case let .discountEndTimeChanged(time): // 마감 할인 종료(시간) 바인딩
         state.discountEndTime = time
         return .none
             
-    case let .discountEndMinuteChanged(minute):
+    case let .discountEndMinuteChanged(minute): // 마감 할인 종료(분) 바인딩
         state.discountEndMinute = minute
         return .none
         
