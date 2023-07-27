@@ -59,12 +59,24 @@ struct StoreIntroduceView: View {
                 
                 BottomButton(
                     height: 64,
-                    text: "제품 등록",
+                    text: "수정 완료",
                     textColor: .designSystem(.pureBlack)!
                 ) {
                     viewStore.send(.tapBottomButton)
                 }
             }
+            .alert(
+                "가게 소개 수정",
+                isPresented: viewStore.binding(
+                    get: { $0.isShowingAlert },
+                    send: StoreIntroduceAction.dismissAlert
+                ),
+                actions: {
+                    Button("확인", role: .none) { viewStore.send(.tapAlertOk) }
+                    Button("취소", role: .cancel) { viewStore.send(.tapAlertCancel) }
+                },
+                message: { Text("가게 소개글을 수정할까요?") }
+            )
         }
     }
 }
