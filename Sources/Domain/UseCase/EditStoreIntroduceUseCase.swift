@@ -1,5 +1,5 @@
 //
-//  EditStoreIntroduceRepository.swift
+//  EditStoreIntroduceUseCase.swift
 //  ZupZupManager
 //
 //  Created by YeongJin Jeong on 2023/07/28.
@@ -8,31 +8,31 @@
 
 import Foundation
 
-protocol EditStoreIntroduceRepository {
+protocol EditStoreIntroduceUseCase {
     func editStoreIntroduce(
         request: EditStoreIntroduceRequest,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     )
 }
 
-final class EditStoreIntroduceRepositoryImpl: EditStoreIntroduceRepository {
+final class EditStoreIntroduceUseCaseImpl: EditStoreIntroduceUseCase {
+    
+    private let editStoreIntroduceRepository: EditStoreIntroduceRepository
+    
+    init(editStoreIntroduceRepository: EditStoreIntroduceRepository = EditStoreIntroduceRepositoryImpl()) {
+        self.editStoreIntroduceRepository = editStoreIntroduceRepository
+    }
     
     func editStoreIntroduce(
         request: EditStoreIntroduceRequest,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
-        
-        let url = "https://zupzuptest.com:8080/seller/notice/\(LoginManager.shared.getStoreId())/\(request.storeMatters)"
-        
-        NetworkManager.shared.justRequest(
-            to: url,
-            method: .post
-        ) { result in
+        editStoreIntroduceRepository.editStoreIntroduce(request: request) { result in
             switch result {
             case .success(let response):
                 completion(.success(response))
-            case.failure:
-                completion(.failure(NetworkError.invalidResponse))
+            case .failure(let error):
+                completion(.failure(let error))
             }
         }
     }
