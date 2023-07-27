@@ -11,22 +11,31 @@ import SwiftUI
 import ComposableArchitecture
 
 struct StoreManagementState: Equatable {
-    var isLoading = false // API 호출 사이 인디케이터 트리거
-    var isShowingEditStoreInfo = false // 가게 정보 수정 화면 이동 트리거
-    var isShowingCustomerCenter = false // 고객센터 웹페이지 이동 트리거
+    
+    // Entity 관련
     var storeEntity: StoreEntity = StoreEntity() // 가게 정보 Entity
     
+    // indicator 관련
+    var isLoading = false // API 호출 사이 인디케이터 트리거
+    
+    // Alert 관련
     var isShowingStoreOpenAlert: Bool = false // 가게 ON/OFF 스위치 눌렀을 때, Alert
     var isShowingLogoutAlert: Bool = false // 로그아웃 버튼을 눌렀을 때, Alert
+    
+    // 화면 전환 관련
+    var isShowingEditStoreInfo = false // 가게 정보 수정 화면 이동 트리거
+    var isShowingCustomerCenter = false // 고객센터 웹페이지 이동 트리거
+    var isShowingStoreIntroduce = false // 가게 소개 화면 이동 트리거
 }
 
 enum StoreManagementAction: Equatable {
+    
+    // 화면 전환 관련
     case tapInfoButton // 가게 세부 정보 네비게이션
-    case isShowingEditStoreInfoBinding // isShowingEditStoreInfo 변수 바인딩
-    case openStoreResponse(Result<OpenStoreResponse, NetworkError>) // 가게 ON/OFF API 호출의 결과
-    case fetchStore // 가게 정보 조희 API 호출
-    case fetchStoreResponse(Result<StoreEntity, NetworkError>) // 가게 정보 조희 API 호출의 결과
     case tapCustomerCenterButton // 고객센터 버튼을 눌렀을 경우
+    case tapStoreIntroduceButton // 가게소개 버튼을 눌렀을 경우
+    case isShowingEditStoreInfoBinding // isShowingEditStoreInfo 변수 바인딩
+    case isShowingStoreIntroduceBinding // isShowingStoreIntroduce 변수 바인딩
     
     // 가게 ON/OFF Alert 관련
     case tapToggle // 가게 On / Off 토글
@@ -39,6 +48,11 @@ enum StoreManagementAction: Equatable {
     case dismissLogoutAlert // isShowingLogoutAlert 변수 바인딩
     case tapLogoutAlertOK // 로그아웃 Alert - 네 누른 경우
     case tapLogoutAlertCancel // 로그아웃 Alert - 취소 누른 경우
+    
+    // API 관련
+    case fetchStore // 가게 정보 조희 API 호출
+    case openStoreResponse(Result<OpenStoreResponse, NetworkError>) // 가게 ON/OFF API 호출의 결과
+    case fetchStoreResponse(Result<StoreEntity, NetworkError>) // 가게 정보 조희 API 호출의 결과
 }
 
 struct StoreManagementEnvironment {
@@ -118,6 +132,14 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         
     case .tapLogoutAlertCancel: // 로그아웃 Alert - 취소 누른 경우
         state.isShowingLogoutAlert = false
+        return .none
+        
+    case .tapStoreIntroduceButton:
+        state.isShowingStoreIntroduce = true
+        return .none
+        
+    case .isShowingStoreIntroduceBinding:
+        state.isShowingStoreIntroduce = false
         return .none
     }
 }
