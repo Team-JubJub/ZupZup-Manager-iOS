@@ -84,7 +84,12 @@ extension SelectDaysView {
     
     private func makeDaysString() -> String {
         let selectedDays = days.indices.filter { days[$0] }
-        let temp = selectedDays.map { makeDaysOfWeek(idx: $0) + "요일" }.joined(separator: ", ")
-        return temp
+        
+        if selectedDays.isEmpty {
+            return "연중 무휴"
+        } else {
+            let temp = selectedDays.map { makeDaysOfWeek(idx: $0) + "요일" }.joined(separator: ", ")
+            return temp
+        }
     }
 }

@@ -78,7 +78,14 @@ struct StoreManagementView: View {
                                             send: StoreManagementAction.isShowingEditStoreInfoBinding
                                         )
                                     ) {
-                                        EditStoreInfoView(store: EditStoreInfoStore())
+                                        let store = Store<EditStoreInfoState, EditStoreInfoAction>(
+                                            initialState: EditStoreInfoState(
+                                                storeEntity: viewStore.storeEntity
+                                            ),
+                                            reducer: editStoreInfoReducer,
+                                            environment: EditStoreInfoEnvironment()
+                                        )
+                                        EditStoreInfoView(store: store)
                                     }
                                 }
                                 
