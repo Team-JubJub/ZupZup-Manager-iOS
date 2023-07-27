@@ -14,6 +14,7 @@ import ComposableArchitecture
 struct StoreManagementView: View {
     
     let store: Store<StoreManagementState, StoreManagementAction>
+    
     // MARK: 유즈 케이스
     let editStoreInfoUseCase: EditStoreInfoUseCase = EditStoreInfoUseCaseImpl()
     
@@ -148,10 +149,7 @@ struct StoreManagementView: View {
                                 
                                 InfiniteSpacer()
                                 
-                                RightChevronButton {
-                                    // TODO: 가게 소개 화면으로 전환
-                                    print("가게 소개")
-                                }
+                                RightChevronButton { viewStore.send(.tapStoreIntroduceButton) }
                             }
                             .frame(width: Device.Width * 326 / 390, height: 44)
                         }
@@ -164,18 +162,13 @@ struct StoreManagementView: View {
                         .padding(EdgeInsets(top: 0, leading: Device.HPadding, bottom: Device.VPadding * 4 / 3, trailing: Device.HPadding))
                         
                         VStack(spacing: 0) {
-                            StoreManageViewItem(title: "고객 센터") {
-                                viewStore.send(.tapCustomerCenterButton)
-                            }
+                            StoreManageViewItem(title: "고객 센터") { viewStore.send(.tapCustomerCenterButton) }
                             
                             StoreManageViewItem(title: "가게 위치 이전") {
-                                // TODO: 가게 위치 이전 화면 전환
-                                print("가게 위치 이전 화면 전환")
+                                // TODO: 가게 위치 이전 구현
                             }
                             
-                            StoreManageViewItem(title: "로그아웃") {
-                                viewStore.send(.tapLogoutButton)
-                            }
+                            StoreManageViewItem(title: "로그아웃") { viewStore.send(.tapLogoutButton) }
                         }
                     }
                     .navigationTitle("")
@@ -209,6 +202,14 @@ struct StoreManagementView: View {
                 if viewStore.isLoading {
                     FullScreenProgressView()
                 }
+            }
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: { $0.isShowingStoreIntroduce },
+                    send: StoreManagementAction.isShowingStoreIntroduceBinding
+                )
+            ) {
+                Rectangle()
             }
         }
     }
