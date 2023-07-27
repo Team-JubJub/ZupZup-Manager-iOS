@@ -29,15 +29,20 @@ enum AddItemAction: Equatable {
     case priceChanged(String) // 가격 텍스트 필드 업데이트
     case discountChanged(String) // 할인 가격 텍스트 필드 업데이트
     case countChanged(Int) // 개수 텍스트 필드 업데이트
+    
     case tabImagePickerButton // 이미지 피커를 누른 경우
     case tabMinusButton // 제품 개수 + 버튼 누른 경우
     case tabPlusButton // 제품 개수 - 버튼 누른 경우
+    
     case tapBottomButton // 하단 제품 등록 버튼을 누른 경우
     case alertOkButton // Alert - 네 누른 경우
     case alertCancelButton // Alert - 아니오 누른 경우
+    
     case tapEmptySpace // 빈 공간을 눌렀을 경우
+    
     case dismissAlert // isShowingAlert 바인딩
     case dismissImagePicker // isShowingImagePicker 바인딩
+    
     case selectedImageChanged(UIImage?) // 이미지 피커에서 선택된 이미지 바인딩
     case addItemResponse(Result<AddItemResponse, NetworkError>) // 아이템 추가 API 호출의 결과
 }

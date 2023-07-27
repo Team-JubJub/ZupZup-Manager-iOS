@@ -140,7 +140,9 @@ struct AddItemView: View {
                 }
             }
             .overlay {
-                FullScreenProgressView()
+                if viewStore.isLoading {
+                    FullScreenProgressView()
+                }
             }
             .navigationTitle("")
             .navigationBarHidden(true)
@@ -151,16 +153,10 @@ struct AddItemView: View {
                     send: AddItemAction.dismissAlert
                 ),
                 actions: {
-                    Button("아니오", role: .destructive) {
-                        viewStore.send(.alertCancelButton)
-                    }
-                    Button("네", role: .cancel) {
-                        viewStore.send(.alertOkButton)
-                    }
+                    Button("아니오", role: .destructive) { viewStore.send(.alertCancelButton) }
+                    Button("네", role: .cancel) { viewStore.send(.alertOkButton) }
                 },
-                message: {
-                    Text("제품을 추가하시겠습니까?")
-                }
+                message: { Text("제품을 추가하시겠습니까?") }
             )
         }
     }
