@@ -13,5 +13,7 @@ struct RoundCircleProgress: View {
         ProgressView()
             .progressViewStyle(.circular)
             .padding()
+            .frame(width: Device.Width, height: Device.Height)
+            .background(Color.designSystem(.ScrimBlack40))
     }
 }

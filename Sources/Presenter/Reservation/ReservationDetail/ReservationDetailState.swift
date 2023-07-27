@@ -12,8 +12,9 @@ import Combine
 import ComposableArchitecture
 
 struct ReservationDetailState: Equatable {
-    var reservation: ReservationEntity
-    var isShowingHalfModal: Bool = false
+    var reservation: ReservationEntity // 단건 예약
+    var isShowingHalfModal: Bool = false // 하프 모달 트리거
+    var isLoading: Bool = false // API 호출시 indicator 트리거
 }
 
 enum ReservationDetailAction: Equatable {
@@ -52,6 +53,7 @@ let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDet
     case .tabCancelButton: // 신규 상태 - 취소 버튼을 눌렀을 경우
         // '상태만' 바꾸는 API호출
         let request = state.reservation.toJustChangeStateRequest(state: .cancel)
+        state.isLoading = true
         return environment.changeJustState(request)
             .map(ReservationDetailAction.updatedCondition)
             .eraseToEffect()
@@ -59,6 +61,7 @@ let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDet
     case .tabCompleteButton: // 확정 상태 - 완료 버튼을 눌렀을 경우
         // '상태만' 바꾸는 API호출
         let request = state.reservation.toJustChangeStateRequest(state: .complete)
+        state.isLoading = true
         return environment.changeJustState(request)
             .map(ReservationDetailAction.updatedCondition)
             .eraseToEffect()
@@ -66,6 +69,7 @@ let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDet
     case .tabRejectButton: // 확정 상태 - 반려 버튼을 눌렀을 경우
         // 상테 + 개수 반영 API
         let request = state.reservation.toChangeStateRequest(state: .cancel)
+        state.isLoading = true
         return environment.changeState(request)
             .map(ReservationDetailAction.updatedCondition)
             .eraseToEffect()
@@ -73,6 +77,7 @@ let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDet
     case .tabConfirmButton: // 확정 상태 - 완료 버튼을 눌렀을 경우
         // 상테 + 개수 반영 API
         let request = state.reservation.toChangeStateRequest(state: .confirm)
+        state.isLoading = true
         return environment.changeState(request)
             .map(ReservationDetailAction.updatedCondition)
             .eraseToEffect()
@@ -80,9 +85,11 @@ let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDet
     case let .updatedCondition(.success(condition)): // 예약 상태 변경 API - 성공
         state.reservation.state = condition
         state.isShowingHalfModal = false
+        state.isLoading = false
         return .none
         
     case let .updatedCondition(.failure(error)): // 예약 상태 변경 API - 실패
+        state.isLoading = false
         #if DEBUG
         print("예약 상태 변경 API 호출 실패", error)
         #endif
