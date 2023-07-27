@@ -140,7 +140,7 @@ struct AddItemView: View {
                 }
             }
             .overlay {
-                LoginProgress()
+                FullScreenProgressView()
             }
             .navigationTitle("")
             .navigationBarHidden(true)

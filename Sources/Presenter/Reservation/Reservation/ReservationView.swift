@@ -92,7 +92,7 @@ struct ReservationView: View {
             .navigationTitle("")
             .overlay {
                 if viewStore.isLoading {
-                    LoginProgress()
+                    FullScreenProgressView()
                 }
             }
         }

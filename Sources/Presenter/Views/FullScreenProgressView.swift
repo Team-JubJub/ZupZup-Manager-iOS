@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LoginProgress: View {
+struct FullScreenProgressView: View {
     var body: some View {
         ProgressView()
             .progressViewStyle(.circular)

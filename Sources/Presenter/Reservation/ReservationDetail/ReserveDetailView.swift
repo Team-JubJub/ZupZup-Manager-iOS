@@ -131,7 +131,7 @@ struct ReserveDetailView: View {
             }
             .overlay {
                 if viewStore.isLoading {
-                    LoginProgress()
+                    FullScreenProgressView()
                 }
             }
         }

@@ -66,7 +66,7 @@ struct LoginView: View {
                 }
                 
                 if viewStore.isLoading {
-                    LoginProgress()
+                    FullScreenProgressView()
                 }
             }
             .ignoresSafeArea()

@@ -184,7 +184,7 @@ struct StoreManagementView: View {
             }
             .overlay {
                 if viewStore.isLoading {
-                    LoginProgress()
+                    FullScreenProgressView()
                 }
             }
         }

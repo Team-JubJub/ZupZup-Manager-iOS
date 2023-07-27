@@ -182,7 +182,7 @@ struct EditStoreInfoView: View {
             .navigationBarBackButtonHidden()
             .overlay {
                 if viewStore.isLoading {
-                    LoginProgress()
+                    FullScreenProgressView()
                 }
             }
         }

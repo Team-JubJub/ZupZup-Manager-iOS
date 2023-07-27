@@ -55,7 +55,7 @@ struct EditItemCountView: View {
             }
             .overlay {
                 if viewStore.isLoading {
-                    LoginProgress()
+                    FullScreenProgressView()
                 }
             }
             .navigationBarBackButtonHidden()
