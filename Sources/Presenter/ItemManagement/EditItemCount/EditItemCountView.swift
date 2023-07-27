@@ -53,6 +53,11 @@ struct EditItemCountView: View {
                     }
                 }
             }
+            .overlay {
+                if viewStore.isLoading {
+                    FullScreenProgressView()
+                }
+            }
             .navigationBarBackButtonHidden()
             .navigationTitle("")
         }

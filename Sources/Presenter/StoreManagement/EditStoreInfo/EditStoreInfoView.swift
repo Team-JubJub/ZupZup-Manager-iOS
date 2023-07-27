@@ -180,6 +180,11 @@ struct EditStoreInfoView: View {
             }
             .navigationTitle("")
             .navigationBarBackButtonHidden()
+            .overlay {
+                if viewStore.isLoading {
+                    FullScreenProgressView()
+                }
+            }
         }
     }
 }

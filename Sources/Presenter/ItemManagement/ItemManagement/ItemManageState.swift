@@ -55,6 +55,7 @@ let itemManageReducer = AnyReducer<ItemManageState, ItemManageAction, ItemManage
         
     case let .itemsFetched(.failure(error)): // 제품 리스트 호출 실패
         // TODO: Error Handling
+        state.isLoading = false
         return .none
         
     case .tapEditButton: // 좌측 상단의 연필 모양 눌렀을 경우

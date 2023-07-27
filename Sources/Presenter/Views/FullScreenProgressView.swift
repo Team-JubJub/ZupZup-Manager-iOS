@@ -8,10 +8,13 @@
 
 import SwiftUI
 
-struct RoundCircleProgress: View {
+struct FullScreenProgressView: View {
     var body: some View {
         ProgressView()
             .progressViewStyle(.circular)
             .padding()
+            .frame(width: Device.Width, height: Device.Height)
+            .background(Color.designSystem(.ScrimBlack40))
+            .ignoresSafeArea()
     }
 }

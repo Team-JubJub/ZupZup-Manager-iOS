@@ -11,6 +11,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct StoreManagementState: Equatable {
+    var isLoading = false
     var isShowingEditStoreInfo = false
     var isShowingCustomerCenter = false
     var storeEntity: StoreEntity = StoreEntity()
@@ -35,6 +36,7 @@ struct StoreManagementEnvironment {
 let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAction, StoreManagementEnvironment> { state, action, environment in
     switch action {
     case .tapToggle: // 가게 On / Off 토글
+        state.isLoading = true
         return environment.openStore(OpenStoreRequest(openOrClose: !state.storeEntity.isOpen))
             .map(StoreManagementAction.openStoreResponse)
             .eraseToEffect()
@@ -49,22 +51,27 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         
     case let .openStoreResponse(.success(response)): // 가게 ON/OFF API 호출의 결과 - 성공
         state.storeEntity.isOpen.toggle()
+        state.isLoading = false
         return .none
         
     case let .openStoreResponse(.failure(error)): // 가게 ON/OFF API 호출의 결과 - 실패
+        state.isLoading = false
         return .none
         
     case .fetchStore: // 가게 정보 조희 API 호출
+        state.isLoading = true
         return environment.fetchStore()
             .map(StoreManagementAction.fetchStoreResponse)
             .eraseToEffect()
         
     case let .fetchStoreResponse(.success(storeEntity)): // 가게 정보 조희 API 호출의 결과 - 성공
         state.storeEntity = storeEntity
+        state.isLoading = false
         return .none
         
     case let .fetchStoreResponse(.failure(error)): // 가게 정보 조희 API 호출의 결과 - 실패
         // TODO: Error Handling
+        state.isLoading = false
         return .none
         
     case .tapCustomerCenterButton: // 고객센터 버튼을 누른 경우

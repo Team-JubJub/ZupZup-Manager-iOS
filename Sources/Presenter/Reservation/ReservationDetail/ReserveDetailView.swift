@@ -129,6 +129,11 @@ struct ReserveDetailView: View {
                         .presentationDetents([.medium])
                 }
             }
+            .overlay {
+                if viewStore.isLoading {
+                    FullScreenProgressView()
+                }
+            }
         }
     }
 }

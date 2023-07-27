@@ -139,6 +139,9 @@ struct AddItemView: View {
                     viewStore.send(.tapBottomButton)
                 }
             }
+            .overlay {
+                FullScreenProgressView()
+            }
             .navigationTitle("")
             .navigationBarHidden(true)
             .alert(

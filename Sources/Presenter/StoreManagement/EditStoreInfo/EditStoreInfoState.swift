@@ -21,6 +21,8 @@ struct EditStoreInfoState: Equatable {
         (self.discountEndTime, self.discountEndMinute) = splitTime(storeEntity.saleEndTime)
     }
     
+    var isLoading: Bool = false
+    
     let storeImageUrl: String // 가게의 이미지 URL
     
     var isShowingImagePicker = false // 이미지 피커 상태 변수
@@ -121,7 +123,9 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
         return .none
         
     case .tapBottomButton: // 수정 완료 버튼을 눌렀을 경우
-        // TODO: 통신 - 수정 완료
+        
+        state.isLoading = true
+        
         let data = EditStoreInfoRequest.StoreInfo(
             storeImageUrl: state.storeImageUrl,
             openTime: state.openTime + ":" + state.openMinute,
@@ -204,10 +208,12 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
         return .none
         
     case let .editStoreInfoResponse(.success(response)):
+        state.isLoading = false
         return .none
         
     case let .editStoreInfoResponse(.failure(error)):
         // TODO: Error Handling
+        state.isLoading = false
         return .none
     }
 }

@@ -14,6 +14,7 @@ import Alamofire
 
 // MARK: TCA - State
 struct LoginState: Equatable {
+    var isLoading: Bool = false
     var id: String = "test123"
     var password: String = "test1234"
 }
@@ -47,6 +48,7 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
 
     case .tapLoginButton:
         let request = LoginRequest(loginId: state.id, loginPwd: state.password)
+        state.isLoading = true
         return environment.login(request)
             .map(LoginAction.loginRequestResult)
             .eraseToEffect()
@@ -64,9 +66,11 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
         LoginManager.shared.setStoreId(id: response.storeId)
         LoginManager.shared.setAccessToken(newToken: response.accessToken)
         LoginManager.shared.setRefresh(newToken: response.refreshToken)
+        state.isLoading = false
         return .none
         
     case let .loginRequestResult(.failure(error)):
+        state.isLoading = false
         return .none
     }
 }

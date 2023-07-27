@@ -148,6 +148,11 @@ struct EditItemInfoDetailView: View {
                     viewStore.send(.tapBottomButton)
                 }
             }
+            .overlay {
+                if viewStore.isLoading {
+                    FullScreenProgressView()
+                }
+            }
             .navigationTitle("")
             .navigationBarHidden(true)
             .alert(
