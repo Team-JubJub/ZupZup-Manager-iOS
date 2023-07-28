@@ -17,6 +17,7 @@ struct StoreManagementView: View {
     
     // MARK: 유즈 케이스
     let editStoreInfoUseCase: EditStoreInfoUseCase = EditStoreInfoUseCaseImpl()
+    let editStoreIntroduceUseCase: EditStoreIntroduceUseCase = EditStoreIntroduceUseCaseImpl()
     
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -60,13 +61,13 @@ struct StoreManagementView: View {
                                     )
                                 )
                                 .toggleStyle(StoreStateToggle())
-                                    .cornerRadius(24)
-                                    .frame(width: 52, height: 32)
+                                .cornerRadius(24)
+                                .frame(width: 52, height: 32)
                             }
                             .frame(width: Device.Width * 326 / 390, height: 44)
                         }
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
-
+                        
                         ZStack {
                             IvoryRoundedRectangle(width: Device.Width * 358 / 390, height: 192)
                             VStack {
@@ -213,11 +214,20 @@ struct StoreManagementView: View {
                 let store = Store<StoreIntroduceState, StoreIntroduceAction>(
                     initialState: StoreIntroduceState(viewStore.storeEntity),
                     reducer: storeIntroduceReducer,
-                    environment: StoreIntroduceEnvironment()
+                    environment: StoreIntroduceEnvironment(
+                        editStoreIntroduce: { request in
+                            return Future { promise in
+                                editStoreIntroduceUseCase.editStoreIntroduce(request: request) { result in
+                                    promise(.success(result))
+                                }
+                            }
+                            .eraseToEffect()
+                        }
+                    )
                 )
-                    
                 StoreIntroduceView(store: store)
             }
+            
         }
     }
 }
