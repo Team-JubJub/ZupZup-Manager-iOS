@@ -11,7 +11,7 @@ import Foundation
 protocol EditStoreIntroduceUseCase {
     func editStoreIntroduce(
         request: EditStoreIntroduceRequest,
-        completion: @escaping (Result<Void, NetworkError>) -> Void
+        completion: @escaping (Result<EditStoreIntroduceResponse, NetworkError>) -> Void
     )
 }
 
@@ -25,14 +25,14 @@ final class EditStoreIntroduceUseCaseImpl: EditStoreIntroduceUseCase {
     
     func editStoreIntroduce(
         request: EditStoreIntroduceRequest,
-        completion: @escaping (Result<Void, NetworkError>) -> Void
+        completion: @escaping (Result<EditStoreIntroduceResponse, NetworkError>) -> Void
     ) {
         editStoreIntroduceRepository.editStoreIntroduce(request: request) { result in
             switch result {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                completion(.failure(let error))
+                completion(.failure(error))
             }
         }
     }

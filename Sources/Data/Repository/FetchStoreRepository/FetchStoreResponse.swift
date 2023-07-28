@@ -22,7 +22,7 @@ struct FetchStoreResponse: Decodable {
     let closeTime: String
     let saleTimeStart: String
     let saleTimeEnd: String
-    let saleMatters: String
+    let saleMatters: String?
     let isOpen: Bool
     let closedDay: String?
 }
@@ -41,7 +41,7 @@ extension FetchStoreResponse {
             closeTime: self.closeTime,
             saleStartTime: self.saleTimeStart,
             saleEndTime: self.saleTimeEnd,
-            announcement: self.saleMatters,
+            announcement: self.saleMatters ?? "",
             isOpen: self.isOpen,
             closedDay: [false, false, false, false, false, false, false]
         )

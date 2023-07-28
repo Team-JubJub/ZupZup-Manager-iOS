@@ -34,10 +34,11 @@ enum StoreIntroduceAction: Equatable {
     case tapAlertCancel // Alert - Cancel을 탭한 경우
     
     // API 관련
+    case editStoreIntroduceResponse(Result<EditStoreIntroduceResponse, NetworkError>) // 가게 소개 수정 API의 Response
 }
 
 struct StoreIntroduceEnvironment {
-    
+    let editStoreIntroduce: (EditStoreIntroduceRequest) -> EffectPublisher<Result<EditStoreIntroduceResponse, NetworkError>, Never>
 }
 
 let storeIntroduceReducer = AnyReducer<StoreIntroduceState, StoreIntroduceAction, StoreIntroduceEnvironment> { state, action, environment in
@@ -63,11 +64,24 @@ let storeIntroduceReducer = AnyReducer<StoreIntroduceState, StoreIntroduceAction
         return .none
         
     case .tapAlertOk:
-        // TODO: API 통신 연결
-        return .none
+        let request = EditStoreIntroduceRequest(
+            storeMatters: state.introduceText
+        )
+        return environment.editStoreIntroduce(request)
+            .map(StoreIntroduceAction.editStoreIntroduceResponse)
+            .eraseToEffect()
         
     case .tapAlertCancel:
         state.isShowingAlert = false
+        return .none
+        
+    // API 관련
+        
+    case .editStoreIntroduceResponse(.success): // 가게 소개 수정 API의 Response - 성공
+        print("success")
+        return .none
+        
+    case .editStoreIntroduceResponse(.failure): // 가게 소개 수정 API의 Response - 실패
         return .none
     }
 }

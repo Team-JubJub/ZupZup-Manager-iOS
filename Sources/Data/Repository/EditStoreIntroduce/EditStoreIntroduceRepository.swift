@@ -8,10 +8,12 @@
 
 import Foundation
 
+import Alamofire
+
 protocol EditStoreIntroduceRepository {
     func editStoreIntroduce(
         request: EditStoreIntroduceRequest,
-        completion: @escaping (Result<Void, NetworkError>) -> Void
+        completion: @escaping (Result<EditStoreIntroduceResponse, NetworkError>) -> Void
     )
 }
 
@@ -19,19 +21,24 @@ final class EditStoreIntroduceRepositoryImpl: EditStoreIntroduceRepository {
     
     func editStoreIntroduce(
         request: EditStoreIntroduceRequest,
-        completion: @escaping (Result<Void, NetworkError>) -> Void
+        completion: @escaping (Result<EditStoreIntroduceResponse, NetworkError>) -> Void
     ) {
         
-        let url = "https://zupzuptest.com:8080/seller/notice/\(LoginManager.shared.getStoreId())/\(request.storeMatters)"
+        let url = "https://zupzuptest.com:8080/seller/notice/\(LoginManager.shared.getStoreId())"
+        let headers: HTTPHeaders = [ "accessToken": LoginManager.shared.getAccessToken() ]
+        let parameters: [String: Any] = [ "storeMatters": request.storeMatters ]
         
-        NetworkManager.shared.justRequest(
-            to: url,
-            method: .post
-        ) { result in
-            switch result {
-            case .success(let response):
-                completion(.success(response))
-            case.failure:
+        AF.request(
+            url,
+            method: .post,
+            parameters: parameters,
+            headers: headers
+        )
+        .responseString { response in
+            switch response.result {
+            case .success:
+                completion(.success(EditStoreIntroduceResponse()))
+            case .failure:
                 completion(.failure(NetworkError.invalidResponse))
             }
         }
