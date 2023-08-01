@@ -17,6 +17,8 @@ struct LoginState: Equatable {
     var isLoading: Bool = false
     var id: String = ""
     var password: String = ""
+    var failCount: Int = 0
+    var textFieldColor: Color = .designSystem(.ivoryGray500)!
 }
 
 // MARK: TCA - Action

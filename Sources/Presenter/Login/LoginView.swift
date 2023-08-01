@@ -57,7 +57,26 @@ struct LoginView: View {
                         )
                     )
                     
-                    VSpacer(height: Device.Height * 69 / 844)
+                    VStack(alignment: .leading, spacing: 0) {
+                        HStack(spacing: 0) {
+                            SuitLabel(
+                                text: "아이디 혹은 비밀번호를 다시 확인해주세요.\n5번 이상 잘못된 입력을 하실 경우 이용이 제한됩니다. (1/5)",
+                                typo: .caption,
+                                color: .designSystem(.red500)
+                            )
+                            InfiniteSpacer()
+                        }
+//                        Spacer()
+                    }
+                    .frame(width: Device.WidthWithPadding, height: 30)
+                    .padding(
+                        EdgeInsets(
+                            top: Device.Height * 16 / 844,
+                            leading: 0,
+                            bottom: Device.Height * 24 / 844,
+                            trailing: 0
+                        )
+                    )
                     
                     HStack(spacing: 5) {
                         Rectangle()
@@ -77,7 +96,9 @@ struct LoginView: View {
                         Button {
                             // TODO: 내 계정 찾기
                         } label: {
-                            SystemLabel(text: "내 계정 찾기", typo: .caption, color: .designSystem(.ivoryGray300))
+                            SystemLabel(text: "내 계정 찾기", typo: .caption, color: .designSystem(.ivoryGray500))
+                                .frame(width: 64)
+                            
                         }
                         
                         Rectangle()
@@ -87,8 +108,12 @@ struct LoginView: View {
                         Button {
                             // TODO: 내 계정 찾기
                         } label: {
-                            SystemLabel(text: "회원가입", typo: .caption, color: .designSystem(.ivoryGray300))
+                            HStack(spacing: 0) {
+                                SystemLabel(text: "회원가입", typo: .caption, color: .designSystem(.ivoryGray500))
+                                InfiniteSpacer()
+                            }
                         }
+                        .frame(width: 64)
                     }
                     
                     VSpacer(height: Device.Height * 56 / 844)

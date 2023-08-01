@@ -99,7 +99,7 @@ struct ReservationView: View {
                         .tag(num)
                     }
                 }
-                .tabViewStyle(.page)
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
             .navigationTitle("")
             .overlay {
