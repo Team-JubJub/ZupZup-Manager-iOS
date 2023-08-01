@@ -8,11 +8,11 @@
 
 import SwiftUI
 
-struct BoxHighlighted: View {
+struct ZupZupBox: View {
     var body: some View {
-        Image(assetName: .ic_boxHighlighted)
+        Image(assetName: .ic_zupzup_box)
             .resizable()
-            .frame(width: 122, height: 161)
+            .frame(width: 108, height: 135)
             .scaledToFit()
     }
 }

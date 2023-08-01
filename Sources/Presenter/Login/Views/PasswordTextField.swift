@@ -11,11 +11,12 @@ import SwiftUI
 struct PasswordTextField: View {
     
     @Binding var password: String
+    @Binding var textFieldColor: Color
     
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.designSystem(.ivoryGray500)!, lineWidth: 1)
+                .stroke(textFieldColor, lineWidth: 1)
                 .foregroundColor(.designSystem(.pureWhite))
                 .frame(height: 56)
                 .padding(
@@ -30,7 +31,7 @@ struct PasswordTextField: View {
             TextField(
                 "비밀번호",
                 text: $password,
-                prompt: Text("비밀번호").foregroundColor(.designSystem(.ivoryGray500))
+                prompt: Text("비밀번호를 입력해주세요").foregroundColor(.designSystem(.ivoryGray500))
             )
             .padding(
                 EdgeInsets(

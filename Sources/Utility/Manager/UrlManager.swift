@@ -24,4 +24,18 @@ extension UrlManager {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
+    
+    func openFindMyAccount() {
+        // TODO: URL 수정
+        if let url = URL(string: "https://www.notion.so/ZupZup-Help-9de26b33bf164a9594db321e63f6e7ce?pvs=4") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+    
+    func openMakeAccount() {
+        // TODO: URL 수정
+        if let url = URL(string: "https://www.notion.so/ZupZup-Help-9de26b33bf164a9594db321e63f6e7ce?pvs=4") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
 }
