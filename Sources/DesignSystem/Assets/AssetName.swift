@@ -14,6 +14,7 @@ enum AssetName: String {
     case ic_plus
     case ic_minus
     case ic_boxHighlighted
+    case ic_zupzup_box
     
     // Tabbar Items
     case tab_zero_off
