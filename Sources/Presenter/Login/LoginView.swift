@@ -32,8 +32,7 @@ struct LoginView: View {
                             send: LoginAction.idChanged
                         )
                     )
-                    
-                    VSpacer(height: 20)
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
                     
                     PasswordTextField(
                         password: viewStore.binding(
@@ -58,7 +57,42 @@ struct LoginView: View {
                         )
                     )
                     
-                    VSpacer(height: Device.Height * 128 / 844)
+                    VSpacer(height: Device.Height * 69 / 844)
+                    
+                    HStack(spacing: 5) {
+                        Rectangle()
+                            .frame(height: 1)
+                            .foregroundColor(.designSystem(.ivoryGray300))
+                        
+                        SuitLabel(text: "또는", typo: .caption, color: .designSystem(.ivoryGray300))
+                        
+                        Rectangle()
+                            .frame(height: 1)
+                            .foregroundColor(.designSystem(.ivoryGray300))
+                    }
+                    .frame(width: Device.WidthWithPadding)
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 14, trailing: 0))
+                    
+                    HStack(spacing: 8) {
+                        Button {
+                            // TODO: 내 계정 찾기
+                        } label: {
+                            SystemLabel(text: "내 계정 찾기", typo: .caption, color: .designSystem(.ivoryGray300))
+                        }
+                        
+                        Rectangle()
+                            .frame(width: 1, height: 16)
+                            .foregroundColor(.designSystem(.ivoryGray300))
+                        
+                        Button {
+                            // TODO: 내 계정 찾기
+                        } label: {
+                            SystemLabel(text: "회원가입", typo: .caption, color: .designSystem(.ivoryGray300))
+                        }
+                    }
+                    
+                    VSpacer(height: Device.Height * 56 / 844)
+                    
                 }
                 .background(Color.designSystem(.pureWhite))
                 .onTapGesture {

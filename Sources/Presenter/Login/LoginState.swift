@@ -15,8 +15,8 @@ import Alamofire
 // MARK: TCA - State
 struct LoginState: Equatable {
     var isLoading: Bool = false
-    var id: String = "test123"
-    var password: String = "test1234"
+    var id: String = ""
+    var password: String = ""
 }
 
 // MARK: TCA - Action

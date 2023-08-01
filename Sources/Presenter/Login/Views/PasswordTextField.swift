@@ -30,7 +30,7 @@ struct PasswordTextField: View {
             TextField(
                 "비밀번호",
                 text: $password,
-                prompt: Text("비밀번호").foregroundColor(.designSystem(.ivoryGray500))
+                prompt: Text("비밀번호를 입력해주세요").foregroundColor(.designSystem(.ivoryGray500))
             )
             .padding(
                 EdgeInsets(

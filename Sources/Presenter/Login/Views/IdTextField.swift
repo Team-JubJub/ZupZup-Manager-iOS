@@ -29,7 +29,7 @@ struct IdTextField: View {
             TextField(
                 "아이디",
                 text: $idString,
-                prompt: Text("아이디").foregroundColor(.designSystem(.ivoryGray500))
+                prompt: Text("아이디를 입력해주세요").foregroundColor(.designSystem(.ivoryGray500))
             )
             .padding(
                 EdgeInsets(
