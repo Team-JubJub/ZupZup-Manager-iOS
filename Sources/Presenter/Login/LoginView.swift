@@ -22,7 +22,7 @@ struct LoginView: View {
                 VStack(spacing: 0) {
                     InfiniteSpacer()
                     
-                    BoxHighlighted()
+                    ZupZupBox()
                     
                     InfiniteSpacer()
                     
@@ -30,6 +30,10 @@ struct LoginView: View {
                         idString: viewStore.binding(
                             get: { $0.id },
                             send: LoginAction.idChanged
+                        ),
+                        textFieldColor: viewStore.binding(
+                            get: { $0.textFieldColor },
+                            send: LoginAction.textFieldColorChanged
                         )
                     )
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
@@ -38,13 +42,24 @@ struct LoginView: View {
                         password: viewStore.binding(
                             get: { $0.password },
                             send: LoginAction.passwordChanged
+                        ),
+                        textFieldColor: viewStore.binding(
+                            get: { $0.textFieldColor },
+                            send: LoginAction.textFieldColorChanged
                         )
                     )
                     
-                    BottomButton(
+                    LoginButton(
                         height: 56,
                         text: "로그인",
-                        textColor: .designSystem(.neutralGray400)!
+                        textColor: viewStore.binding(
+                            get: { $0.buttonTextColor },
+                            send: LoginAction.buttonTextColorChanged
+                        ),
+                        bodyColor: viewStore.binding(
+                            get: { $0.buttonBodyColor },
+                            send: LoginAction.buttonBodyColorChanged
+                        )
                     ) {
                         viewStore.send(.tapLoginButton)
                     }
@@ -58,15 +73,18 @@ struct LoginView: View {
                     )
                     
                     VStack(alignment: .leading, spacing: 0) {
-                        HStack(spacing: 0) {
-                            SuitLabel(
-                                text: "아이디 혹은 비밀번호를 다시 확인해주세요.\n5번 이상 잘못된 입력을 하실 경우 이용이 제한됩니다. (1/5)",
-                                typo: .caption,
-                                color: .designSystem(.red500)
-                            )
-                            InfiniteSpacer()
+                        if viewStore.failCount != 0 {
+                            HStack(spacing: 0) {
+                                SuitLabel(
+                                    text: "아이디 혹은 비밀번호를 다시 확인해주세요.\n5번 이상 잘못된 입력을 하실 경우 이용이 제한됩니다. (\(viewStore.failCount)/5)",
+                                    typo: .caption,
+                                    color: .designSystem(.red500)
+                                )
+                                InfiniteSpacer()
+                            }
+                        } else {
+                            Spacer()
                         }
-//                        Spacer()
                     }
                     .frame(width: Device.WidthWithPadding, height: 30)
                     .padding(
@@ -94,11 +112,10 @@ struct LoginView: View {
                     
                     HStack(spacing: 8) {
                         Button {
-                            // TODO: 내 계정 찾기
+                            viewStore.send(.tapFindMyAcoount)
                         } label: {
                             SystemLabel(text: "내 계정 찾기", typo: .caption, color: .designSystem(.ivoryGray500))
                                 .frame(width: 64)
-                            
                         }
                         
                         Rectangle()
@@ -106,7 +123,7 @@ struct LoginView: View {
                             .foregroundColor(.designSystem(.ivoryGray300))
                         
                         Button {
-                            // TODO: 내 계정 찾기
+                            viewStore.send(.tapMakeAccount)
                         } label: {
                             HStack(spacing: 0) {
                                 SystemLabel(text: "회원가입", typo: .caption, color: .designSystem(.ivoryGray500))

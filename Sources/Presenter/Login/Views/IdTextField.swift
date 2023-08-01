@@ -11,11 +11,12 @@ import SwiftUI
 struct IdTextField: View {
     
     @Binding var idString: String
+    @Binding var textFieldColor: Color
     
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.designSystem(.ivoryGray500)!, lineWidth: 1)
+                .stroke(textFieldColor, lineWidth: 1)
                 .foregroundColor(.designSystem(.pureWhite))
                 .frame(height: 56)
                 .padding(
