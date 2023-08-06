@@ -10,6 +10,7 @@ import SwiftUI
 
 import ComposableArchitecture
 
+// MARK: TCA - State
 struct EditItemDetailState: Equatable {
     // 텍스트 필드 관련
     var name: String // 제품 이름
@@ -41,6 +42,7 @@ struct EditItemDetailState: Equatable {
     }
 }
 
+// MARK: TCA - Action
 enum EditItemDetailAction: Equatable {
     // 텍스트 필드 관련
     case nameChanged(String) // 이름 텍스트 필드 업데이트
@@ -79,15 +81,20 @@ enum EditItemDetailAction: Equatable {
     
 }
 
+// MARK: TCA - Environment
 struct EditItemDetailEnvironment {
     let updateItemInfo: (UpdateItemInfoRequest) -> EffectPublisher<Result<UpdateItemInfoResponse, NetworkError>, Never>
     let deleteItem: (DeleteItemRequest) -> EffectPublisher<Result<DeleteItemResponse, NetworkError>, Never>
 }
 
+// MARK: TCA - Reducer
 let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction, EditItemDetailEnvironment> { state, action, environment in
+    
     switch action {
+    // MARK: 텍스트 필드 관련
     case let .nameChanged(name): // 이름 텍스트 필드 업데이트
         state.name = name
+        
         if state.name.count > 20 {
             state.isShowingTitleMaxLengthAlert = true
             state.name = ""
@@ -108,6 +115,7 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         state.count = count
         return .none
         
+    // MARK: 버튼 관련
     case .tabImagePickerButton: // 이미지 피커를 누른 경우
         state.isShowingImagePicker = true
         return .none
@@ -128,18 +136,6 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         state.isShowingAlert = true
         return .none
         
-    case .deleteAlertOk: // Alert - 삭제 누른 경우
-        state.isLoading = true
-        
-        let request = DeleteItemRequest(itemId: state.itemId)
-        
-        return environment.deleteItem(request)
-            .map(EditItemDetailAction.deleteItemResponse)
-            .eraseToEffect()
-        
-    case .deleteAlertCancel: // Alert - 취소 누른 경우
-        return .none
-        
     case .tapEmptySpace: // 빈 공간을 눌렀을 경우
         UIApplication.shared.sendAction(
             #selector(UIResponder.resignFirstResponder),
@@ -149,10 +145,7 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         )
         return .none
         
-    case .dismissDeleteAlert: // isShowingAlert 바인딩
-        state.isShowingAlert = false
-        return .none
-        
+    // MARK: 이미지 피커 관련
     case .dismissImagePicker: // isShowingImagePicker 바인딩
         state.isShowingImagePicker = false
         return .none
@@ -161,6 +154,7 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         state.selectedImage = image
         return .none
         
+    // MARK: API 관련
     case let .updateItemInfoResponse(.success(response)): // 제품 업데이트 API 호출 성공
         state.isLoading = false
         return .none
@@ -178,7 +172,25 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         // TODO: Error Handling
         state.isLoading = false
         return .none
-         
+        
+    // MARK: 제품 삭제 Alert 관련
+    case .deleteAlertOk: // Alert - 삭제 누른 경우
+        state.isLoading = true
+        
+        let request = DeleteItemRequest(itemId: state.itemId)
+        
+        return environment.deleteItem(request)
+            .map(EditItemDetailAction.deleteItemResponse)
+            .eraseToEffect()
+        
+    case .deleteAlertCancel: // Alert - 취소 누른 경우
+        return .none
+        
+    case .dismissDeleteAlert: // isShowingAlert 바인딩
+        state.isShowingAlert = false
+        return .none
+        
+    // MARK: 제품 정보 수정 Alert 관련
     case .dismissEditAlert: // isShowingEditAlert 바인딩
         state.isShowingEditAlert = false
         return .none
@@ -211,6 +223,7 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         state.isShowingEditAlert = false
         return .none
         
+    // MARK: 이름 최대 입력 개수 초과 Alert
     case .dismissMaxLengthAlert:
         state.isShowingTitleMaxLengthAlert = false
         return .none
