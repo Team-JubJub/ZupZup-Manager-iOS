@@ -13,42 +13,56 @@ import Combine
 
 // MARK: TCA - State
 struct AddItemState: Equatable {
-    var isLoading: Bool = false
+    // 텍스트 필드 관련
     var count: Int = 0 // 제품 개수
-    var selectedImage: UIImage? // 이미지 피커에서 선택된 이미니
     var name: String = "" // 제품 이름
     var price: String = "" // 제품 가격
     var discountPrice: String = "" // 재퓸 헐안 거굑
+    
+    // 이미지 피커 관련
+    var selectedImage: UIImage? // 이미지 피커에서 선택된 이미니
     var isShowingImagePicker: Bool = false // 이미지 피커 트리거
     var isShowingAlert: Bool = false // 경고 창 트리거
     
+    // API 호출 관련
+    var isLoading: Bool = false
+    
+    // Alert 관련
     var isShowingTitleMaxLengthAlert: Bool = false // 제품명 20자 제한
+    
+    // Navigation Pop 관련
+    var isPop: Bool = false
 }
 
 // MARK: TCA - Action
 enum AddItemAction: Equatable {
+    // 텍스트 필드 관련
     case nameChanged(String) // 이름 텍스트 필드 업데이트
     case priceChanged(String) // 가격 텍스트 필드 업데이트
     case discountChanged(String) // 할인 가격 텍스트 필드 업데이트
     case countChanged(Int) // 개수 텍스트 필드 업데이트
     
+    // 이미지 피커 관련
     case tabImagePickerButton // 이미지 피커를 누른 경우
+    case selectedImageChanged(UIImage?) // 이미지 피커에서 선택된 이미지 바인딩
+    case dismissImagePicker // isShowingImagePicker 바인딩
+    
+    // 버튼 관련
     case tabMinusButton // 제품 개수 + 버튼 누른 경우
     case tabPlusButton // 제품 개수 - 버튼 누른 경우
-    
     case tapBottomButton // 하단 제품 등록 버튼을 누른 경우
-    case alertOkButton // Alert - 네 누른 경우
-    case alertCancelButton // Alert - 아니오 누른 경우
     
     case tapEmptySpace // 빈 공간을 눌렀을 경우
     
+    // Alert 관련
     case dismissAlert // isShowingAlert 바인딩
-    case dismissImagePicker // isShowingImagePicker 바인딩
-    
-    case selectedImageChanged(UIImage?) // 이미지 피커에서 선택된 이미지 바인딩
-    case addItemResponse(Result<AddItemResponse, NetworkError>) // 아이템 추가 API 호출의 결과
+    case alertOkButton // Alert - 네 누른 경우
+    case alertCancelButton // Alert - 아니오 누른 경우
     
     case dismissMaxLengthAlert // isShowingTitleMaxLengthAlert 바인딩
+    
+    // API 관련
+    case addItemResponse(Result<AddItemResponse, NetworkError>) // 아이템 추가 API 호출의 결과
 }
 
 // MARK: TCA - Environment
@@ -120,6 +134,7 @@ let addItemReducer = AnyReducer<AddItemState, AddItemAction, AddItemEnvironment>
         
     case let .addItemResponse(.success(response)): // 제품 추가 API의 Response
         state.isLoading = false
+        state.isPop = true
         return .none
         
     case let .addItemResponse(.failure(error)): // 제품 추가 API의 Response
