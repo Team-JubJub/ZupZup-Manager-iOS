@@ -31,6 +31,9 @@ struct EditItemDetailState: Equatable {
     let itemId: Int
     let imageUrl: String
     
+    // 네비게이션 pop 관련
+    var isNavagationPop: Bool = false
+    
     // 생성자
     init(item: ItemEntity) {
         self.name = item.name
@@ -157,6 +160,7 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
     // MARK: API 관련
     case let .updateItemInfoResponse(.success(response)): // 제품 업데이트 API 호출 성공
         state.isLoading = false
+        state.isNavagationPop = true
         return .none
         
     case let .updateItemInfoResponse(.failure(error)): // 제품 업데이트 API 호출 실패
@@ -166,6 +170,7 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         
     case let .deleteItemResponse(.success(response)): // 제품 삭제 API 호출 성공
         state.isLoading = false
+        state.isNavagationPop = true
         return .none
         
     case let .deleteItemResponse(.failure(error)): // 제품 삭제 API 호출 실패

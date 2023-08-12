@@ -12,6 +12,8 @@ import ComposableArchitecture
 
 struct EditItemInfoDetailView: View {
     
+    @Environment(\.dismiss) private var dismiss
+    
     let store: Store<EditItemDetailState, EditItemDetailAction>
     
     var body: some View {
@@ -150,6 +152,9 @@ struct EditItemInfoDetailView: View {
             }
             .navigationTitle("")
             .navigationBarHidden(true)
+            .onChange(of: viewStore.isNavagationPop) { isNavagationPop in
+                if isNavagationPop { dismiss() }
+            }
             
             .alert(
                 "제품 삭제",
