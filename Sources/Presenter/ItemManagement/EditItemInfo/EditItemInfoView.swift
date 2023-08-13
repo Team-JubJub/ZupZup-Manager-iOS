@@ -13,6 +13,8 @@ import ComposableArchitecture
 
 struct EditItemInfoView: View {
     
+    @Environment(\.dismiss) private var dismiss
+    
     let store: Store<EditItemInfoState, EditItemInfoAction>
     
     // MARK: UseCase
@@ -92,6 +94,9 @@ struct EditItemInfoView: View {
             }
             .navigationBarBackButtonHidden()
             .navigationTitle("")
+            .onChange(of: viewStore.isPop) { isPop in
+                if isPop { dismiss() }
+            }
         }
     }
 }

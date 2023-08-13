@@ -12,6 +12,8 @@ import ComposableArchitecture
 
 struct EditStoreInfoView: View {
     
+    @Environment(\.dismiss) private var dismiss
+    
     var store: Store<EditStoreInfoState, EditStoreInfoAction>
     
     var body: some View {
@@ -180,6 +182,9 @@ struct EditStoreInfoView: View {
             }
             .navigationTitle("")
             .navigationBarBackButtonHidden()
+            .onChange(of: viewStore.isPop) { isPop in
+                if isPop { dismiss() }
+            }
             .alert(
                 "가게 정보 수정",
                 isPresented: viewStore.binding(

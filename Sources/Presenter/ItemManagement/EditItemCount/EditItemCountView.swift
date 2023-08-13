@@ -12,6 +12,8 @@ import ComposableArchitecture
 
 struct EditItemCountView: View {
     
+    @Environment(\.dismiss) private var dismiss
+    
     let store: Store<EditItemCountState, EditItemCountAction>
     
     let columns = [GridItem(), GridItem()]
@@ -60,6 +62,9 @@ struct EditItemCountView: View {
             }
             .navigationBarBackButtonHidden()
             .navigationTitle("")
+            .onChange(of: viewStore.isPop) { isPop in
+                if isPop { dismiss() }
+            }
             .alert(
                 "수량 수정",
                 isPresented: viewStore.binding(

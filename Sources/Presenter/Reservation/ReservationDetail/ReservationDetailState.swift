@@ -11,13 +11,19 @@ import Combine
 
 import ComposableArchitecture
 
+// MARK: TCA - State
 struct ReservationDetailState: Equatable {
+    // 예약 관련
     var reservation: ReservationEntity // 단건 예약
+    // 모달 관련
     var isShowingHalfModal: Bool = false // 하프 모달 트리거
+    // API 관련
     var isLoading: Bool = false // API 호출시 indicator 트리거
 }
 
+// MARK: TCA - Action
 enum ReservationDetailAction: Equatable {
+    // 버튼 관련
     case tabBottomButton // 예약 확정하기 버튼을 눌렀을 경우
     case tabPlusButton(Int) // 아이템의 + 버튼을 눌렀을 경우
     case tabMinusButton(Int) // 아이템의 - 버튼을 눌렀을 경우
@@ -25,17 +31,24 @@ enum ReservationDetailAction: Equatable {
     case tabCompleteButton // 완료 버튼을 눌렀을 경우
     case tabRejectButton // 반려 버튼을 눌렀을 경우
     case tabConfirmButton // 화정 버튼을 눌렀을 경우
+    
+    // API 관련
     case updatedCondition(Result<ReservationCondition, NetworkError>) // 예약 상태 변경 API 리턴
+    
+    // 모달 관련
     case bindIsShowingHalfModal // isShowingHalfModal 변수 바인딩
 }
 
+// MARK: TCA - Environment
 struct ReservationDetailEnvironment {
     var changeState: (ChangeStateRequest) -> EffectPublisher<Result<ReservationCondition, NetworkError>, Never>
     var changeJustState: (ChangeJustStateRequest) -> EffectPublisher<Result<ReservationCondition, NetworkError>, Never>
 }
 
+// MARK: TCA - Reducer
 let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDetailAction, ReservationDetailEnvironment> { state, action, environment in
     switch action {
+    // 버튼 관련
     case .tabBottomButton: // 예약 확정하기 버튼을 눌렀을 경우
         state.isShowingHalfModal = true
         return .none
@@ -81,7 +94,8 @@ let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDet
         return environment.changeState(request)
             .map(ReservationDetailAction.updatedCondition)
             .eraseToEffect()
-        
+    
+    // API 관련
     case let .updatedCondition(.success(condition)): // 예약 상태 변경 API - 성공
         state.reservation.state = condition
         state.isShowingHalfModal = false
@@ -95,6 +109,7 @@ let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDet
         #endif
         return .none
         
+    // 모달 관련
     case .bindIsShowingHalfModal: // isShowingHalfModal 변수 바인딩
         state.isShowingHalfModal = false
         return .none

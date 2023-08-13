@@ -152,8 +152,8 @@ struct EditItemInfoDetailView: View {
             }
             .navigationTitle("")
             .navigationBarHidden(true)
-            .onChange(of: viewStore.isNavagationPop) { isNavagationPop in
-                if isNavagationPop { dismiss() }
+            .onChange(of: viewStore.isPop) { isPop in
+                if isPop { dismiss() }
             }
             
             .alert(

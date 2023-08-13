@@ -13,6 +13,8 @@ import Kingfisher
 
 struct AddItemView: View {
     
+    @Environment(\.dismiss) private var dismiss
+    
     var store: Store<AddItemState, AddItemAction>
     
     var body: some View {
@@ -141,6 +143,9 @@ struct AddItemView: View {
             }
             .navigationTitle("")
             .navigationBarHidden(true)
+            .onChange(of: viewStore.isPop) { isPop in
+                if isPop { dismiss() }
+            }
             
             .alert(
                 "제품 추가",

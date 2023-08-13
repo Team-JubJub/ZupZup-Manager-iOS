@@ -12,13 +12,16 @@ import ComposableArchitecture
 
 struct StoreIntroduceState: Equatable {
     
+    init(_ store: StoreEntity) { self.introduceText = store.announcement }
+    
     // 텍스트 핋드 관련
     var introduceText: String
     
     // Alert관련
     var isShowingAlert: Bool = false
     
-    init(_ store: StoreEntity) { self.introduceText = store.announcement }
+    // 네비게이션 관련
+    var isPop: Bool = false
 }
 
 enum StoreIntroduceAction: Equatable {
@@ -76,9 +79,8 @@ let storeIntroduceReducer = AnyReducer<StoreIntroduceState, StoreIntroduceAction
         return .none
         
     // API 관련
-        
     case .editStoreIntroduceResponse(.success): // 가게 소개 수정 API의 Response - 성공
-        print("success")
+        state.isPop = true
         return .none
         
     case .editStoreIntroduceResponse(.failure): // 가게 소개 수정 API의 Response - 실패

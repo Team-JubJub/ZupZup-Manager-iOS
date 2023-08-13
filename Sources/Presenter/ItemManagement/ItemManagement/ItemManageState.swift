@@ -14,11 +14,14 @@ import ComposableArchitecture
 // MARK: TCA - State
 struct ItemManageState: Equatable {
     
+    // 제품 관련
     var items: [ItemEntity] = [] // 제품 목록
     
-    var isEditable = false // 액션 시트 호출
+    // API 관련
     var isLoading = false // 로딩 인디케이터 호출
     
+    // 네비게이션 관련
+    var isEditable = false // 액션 시트 호출
     var isEditCountVisible = false // EditCountView호출
     var isAddItemVisible = false // AddItemView 호출
     var isEditInfoVisible = false // EditInfoView 호출
@@ -26,8 +29,12 @@ struct ItemManageState: Equatable {
 
 // MARK: TCA - Action
 enum ItemManageAction: Equatable {
+    
+    // API 관련
     case fetchItems // 아이템 호출
     case itemsFetched(Result<[ItemEntity], NetworkError>) // 아이템 호출 결과
+    
+    // 버튼 관련
     case tapEditButton // 좌측 상단의 연필 모양 눌렀을 경우
     case tapEditCountButton // 액션 시트 - 제품 수량 수정
     case tapAddItemButton // 액션 시트 - 제품 추가
@@ -39,9 +46,11 @@ struct ItemManageEnvironment {
     var items: () -> EffectPublisher<Result<[ItemEntity], NetworkError>, Never>
 }
 
+// MARK: TCA - Reducer
 let itemManageReducer = AnyReducer<ItemManageState, ItemManageAction, ItemManageEnvironment> { state, action, environment in
     
     switch action {
+    // API 관련
     case .fetchItems: // 제품 리스트 호출
         state.isLoading = true
         return environment.items()
@@ -58,6 +67,7 @@ let itemManageReducer = AnyReducer<ItemManageState, ItemManageAction, ItemManage
         state.isLoading = false
         return .none
         
+    // 버튼 관련
     case .tapEditButton: // 좌측 상단의 연필 모양 눌렀을 경우
         withAnimation { state.isEditable.toggle() }
         return .none
