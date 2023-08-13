@@ -12,6 +12,8 @@ import ComposableArchitecture
 
 struct StoreIntroduceView: View {
     
+    @Environment(\.dismiss) private var dismiss
+    
     let store: Store<StoreIntroduceState, StoreIntroduceAction>
     
     var body: some View {
@@ -64,6 +66,9 @@ struct StoreIntroduceView: View {
                 ) {
                     viewStore.send(.tapBottomButton)
                 }
+            }
+            .onChange(of: viewStore.isPop) { isPop in
+                if isPop { dismiss() }
             }
             .alert(
                 "가게 소개 수정",
