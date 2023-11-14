@@ -100,7 +100,7 @@ enum EditStoreInfoAction: Equatable {
     case dismissDiscountEndTimePicker
     
     // API 관련
-    case editStoreInfoResponse(Result<EditStoreInfoResponse, NetworkError>)
+    case editStoreInfoResponse(Result<EditStoreInfoResponse, EditStoreInfoError>)
 
     // Alert 관련
     case dismissAlert // isShowing Alert 바인딩 함수
@@ -110,7 +110,7 @@ enum EditStoreInfoAction: Equatable {
 
 // MARK: TCA-Environment
 struct EditStoreInfoEnvironment {
-    let editStoreInfo: (EditStoreInfoRequest) -> EffectPublisher<Result<EditStoreInfoResponse, NetworkError>, Never>
+    let editStoreInfo: (EditStoreInfoRequest) -> EffectPublisher<Result<EditStoreInfoResponse, EditStoreInfoError>, Never>
 }
 
 // MARK: TCA-Reducer

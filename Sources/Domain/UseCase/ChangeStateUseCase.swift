@@ -9,20 +9,24 @@
 import Foundation
 
 protocol ChangeStateUseCase {
-    func changeState(request: ChangeStateRequest, completion: @escaping (Result<ReservationCondition, NetworkError>) -> Void)
+    func changeState(
+        request: ChangeStateRequest,
+        completion: @escaping (Result<ReservationCondition, ChangeStateError>) -> Void
+    )
 }
 
 final class ChangeStateUseCaseImpl: ChangeStateUseCase {
     
     private let changeStateRepository: ChangeStateRepository
     
-    init(
-        changeStateRepository: ChangeStateRepository = ChangeStateRepositoryImpl()
-    ) {
+    init(changeStateRepository: ChangeStateRepository = ChangeStateRepositoryImpl()) {
         self.changeStateRepository = changeStateRepository
     }
     
-    func changeState(request: ChangeStateRequest, completion: @escaping (Result<ReservationCondition, NetworkError>) -> Void) {
+    func changeState(
+        request: ChangeStateRequest,
+        completion: @escaping (Result<ReservationCondition, ChangeStateError>) -> Void
+    ) {
         self.changeStateRepository.changeState(
             request: request) { result in
                 switch result {
@@ -31,7 +35,6 @@ final class ChangeStateUseCaseImpl: ChangeStateUseCase {
                 case .failure(let error):
                     completion(.failure(error))
                 }
-        }
+            }
     }
-    
 }

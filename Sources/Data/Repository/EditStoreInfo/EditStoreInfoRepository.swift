@@ -11,7 +11,10 @@ import UIKit
 import Alamofire
 
 protocol EditStoreInfoRepository {
-    func editStoreInfo(request: EditStoreInfoRequest, completion: @escaping (Result<EditStoreInfoResponse, NetworkError>) -> Void)
+    func editStoreInfo(
+        request: EditStoreInfoRequest,
+        completion: @escaping (Result<EditStoreInfoResponse, EditStoreInfoError>) -> Void
+    )
 }
 
 final class EditStoreInfoRepositoryImpl: EditStoreInfoRepository {
@@ -20,7 +23,7 @@ final class EditStoreInfoRepositoryImpl: EditStoreInfoRepository {
     
     let accessToken = LoginManager.shared.getAccessToken()
     
-    func editStoreInfo(request: EditStoreInfoRequest, completion: @escaping (Result<EditStoreInfoResponse, NetworkError>) -> Void) {
+    func editStoreInfo(request: EditStoreInfoRequest, completion: @escaping (Result<EditStoreInfoResponse, EditStoreInfoError>) -> Void) {
         
         let headers: HTTPHeaders = [
             "accessToken": accessToken,
@@ -32,14 +35,14 @@ final class EditStoreInfoRepositoryImpl: EditStoreInfoRepository {
                 let jsonData = try JSONEncoder().encode(request.data)
                 multipartFormData.append(jsonData, withName: "data", fileName: "data.json", mimeType: "application/json")
             } catch {
-                completion(.failure(NetworkError.failToEncode))
+                completion(.failure(.failToEncode))
                 return
             }
             
             if let imageData = request.image?.jpegData(compressionQuality: 0.8) {
                 multipartFormData.append(imageData, withName: "image", fileName: "image.jpg", mimeType: "image/jpeg")
             } else {
-                completion(.failure(NetworkError.failToEncode))
+                completion(.failure(.failToEncode))
                 return
             }
         },
@@ -52,7 +55,18 @@ final class EditStoreInfoRepositoryImpl: EditStoreInfoRepository {
             case .success:
                 completion(.success(EditStoreInfoResponse()))
             case .failure:
-                completion(.failure(NetworkError.invalidResponse))
+                switch response.response?.statusCode {
+                case 400:
+                    completion(.failure(.noToken))
+                case 401:
+                    completion(.failure(.tokenExpired))
+                case 404:
+                    completion(.failure(.noItem))
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unKnown))
+                }
             }
         }
     }

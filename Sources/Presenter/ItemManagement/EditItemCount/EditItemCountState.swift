@@ -38,12 +38,12 @@ enum EditItemCountAction: Equatable {
     case alertOkButton
     
     // APi 관련
-    case updateItemCountResponse(Result<UpdateItemCountResponse, NetworkError>) // 제품 수량 수정 API의 결과
+    case updateItemCountResponse(Result<UpdateItemCountResponse, UpdateItemCountError>) // 제품 수량 수정 API의 결과
 }
 
 // MARK: TCA - Environment
 struct EditItemCountEnvironment {
-let updateItemCount: (UpdateItemCountRequest) -> EffectPublisher<Result<UpdateItemCountResponse, NetworkError>, Never>
+let updateItemCount: (UpdateItemCountRequest) -> EffectPublisher<Result<UpdateItemCountResponse, UpdateItemCountError>, Never>
 }
 
 // MARK: TCA - Reducer

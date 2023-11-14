@@ -11,13 +11,16 @@ import Foundation
 protocol FetchReservationsRepository {
     func fetchReservations(
         request: FetchReservationsRequest?,
-        completion: @escaping(Result<FetchReservationsResponse, NetworkError>) -> Void
+        completion: @escaping(Result<FetchReservationsResponse, FetchReservationsError>) -> Void
     )
 }
 
 final class FetchReservationsRepositoryImpl: FetchReservationsRepository {
     
-    func fetchReservations(request: FetchReservationsRequest?, completion: @escaping(Result<FetchReservationsResponse, NetworkError>) -> Void) {
+    func fetchReservations(
+        request: FetchReservationsRequest?,
+        completion: @escaping(Result<FetchReservationsResponse, FetchReservationsError>) -> Void
+    ) {
         
         let storeId = LoginManager.shared.getStoreId()
         
@@ -25,15 +28,23 @@ final class FetchReservationsRepositoryImpl: FetchReservationsRepository {
             to: "https://zupzuptest.com:8080/seller/\(String(describing: storeId))/order",
             method: .get,
             parameters: request
-        ) { (result: Result<FetchReservationsResponse, NetworkError>) in
+        ) { (result: Result<FetchReservationsResponse, Error>) in
             switch result {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                #if DEBUG
-                print("⭐️ 예약조회 API 호출 실패 ⭐️")
-                #endif
-                completion(.failure(error))
+                switch error.asAFError?.responseCode {
+                case 400:
+                    completion(.failure(.noToken))
+                case 401:
+                    completion(.failure(.tokenExpired))
+                case 403:
+                    completion(.failure(.noPermission))
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unKnown))
+                }
             }
         }
     }

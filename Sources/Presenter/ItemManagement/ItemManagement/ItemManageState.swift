@@ -32,7 +32,7 @@ enum ItemManageAction: Equatable {
     
     // API 관련
     case fetchItems // 아이템 호출
-    case itemsFetched(Result<[ItemEntity], NetworkError>) // 아이템 호출 결과
+    case itemsFetched(Result<[ItemEntity], FetchItemsError>) // 아이템 호출 결과
     
     // 버튼 관련
     case tapEditButton // 좌측 상단의 연필 모양 눌렀을 경우
@@ -43,7 +43,7 @@ enum ItemManageAction: Equatable {
 
 // MARK: TCA - Environment
 struct ItemManageEnvironment {
-    var items: () -> EffectPublisher<Result<[ItemEntity], NetworkError>, Never>
+    var items: () -> EffectPublisher<Result<[ItemEntity], FetchItemsError>, Never>
 }
 
 // MARK: TCA - Reducer

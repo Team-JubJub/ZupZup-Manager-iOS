@@ -9,12 +9,12 @@
 import Foundation
 
 protocol DeleteItemRepository {
-    func deleteItem(request: DeleteItemRequest, completion: @escaping (Result<DeleteItemResponse, NetworkError>) -> Void)
+    func deleteItem(request: DeleteItemRequest, completion: @escaping (Result<DeleteItemResponse, DeleteItemError>) -> Void)
 }
 
 final class DeleteItemRepositoryImpl: DeleteItemRepository {
     
-    func deleteItem(request: DeleteItemRequest, completion: @escaping (Result<DeleteItemResponse, NetworkError>) -> Void) {
+    func deleteItem(request: DeleteItemRequest, completion: @escaping (Result<DeleteItemResponse, DeleteItemError>) -> Void) {
         
         let url = "https://zupzuptest.com:8080/seller/\(LoginManager.shared.getStoreId())/\(request.itemId)"
         
@@ -26,7 +26,18 @@ final class DeleteItemRepositoryImpl: DeleteItemRepository {
             case .success:
                 completion(.success(DeleteItemResponse()))
             case .failure(let error):
-                completion(.failure(error))
+                switch error.asAFError?.responseCode {
+                case 400:
+                    completion(.failure(.noToken))
+                case 401:
+                    completion(.failure(.tokenExpired))
+                case 404:
+                    completion(.failure(.noItem))
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unKnown))
+                }
             }
         }
     }

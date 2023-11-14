@@ -19,8 +19,8 @@ struct LoginState: Equatable {
     var isLoading: Bool = false // API 호출 사이 인디케이터 트리거
     
     // 텍스트 필드 관련
-    var id: String = "test123"
-    var password: String = "test1234"
+    var id: String = "zupzup6"
+    var password: String = "sksahffk22!"
     
     // 색상 변경 관련
     var failCount: Int = 0
@@ -43,7 +43,7 @@ enum LoginAction: Equatable {
     case tapMakeAccount                                                 // 회원가입을 터치한 경우
     
     // API관련
-    case loginRequestResult(Result<LoginResponse, NetworkError>)        // 로그인 API Response 받은 경우
+    case loginRequestResult(Result<LoginResponse, LoginError>)        // 로그인 API Response 받은 경우
     
     // 색상 변경 관련
     case textFieldColorChanged                                          // textFieldColor 바인딩 함수
@@ -54,7 +54,7 @@ enum LoginAction: Equatable {
 // MARK: TCA - Environment
 struct LoginEnvironment {
     var loginRepository: LoginRepository
-    var login: (LoginRequest) -> EffectPublisher<Result<LoginResponse, NetworkError>, Never>
+    var login: (LoginRequest) -> EffectPublisher<Result<LoginResponse, LoginError>, Never>
     let openFindMyAcoountURL: () -> Void // 내 계정 찾기 URL로 전환
     let openMakeAccountURL: () -> Void // 회원가입 URL로 전환
 }

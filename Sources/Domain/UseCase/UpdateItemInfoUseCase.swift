@@ -11,7 +11,7 @@ import Foundation
 protocol UpdateItemInfoUseCase {
     func updateItemInformation(
         request: UpdateItemInfoRequest,
-        completion: @escaping (Result<UpdateItemInfoResponse, NetworkError>) -> Void
+        completion: @escaping (Result<UpdateItemInfoResponse, UpdateItemInfoError>) -> Void
     )
 }
 
@@ -25,7 +25,7 @@ final class UpdateItemInfoUseCaseImpl: UpdateItemInfoUseCase {
     
     func updateItemInformation(
         request: UpdateItemInfoRequest,
-        completion: @escaping (Result<UpdateItemInfoResponse, NetworkError>) -> Void
+        completion: @escaping (Result<UpdateItemInfoResponse, UpdateItemInfoError>) -> Void
     ) {
         updateItemInfoRepository.updateItemInformation(request: request) { result in
             switch result {

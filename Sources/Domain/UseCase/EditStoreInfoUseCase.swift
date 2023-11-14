@@ -9,7 +9,10 @@
 import Foundation
 
 protocol EditStoreInfoUseCase {
-    func editStoreInfo(request: EditStoreInfoRequest, completion: @escaping (Result<EditStoreInfoResponse, NetworkError>) -> Void)
+    func editStoreInfo(
+        request: EditStoreInfoRequest,
+        completion: @escaping (Result<EditStoreInfoResponse, EditStoreInfoError>) -> Void
+    )
 }
 
 final class EditStoreInfoUseCaseImpl: EditStoreInfoUseCase {
@@ -20,7 +23,10 @@ final class EditStoreInfoUseCaseImpl: EditStoreInfoUseCase {
         self.editStoreInfoRepository = editStoreInfoRepository
     }
     
-    func editStoreInfo(request: EditStoreInfoRequest, completion: @escaping (Result<EditStoreInfoResponse, NetworkError>) -> Void) {
+    func editStoreInfo(
+        request: EditStoreInfoRequest,
+        completion: @escaping (Result<EditStoreInfoResponse, EditStoreInfoError>) -> Void
+    ) {
         editStoreInfoRepository.editStoreInfo(request: request) { result in
             switch result {
             case .success(let response):

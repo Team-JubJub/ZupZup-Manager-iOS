@@ -9,7 +9,10 @@
 import Foundation
 
 protocol DeleteItemUseCase {
-    func deleteItem(request: DeleteItemRequest, completion: @escaping (Result<DeleteItemResponse, NetworkError>) -> Void)
+    func deleteItem(
+        request: DeleteItemRequest,
+        completion: @escaping (Result<DeleteItemResponse, DeleteItemError>) -> Void
+    )
 }
 
 final class DeleteItemUseCaseImpl: DeleteItemUseCase {
@@ -20,7 +23,10 @@ final class DeleteItemUseCaseImpl: DeleteItemUseCase {
         self.deleteItemRepository = deleteItemRepository
     }
     
-    func deleteItem(request: DeleteItemRequest, completion: @escaping (Result<DeleteItemResponse, NetworkError>) -> Void) {
+    func deleteItem(
+        request: DeleteItemRequest,
+        completion: @escaping (Result<DeleteItemResponse, DeleteItemError>) -> Void
+    ) {
         deleteItemRepository.deleteItem(request: request) { result in
             switch result {
             case .success(let response):

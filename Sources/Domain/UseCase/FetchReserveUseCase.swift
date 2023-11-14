@@ -9,7 +9,10 @@
 import Foundation
 
 protocol FetchReserveUseCase {
-    func fetchReserve(request: FetchReservationsRequest?, completion: @escaping (Result<[ReservationEntity], NetworkError>) -> Void)
+    func fetchReserve(
+        request: FetchReservationsRequest?,
+        completion: @escaping (Result<[ReservationEntity], FetchReservationsError>) -> Void
+    )
 }
 
 final class FetchReserveUseCaseImpl: FetchReserveUseCase {
@@ -20,7 +23,10 @@ final class FetchReserveUseCaseImpl: FetchReserveUseCase {
         self.fetchReservationsRepository = fetchReservationsRepository
     }
     
-    func fetchReserve(request: FetchReservationsRequest?, completion: @escaping (Result<[ReservationEntity], NetworkError>) -> Void) {
+    func fetchReserve(
+        request: FetchReservationsRequest?,
+        completion: @escaping (Result<[ReservationEntity], FetchReservationsError>) -> Void
+    ) {
         fetchReservationsRepository.fetchReservations(
             request: request
         ) { result in

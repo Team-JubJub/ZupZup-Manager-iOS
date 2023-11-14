@@ -62,12 +62,12 @@ enum AddItemAction: Equatable {
     case dismissMaxLengthAlert // isShowingTitleMaxLengthAlert 바인딩
     
     // API 관련
-    case addItemResponse(Result<AddItemResponse, NetworkError>) // 아이템 추가 API 호출의 결과
+    case addItemResponse(Result<AddItemResponse, AddItemError>) // 아이템 추가 API 호출의 결과
 }
 
 // MARK: TCA - Environment
 struct AddItemEnvironment {
-    var addItem: (AddItemRequest) -> EffectPublisher<Result<AddItemResponse, NetworkError>, Never>
+    var addItem: (AddItemRequest) -> EffectPublisher<Result<AddItemResponse, AddItemError>, Never>
 }
 
 // MARK: TCA - Reducer

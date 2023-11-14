@@ -22,14 +22,14 @@ struct ReservationState: Equatable {
 // Action
 enum ReservationAction: Equatable {
     case fetchReservation
-    case reservationsFetched(Result<[ReservationEntity], NetworkError>)
+    case reservationsFetched(Result<[ReservationEntity], FetchReservationsError>)
     case tapTabbarItem(Int)
 }
 
 // Environment
 struct ReservationEnvironment {
     var mainQueue: AnySchedulerOf<DispatchQueue>
-    var reservations: (FetchReservationsRequest?) -> EffectPublisher<Result<[ReservationEntity], NetworkError>, Never>
+    var reservations: (FetchReservationsRequest?) -> EffectPublisher<Result<[ReservationEntity], FetchReservationsError>, Never>
 }
 
 // Reducer

@@ -66,8 +66,8 @@ enum EditItemDetailAction: Equatable {
     case selectedImageChanged(UIImage?) // 이미지 피커에서 선택된 이미지 바인딩
     
     // API 관련
-    case updateItemInfoResponse(Result<UpdateItemInfoResponse, NetworkError>) // 제품 업데이트 API 호출의 결과
-    case deleteItemResponse(Result<DeleteItemResponse, NetworkError>) // 제품 삭제 API 호출의 결과
+    case updateItemInfoResponse(Result<UpdateItemInfoResponse, UpdateItemInfoError>) // 제품 업데이트 API 호출의 결과
+    case deleteItemResponse(Result<DeleteItemResponse, DeleteItemError>) // 제품 삭제 API 호출의 결과
     
     // 제품 삭제 Alert 관련
     case dismissDeleteAlert // isShowingAlert 바인딩
@@ -86,8 +86,8 @@ enum EditItemDetailAction: Equatable {
 
 // MARK: TCA - Environment
 struct EditItemDetailEnvironment {
-    let updateItemInfo: (UpdateItemInfoRequest) -> EffectPublisher<Result<UpdateItemInfoResponse, NetworkError>, Never>
-    let deleteItem: (DeleteItemRequest) -> EffectPublisher<Result<DeleteItemResponse, NetworkError>, Never>
+    let updateItemInfo: (UpdateItemInfoRequest) -> EffectPublisher<Result<UpdateItemInfoResponse, UpdateItemInfoError>, Never>
+    let deleteItem: (DeleteItemRequest) -> EffectPublisher<Result<DeleteItemResponse, DeleteItemError>, Never>
 }
 
 // MARK: TCA - Reducer

@@ -9,12 +9,12 @@
 import Foundation
 
 protocol FetchItemsRepository {
-    func fetchItems(completion: @escaping(Result<FetchItemsResponse, NetworkError>) -> Void)
+    func fetchItems(completion: @escaping(Result<FetchItemsResponse, FetchItemsError>) -> Void)
 }
 
 final class FetchItemsRepositoryImpl: FetchItemsRepository {
     
-    func fetchItems(completion: @escaping (Result<FetchItemsResponse, NetworkError>) -> Void) {
+    func fetchItems(completion: @escaping (Result<FetchItemsResponse, FetchItemsError>) -> Void) {
         
         let storeId = LoginManager.shared.getStoreId()
         
@@ -23,15 +23,23 @@ final class FetchItemsRepositoryImpl: FetchItemsRepository {
         NetworkManager.shared.sendRequest(
             to: url,
             method: .get
-        ) { (result: Result<FetchItemsResponse, NetworkError>) in
+        ) { (result: Result<FetchItemsResponse, Error>) in
             switch result {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                #if DEBUG
-                print("⭐️ 제품 조회 API 호출 실패 ⭐️")
-                #endif
-                completion(.failure(error))
+                switch error.asAFError?.responseCode {
+                case 400:
+                    completion(.failure(.noToken))
+                case 401:
+                    completion(.failure(.tokenExpired))
+                case 404:
+                    completion(.failure(.noStore))
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unKnown))
+                }
             }
         }
     }

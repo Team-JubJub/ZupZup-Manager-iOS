@@ -9,11 +9,11 @@
 import Foundation
 
 protocol FetchStoreRepository {
-    func fetchStore(completion: @escaping (Result<FetchStoreResponse, NetworkError>) -> Void)
+    func fetchStore(completion: @escaping (Result<FetchStoreResponse, FetchStoreError>) -> Void)
 }
 
 final class FetchStoreRepositoryImpl: FetchStoreRepository {
-    func fetchStore(completion: @escaping (Result<FetchStoreResponse, NetworkError>) -> Void) {
+    func fetchStore(completion: @escaping (Result<FetchStoreResponse, FetchStoreError>) -> Void) {
         
         let storeId = LoginManager.shared.getStoreId()
         let url = "https://zupzuptest.com:8080/seller/\(storeId)"
@@ -21,12 +21,25 @@ final class FetchStoreRepositoryImpl: FetchStoreRepository {
         NetworkManager.shared.sendRequest(
             to: url,
             method: .get
-        ) { (result: Result<FetchStoreResponse, NetworkError>) in
+        ) { (result: Result<FetchStoreResponse, Error>) in
             switch result {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                completion(.failure(error))
+                switch error.asAFError?.responseCode {
+                case 400:
+                    completion(.failure(.noToken))
+                case 401:
+                    completion(.failure(.tokenExpired))
+                case 403:
+                    completion(.failure(.noPermission))
+                case 404:
+                    completion(.failure(.noStore))
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unKnown))
+                }
             }
         }
     }

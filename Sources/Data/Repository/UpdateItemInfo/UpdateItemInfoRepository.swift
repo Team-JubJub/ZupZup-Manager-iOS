@@ -13,7 +13,7 @@ import Alamofire
 protocol UpdateItemInfoRepository {
     func updateItemInformation(
         request: UpdateItemInfoRequest,
-        completion: @escaping (Result<UpdateItemInfoResponse, NetworkError>) -> Void
+        completion: @escaping (Result<UpdateItemInfoResponse, UpdateItemInfoError>) -> Void
     )
 }
 
@@ -23,7 +23,7 @@ final class UpdateItemInfoRespositoryImpl: UpdateItemInfoRepository {
     
     func updateItemInformation(
         request: UpdateItemInfoRequest,
-        completion: @escaping (Result<UpdateItemInfoResponse, NetworkError>) -> Void
+        completion: @escaping (Result<UpdateItemInfoResponse, UpdateItemInfoError>) -> Void
     ) {
         
         let url = "https://zupzuptest.com:8080/seller/\(LoginManager.shared.getStoreId())/\(request.itemid)"
@@ -36,17 +36,26 @@ final class UpdateItemInfoRespositoryImpl: UpdateItemInfoRepository {
         AF.upload(multipartFormData: { multipartFormData in
             do {
                 let jsonData = try JSONEncoder().encode(request.item)
-                multipartFormData.append(jsonData, withName: "item", fileName: "item.json", mimeType: "application/json")
+                multipartFormData.append(
+                    jsonData,
+                    withName: "item",
+                    fileName: "item.json",
+                    mimeType: "application/json"
+                )
             } catch {
-                // TODO: Error Handling
-                completion(.failure(NetworkError.failToEncode))
+                completion(.failure(.failToEncode))
                 return
             }
             
             if let imageData = request.image?.jpegData(compressionQuality: 0.8) {
-                multipartFormData.append(imageData, withName: "image", fileName: "image.jpg", mimeType: "image/jpeg")
+                multipartFormData.append(
+                    imageData,
+                    withName: "image",
+                    fileName: "image.jpg",
+                    mimeType: "image/jpeg"
+                )
             } else {
-                completion(.failure(NetworkError.failToEncode))
+                completion(.failure(.failToEncode))
                 return
             }
         },
@@ -59,7 +68,18 @@ final class UpdateItemInfoRespositoryImpl: UpdateItemInfoRepository {
             case .success:
                 completion(.success(UpdateItemInfoResponse()))
             case .failure:
-                completion(.failure(NetworkError.invalidResponse))
+                switch response.response?.statusCode {
+                case 400:
+                    completion(.failure(.noToken))
+                case 401:
+                    completion(.failure(.tokenExpired))
+                case 404:
+                    completion(.failure(.noItem))
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unKnown))
+                }
             }
         }
     }

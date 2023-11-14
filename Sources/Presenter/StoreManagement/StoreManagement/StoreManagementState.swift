@@ -51,13 +51,13 @@ enum StoreManagementAction: Equatable {
     
     // API 관련
     case fetchStore // 가게 정보 조희 API 호출
-    case openStoreResponse(Result<OpenStoreResponse, NetworkError>) // 가게 ON/OFF API 호출의 결과
-    case fetchStoreResponse(Result<StoreEntity, NetworkError>) // 가게 정보 조희 API 호출의 결과
+    case openStoreResponse(Result<OpenStoreResponse, OpenStoreError>) // 가게 ON/OFF API 호출의 결과
+    case fetchStoreResponse(Result<StoreEntity, FetchStoreError>) // 가게 정보 조희 API 호출의 결과
 }
 
 struct StoreManagementEnvironment {
-    let openStore: (OpenStoreRequest) -> EffectPublisher<Result<OpenStoreResponse, NetworkError>, Never> // 가게 ON/OFF
-    let fetchStore: () -> EffectPublisher<Result<StoreEntity, NetworkError>, Never> // 가게 정보 조희
+    let openStore: (OpenStoreRequest) -> EffectPublisher<Result<OpenStoreResponse, OpenStoreError>, Never> // 가게 ON/OFF
+    let fetchStore: () -> EffectPublisher<Result<StoreEntity, FetchStoreError>, Never> // 가게 정보 조희
     let openCustomerCenterURL: () -> Void // 고객센터 URL로 전환
 }
 

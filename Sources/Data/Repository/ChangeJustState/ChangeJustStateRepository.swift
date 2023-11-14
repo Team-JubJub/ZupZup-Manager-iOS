@@ -9,11 +9,17 @@
 import Foundation
 
 protocol ChangeJustStateRepository {
-    func changeState(request: ChangeJustStateRequest, completion: @escaping (Result<ChangeStateResponse, NetworkError>) -> Void)
+    func changeState(
+        request: ChangeJustStateRequest,
+        completion: @escaping (Result<ChangeStateResponse, ChangeStateError>) -> Void
+    )
 }
 
 final class ChangeJustStateRepositoryImpl: ChangeJustStateRepository {
-    func changeState(request: ChangeJustStateRequest, completion: @escaping (Result<ChangeStateResponse, NetworkError>) -> Void) {
+    func changeState(
+        request: ChangeJustStateRequest,
+        completion: @escaping (Result<ChangeStateResponse, ChangeStateError>) -> Void
+    ) {
         
         let storeId = LoginManager.shared.getStoreId()
         
@@ -29,12 +35,21 @@ final class ChangeJustStateRepositoryImpl: ChangeJustStateRepository {
         NetworkManager.shared.sendRequest(
             to: url,
             method: .patch
-        ) { (result: Result<ChangeStateResponse, NetworkError>) in
+        ) { (result: Result<ChangeStateResponse, Error>) in
                 switch result {
                 case .success(let response):
                     completion(.success(response))
                 case .failure(let error):
-                    completion(.failure(error))
+                    switch error.asAFError?.responseCode {
+                    case 400:
+                        completion(.failure(.badRequest))
+                    case 401:
+                        completion(.failure(.tokenExpired))
+                    case 500:
+                        completion(.failure(.serverError))
+                    default:
+                        completion(.failure(.unKnown))
+                    }
                 }
         }
     }

@@ -9,7 +9,10 @@
 import Foundation
 
 protocol OpenStoreUseCase {
-    func openStore(request: OpenStoreRequest, completion: @escaping (Result<OpenStoreResponse, NetworkError>) -> Void)
+    func openStore(
+        request: OpenStoreRequest,
+        completion: @escaping (Result<OpenStoreResponse, OpenStoreError>) -> Void
+    )
 }
 
 final class OpenStoreUseCaseImpl: OpenStoreUseCase {
@@ -20,7 +23,10 @@ final class OpenStoreUseCaseImpl: OpenStoreUseCase {
         self.openStoreRepository = openStoreRepository
     }
     
-    func openStore(request: OpenStoreRequest, completion: @escaping (Result<OpenStoreResponse, NetworkError>) -> Void) {
+    func openStore(
+        request: OpenStoreRequest,
+        completion: @escaping (Result<OpenStoreResponse, OpenStoreError>) -> Void
+    ) {
         openStoreRepository.openStore(request: request) { result in
             switch result {
             case .success(let response):

@@ -20,7 +20,7 @@ class NetworkManager {
         to url: String,
         method: HTTPMethod,
         parameters: P? = nil,
-        completion: @escaping (Result<T, NetworkError>) -> Void
+        completion: @escaping (Result<T, Error>) -> Void
     ) {
         let headers: HTTPHeaders = ["accessToken": accessToken]
         
@@ -37,11 +37,7 @@ class NetworkManager {
             case .success(let value):
                 completion(.success(value))
             case .failure(let error):
-                if error.underlyingError != nil {
-                    completion(.failure(.requestFailed))
-                } else {
-                    completion(.failure(.invalidResponse))
-                }
+                completion(.failure(error))
             }
         }
     }
@@ -49,7 +45,7 @@ class NetworkManager {
     func sendRequest<T: Decodable>(
         to url: String,
         method: HTTPMethod,
-        completion: @escaping (Result<T, NetworkError>) -> Void
+        completion: @escaping (Result<T, Error>) -> Void
     ) {
         let parameters: String? = nil
         let headers: HTTPHeaders = ["accessToken": accessToken]
@@ -67,11 +63,7 @@ class NetworkManager {
             case .success(let value):
                 completion(.success(value))
             case .failure(let error):
-                if error.underlyingError != nil {
-                    completion(.failure(.requestFailed))
-                } else {
-                    completion(.failure(.invalidResponse))
-                }
+                completion(.failure(error))
             }
         }
     }
@@ -79,7 +71,7 @@ class NetworkManager {
     func justRequest(
         to url: String,
         method: HTTPMethod,
-        completion: @escaping (Result<Void, NetworkError>) -> Void
+        completion: @escaping (Result<Void, Error>) -> Void
     ) {
         let parameters: String? = nil
         let hearders: HTTPHeaders = ["accessToken": accessToken]
@@ -96,8 +88,8 @@ class NetworkManager {
             switch response.result {
             case .success:
                 completion(.success(Void()))
-            case .failure:
-                completion(.failure(.invalidResponse))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }

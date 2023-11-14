@@ -33,7 +33,7 @@ enum ReservationDetailAction: Equatable {
     case tabConfirmButton // 화정 버튼을 눌렀을 경우
     
     // API 관련
-    case updatedCondition(Result<ReservationCondition, NetworkError>) // 예약 상태 변경 API 리턴
+    case updatedCondition(Result<ReservationCondition, ChangeStateError>) // 예약 상태 변경 API 리턴
     
     // 모달 관련
     case bindIsShowingHalfModal // isShowingHalfModal 변수 바인딩
@@ -41,8 +41,8 @@ enum ReservationDetailAction: Equatable {
 
 // MARK: TCA - Environment
 struct ReservationDetailEnvironment {
-    var changeState: (ChangeStateRequest) -> EffectPublisher<Result<ReservationCondition, NetworkError>, Never>
-    var changeJustState: (ChangeJustStateRequest) -> EffectPublisher<Result<ReservationCondition, NetworkError>, Never>
+    var changeState: (ChangeStateRequest) -> EffectPublisher<Result<ReservationCondition, ChangeStateError>, Never>
+    var changeJustState: (ChangeJustStateRequest) -> EffectPublisher<Result<ReservationCondition, ChangeStateError>, Never>
 }
 
 // MARK: TCA - Reducer
