@@ -11,7 +11,10 @@ import Alamofire
 
 final class LoginRepository {
     
-    func login(request: LoginRequest, completion: @escaping (Result<LoginResponse, NetworkError>) -> Void) {
+    func login(
+        request: LoginRequest,
+        completion: @escaping (Result<LoginResponse, NetworkError>) -> Void
+    ) {
         NetworkManager.shared.sendRequest(
             to: "https://zupzuptest.com:8080/mobile/sign-in",
             method: .post,
@@ -21,9 +24,9 @@ final class LoginRepository {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                #if DEBUG
+#if DEBUG
                 print("⭐️ 로그인 API 호출 실패 ⭐️")
-                #endif
+#endif
                 completion(.failure(error))
             }
         }

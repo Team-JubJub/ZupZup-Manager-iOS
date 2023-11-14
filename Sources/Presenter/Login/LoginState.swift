@@ -97,7 +97,15 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
     
     // 터치 액션 관련
     case .tapLoginButton: // 로그인 버튼을 누른 경우
-        let request = LoginRequest(loginId: state.id, loginPwd: state.password)
+        
+        let deviceToken = LoginManager.shared.getDeviceToken()
+        
+        let request = LoginRequest(
+            loginId: state.id,
+            loginPwd: state.password,
+            deviceToken: deviceToken
+        )
+        
         state.isLoading = true
         
         return environment.login(request)
