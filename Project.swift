@@ -42,7 +42,9 @@ let project = Project(
                 .package(product: "Kingfisher"),
                 .package(product: "ComposableArchitecture"),
                 .package(product: "FirebaseFirestore"),
-                .package(product: "FirebaseFirestoreSwift")
+                .package(product: "FirebaseFirestoreSwift"),
+                .package(product: "FirebaseMessaging")
+                
             ]
         ),
         Target(
