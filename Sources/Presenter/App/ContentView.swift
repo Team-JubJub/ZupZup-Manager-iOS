@@ -133,7 +133,12 @@ struct ContentView: View {
                         login: { request in
                             return Future { promise in
                                 LoginRepository().login(request: request) { result in
-                                    self.isLogin.toggle()
+                                    switch result {
+                                    case .success:
+                                        self.isLogin = true
+                                    case .failure:
+                                        self.isLogin = false
+                                    }
                                     promise(.success(result))
                                 }
                             }

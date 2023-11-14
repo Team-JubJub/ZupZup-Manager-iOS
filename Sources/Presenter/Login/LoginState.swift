@@ -33,22 +33,22 @@ struct LoginState: Equatable {
 enum LoginAction: Equatable {
     
     // 텍스트 필드 관련
-    case idChanged(String) // 텍스트 필드 ID 업데이트
-    case passwordChanged(String) // 텍스트 필드 Password 업데이트
+    case idChanged(String)                                              // 텍스트 필드 ID 업데이트
+    case passwordChanged(String)                                        // 텍스트 필드 Password 업데이트
     
     // 터치 액션 관련
-    case tapLoginButton // 로그인 버튼을 누른 경우
-    case tapEmptySpace // 빈 화면을 터치한 경우
-    case tapFindMyAcoount // 내 계정 찾기를 터치한 경우
-    case tapMakeAccount // 회원가입을 터치한 경우
+    case tapLoginButton                                                 // 로그인 버튼을 누른 경우
+    case tapEmptySpace                                                  // 빈 화면을 터치한 경우
+    case tapFindMyAcoount                                               // 내 계정 찾기를 터치한 경우
+    case tapMakeAccount                                                 // 회원가입을 터치한 경우
     
     // API관련
-    case loginRequestResult(Result<LoginResponse, NetworkError>) // 로그인 API Response 받은 경우
+    case loginRequestResult(Result<LoginResponse, NetworkError>)        // 로그인 API Response 받은 경우
     
     // 색상 변경 관련
-    case textFieldColorChanged // textFieldColor 바인딩 함수
-    case buttonBodyColorChanged // buttonBodyColor 바인딩 함수
-    case buttonTextColorChanged // buttonTextColor 바인딩 함수
+    case textFieldColorChanged                                          // textFieldColor 바인딩 함수
+    case buttonBodyColorChanged                                         // buttonBodyColor 바인딩 함수
+    case buttonTextColorChanged                                         // buttonTextColor 바인딩 함수
 }
 
 // MARK: TCA - Environment

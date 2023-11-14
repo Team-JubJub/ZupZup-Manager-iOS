@@ -13,6 +13,7 @@ final class LoginManager {
     static let shared = LoginManager()
     static let accessToken = "accessToken"
     static let refreshToken = "refreshToken"
+    static let deviceToken = "deviceToken"
     static let storeID = "storeID"
     
     private init() { }
@@ -31,6 +32,10 @@ extension LoginManager {
         UserDefaults.standard.set(id, forKey: LoginManager.storeID)
     }
     
+    func setDeviceToken(newToken: String?) {
+        UserDefaults.standard.set(newToken, forKey: LoginManager.deviceToken)
+    }
+    
     func getAccessToken() -> String {
         guard let token = UserDefaults.standard.string(forKey: LoginManager.accessToken) else { return "" }
         return token
@@ -38,6 +43,11 @@ extension LoginManager {
     
     func getRefreshToken() -> String {
         guard let token = UserDefaults.standard.string(forKey: LoginManager.refreshToken) else { return "" }
+        return token
+    }
+    
+    func getDeviceToken() -> String {
+        guard let token = UserDefaults.standard.string(forKey: LoginManager.deviceToken) else { return "" }
         return token
     }
     
