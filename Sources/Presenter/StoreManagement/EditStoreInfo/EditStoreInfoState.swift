@@ -248,7 +248,7 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
             closeTime: state.closeTime + ":" + state.closeMinute,
             saleTimeStart: state.discountStartTime + ":" + state.discountStartMinute,
             saleTimeEnd: state.discountEndTime + ":" + state.discountEndMinute,
-            closedDay: nil
+            closedDay: convertBoolArrayToString(state.daysOfWeek)
         )
         
         let request = EditStoreInfoRequest(

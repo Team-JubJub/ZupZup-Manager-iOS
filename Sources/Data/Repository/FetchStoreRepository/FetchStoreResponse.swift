@@ -43,7 +43,7 @@ extension FetchStoreResponse {
             saleEndTime: self.saleTimeEnd,
             announcement: self.saleMatters ?? "",
             isOpen: self.isOpen,
-            closedDay: [false, false, false, false, false, false, false]
+            closedDay: convertStringToBoolArray(closedDay ?? "FFFFFF")
         )
     }
 }
