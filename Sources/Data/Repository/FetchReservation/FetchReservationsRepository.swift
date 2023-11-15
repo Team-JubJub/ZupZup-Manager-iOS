@@ -34,7 +34,7 @@ final class FetchReservationsRepositoryImpl: FetchReservationsRepository {
             case .failure(let error):
                 switch error.code {
                 case 204:
-                    completion(.success(FetchReservationsResponse(orderList: [])))
+                    completion(.success(FetchReservationsResponse(orders: [])))
                 case 400:
                     completion(.failure(.noToken))
                 case 401:

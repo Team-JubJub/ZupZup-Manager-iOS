@@ -22,11 +22,13 @@ final class FetchStoreRepositoryImpl: FetchStoreRepository {
             to: url,
             method: .get
         ) { (result: Result<FetchStoreResponse, NetworkError>) in
+            dump(result)
             switch result {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                switch error.asAFError?.responseCode {
+                
+                switch error.code {
                 case 400:
                     completion(.failure(.noToken))
                 case 401:
