@@ -33,7 +33,6 @@ class NetworkManager {
         )
         .validate()
         .responseDecodable(of: T.self) { response in
-            
             switch response.result {
             case .success(let value):
                 completion(.success(value))
@@ -60,9 +59,6 @@ class NetworkManager {
         )
         .validate()
         .responseDecodable(of: T.self) { response in
-            
-            dump(response)
-            
             switch response.result {
             case .success(let value):
                 completion(.success(value))

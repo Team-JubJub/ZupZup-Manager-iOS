@@ -105,6 +105,7 @@ struct ContentView: View {
                             )
                             StoreManagementView(store: store)
                                 .onAppear {
+                                    print("hi!")
                                     ViewStore(store).send(.fetchStore)
                                 }
                         }

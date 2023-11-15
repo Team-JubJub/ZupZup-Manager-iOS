@@ -22,7 +22,6 @@ final class FetchStoreRepositoryImpl: FetchStoreRepository {
             to: url,
             method: .get
         ) { (result: Result<FetchStoreResponse, NetworkError>) in
-            dump(result)
             switch result {
             case .success(let response):
                 completion(.success(response))
