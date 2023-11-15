@@ -36,7 +36,7 @@ final class ChangeStateRepositoryImpl: ChangeStateRepository {
             to: url,
             method: .patch,
             parameters: request.body
-        ) { (result: Result<ChangeStateResponse, Error>) in
+        ) { (result: Result<ChangeStateResponse, NetworkError>) in
             switch result {
             case .success(let response):
                 completion(.success(response))

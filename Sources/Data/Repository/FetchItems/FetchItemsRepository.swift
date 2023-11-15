@@ -23,12 +23,12 @@ final class FetchItemsRepositoryImpl: FetchItemsRepository {
         NetworkManager.shared.sendRequest(
             to: url,
             method: .get
-        ) { (result: Result<FetchItemsResponse, Error>) in
+        ) { (result: Result<FetchItemsResponse, NetworkError>) in
             switch result {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                switch error.asAFError?.responseCode {
+                switch error.code {
                 case 400:
                     completion(.failure(.noToken))
                 case 401:

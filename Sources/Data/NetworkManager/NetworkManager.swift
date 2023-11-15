@@ -20,7 +20,7 @@ class NetworkManager {
         to url: String,
         method: HTTPMethod,
         parameters: P? = nil,
-        completion: @escaping (Result<T, Error>) -> Void
+        completion: @escaping (Result<T, NetworkError>) -> Void
     ) {
         let headers: HTTPHeaders = ["accessToken": accessToken]
         
@@ -33,11 +33,12 @@ class NetworkManager {
         )
         .validate()
         .responseDecodable(of: T.self) { response in
+            
             switch response.result {
             case .success(let value):
                 completion(.success(value))
-            case .failure(let error):
-                completion(.failure(error))
+            case .failure:
+                completion(.failure(NetworkError(code: response.response?.statusCode ?? 600)))
             }
         }
     }
@@ -45,7 +46,7 @@ class NetworkManager {
     func sendRequest<T: Decodable>(
         to url: String,
         method: HTTPMethod,
-        completion: @escaping (Result<T, Error>) -> Void
+        completion: @escaping (Result<T, NetworkError>) -> Void
     ) {
         let parameters: String? = nil
         let headers: HTTPHeaders = ["accessToken": accessToken]
@@ -62,8 +63,8 @@ class NetworkManager {
             switch response.result {
             case .success(let value):
                 completion(.success(value))
-            case .failure(let error):
-                completion(.failure(error))
+            case .failure:
+                completion(.failure(NetworkError(code: response.response?.statusCode ?? 600)))
             }
         }
     }
@@ -75,7 +76,7 @@ class NetworkManager {
     ) {
         let parameters: String? = nil
         let hearders: HTTPHeaders = ["accessToken": accessToken]
-
+        
         AF.request(
             url,
             method: method,

@@ -36,8 +36,13 @@ struct ReservationEnvironment {
 let reservationReducer = AnyReducer<ReservationState, ReservationAction, ReservationEnvironment> { state, action, environment in
     switch action {
     case .fetchReservation:
+        
+        let storeId = LoginManager.shared.getStoreId()
+        
+        let request = FetchReservationsRequest(storeId: 8)
+        
         state.isLoading = true
-        return environment.reservations(nil)
+        return environment.reservations(request)
             .map(ReservationAction.reservationsFetched)
             .eraseToEffect()
         

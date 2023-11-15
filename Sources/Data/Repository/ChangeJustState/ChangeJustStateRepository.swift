@@ -35,7 +35,7 @@ final class ChangeJustStateRepositoryImpl: ChangeJustStateRepository {
         NetworkManager.shared.sendRequest(
             to: url,
             method: .patch
-        ) { (result: Result<ChangeStateResponse, Error>) in
+        ) { (result: Result<ChangeStateResponse, NetworkError>) in
                 switch result {
                 case .success(let response):
                     completion(.success(response))

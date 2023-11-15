@@ -19,7 +19,7 @@ final class LoginRepository {
             to: "https://zupzuptest.com:8080/mobile/sign-in",
             method: .post,
             parameters: request
-        ) { (result: Result<LoginResponse, Error>) in
+        ) { (result: Result<LoginResponse, NetworkError>) in
             switch result {
             case .success(let response):
                 completion(.success(response))

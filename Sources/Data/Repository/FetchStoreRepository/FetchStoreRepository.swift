@@ -21,7 +21,7 @@ final class FetchStoreRepositoryImpl: FetchStoreRepository {
         NetworkManager.shared.sendRequest(
             to: url,
             method: .get
-        ) { (result: Result<FetchStoreResponse, Error>) in
+        ) { (result: Result<FetchStoreResponse, NetworkError>) in
             switch result {
             case .success(let response):
                 completion(.success(response))

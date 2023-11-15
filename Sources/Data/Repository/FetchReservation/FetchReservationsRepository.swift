@@ -26,14 +26,15 @@ final class FetchReservationsRepositoryImpl: FetchReservationsRepository {
         
         NetworkManager.shared.sendRequest(
             to: "https://zupzuptest.com:8080/seller/\(String(describing: storeId))/order",
-            method: .get,
-            parameters: request
-        ) { (result: Result<FetchReservationsResponse, Error>) in
+            method: .get
+        ) { (result: Result<FetchReservationsResponse, NetworkError>) in
             switch result {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                switch error.asAFError?.responseCode {
+                switch error.code {
+                case 204:
+                    completion(.success(FetchReservationsResponse(orderList: [])))
                 case 400:
                     completion(.failure(.noToken))
                 case 401:
