@@ -34,7 +34,7 @@ final class OpenStoreRepositoryImpl: OpenStoreRepository {
             case .success:
                 completion(.success(OpenStoreResponse()))
             case .failure(let error):
-                switch error.asAFError?.responseCode {
+                switch error.code {
                 case 400:
                     completion(.failure(.badRequest))
                 case 401:

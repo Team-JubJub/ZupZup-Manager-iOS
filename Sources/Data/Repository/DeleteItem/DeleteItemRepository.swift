@@ -26,7 +26,7 @@ final class DeleteItemRepositoryImpl: DeleteItemRepository {
             case .success:
                 completion(.success(DeleteItemResponse()))
             case .failure(let error):
-                switch error.asAFError?.responseCode {
+                switch error.code {
                 case 400:
                     completion(.failure(.noToken))
                 case 401:

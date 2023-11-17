@@ -11,6 +11,7 @@ import Foundation
 enum UpdateItemInfoError: Error, Equatable {
     case failToDecode    // 디코딩 오류
     case failToEncode    // 인코딩 오류
+    case noImage         // 이미지 없음
     case noToken         // (400) 요청에 필요한 헤더(액세스 토큰)가 없음
     case tokenExpired    // (401) 액세스 토큰 만료, 로그아웃 혹은 회원탈퇴한 회원의 액세스 토큰
     case noItem          // (404) 해당 가게나 상품이 존재하지 않음

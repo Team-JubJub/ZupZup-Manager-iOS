@@ -63,7 +63,12 @@ class NetworkManager {
             case .success(let value):
                 completion(.success(value))
             case .failure:
-                completion(.failure(NetworkError(code: response.response?.statusCode ?? 600)))
+                completion(
+                    .failure(
+                        NetworkError(
+                            code: response.response?.statusCode ?? 600)
+                    )
+                )
             }
         }
     }
@@ -71,7 +76,7 @@ class NetworkManager {
     func justRequest(
         to url: String,
         method: HTTPMethod,
-        completion: @escaping (Result<Void, Error>) -> Void
+        completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
         let parameters: String? = nil
         let hearders: HTTPHeaders = ["accessToken": accessToken]
@@ -88,8 +93,13 @@ class NetworkManager {
             switch response.result {
             case .success:
                 completion(.success(Void()))
-            case .failure(let error):
-                completion(.failure(error))
+            case .failure:
+                completion(
+                    .failure(
+                        NetworkError(
+                            code: response.response?.statusCode ?? 600)
+                    )
+                )
             }
         }
     }

@@ -51,14 +51,12 @@ final class AddItemRepositoryImpl: AddItemRepository {
             
             if let imageData = request.image.jpegData(compressionQuality: 0.8) {
                 multipartFormData.append(
-                    imageData, withName: "image",
+                    imageData, 
+                    withName: "image",
                     fileName: "image.jpg",
                     mimeType: "image/jpeg"
                 )
-            } else {
-                completion(.failure(.failToEncode))
-                return
-            }
+            } 
         },
                   to: url,
                   headers: headers

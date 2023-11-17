@@ -41,10 +41,7 @@ final class EditStoreInfoRepositoryImpl: EditStoreInfoRepository {
             
             if let imageData = request.image?.jpegData(compressionQuality: 0.8) {
                 multipartFormData.append(imageData, withName: "image", fileName: "image.jpg", mimeType: "image/jpeg")
-            } else {
-                completion(.failure(.failToEncode))
-                return
-            }
+            } 
         },
                   to: url,
                   method: .patch,

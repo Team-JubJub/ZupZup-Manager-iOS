@@ -54,9 +54,6 @@ final class UpdateItemInfoRespositoryImpl: UpdateItemInfoRepository {
                     fileName: "image.jpg",
                     mimeType: "image/jpeg"
                 )
-            } else {
-                completion(.failure(.failToEncode))
-                return
             }
         },
                   to: url,
@@ -83,5 +80,4 @@ final class UpdateItemInfoRespositoryImpl: UpdateItemInfoRepository {
             }
         }
     }
-    
 }

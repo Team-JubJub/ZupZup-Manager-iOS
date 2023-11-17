@@ -40,7 +40,7 @@ final class ChangeJustStateRepositoryImpl: ChangeJustStateRepository {
                 case .success(let response):
                     completion(.success(response))
                 case .failure(let error):
-                    switch error.asAFError?.responseCode {
+                    switch error.code {
                     case 400:
                         completion(.failure(.badRequest))
                     case 401:
