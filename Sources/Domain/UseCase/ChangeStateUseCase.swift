@@ -35,6 +35,6 @@ final class ChangeStateUseCaseImpl: ChangeStateUseCase {
                 case .failure(let error):
                     completion(.failure(error))
                 }
-            }
+        }
     }
 }

@@ -72,8 +72,8 @@ struct ContentView: View {
                                 .onAppear {
                                     ViewStore(store).send(.fetchItems)
                                 }
-                        default:
-                            let store = Store<StoreManagementState, StoreManagementAction> ( // MARK: 3번 탭 : 매장 관리 화면
+                        default:                                                            // MARK: 3번 탭 : 매장 관리 화면
+                            let store = Store<StoreManagementState, StoreManagementAction>(
                                 initialState: StoreManagementState(),
                                 reducer: storeManagementReducer,
                                 environment: StoreManagementEnvironment(
