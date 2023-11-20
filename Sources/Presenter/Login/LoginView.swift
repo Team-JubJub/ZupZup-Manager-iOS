@@ -14,8 +14,6 @@ struct LoginView: View {
     
     let store: Store<LoginState, LoginAction>
     
-    @Binding var isLogin: Bool
-    
     var body: some View {
         WithViewStore(store) { viewStore in
             ZStack {

@@ -6,14 +6,20 @@
 //  Copyright © 2023 ZupZup. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
 
-final class LoginManager {
+final class LoginManager: ObservableObject {
     
     static let shared = LoginManager()
+    
+    @Published var isLogin: Bool = false
+    
     static let accessToken = "accessToken"
+    
     static let refreshToken = "refreshToken"
+    
     static let deviceToken = "deviceToken"
+    
     static let storeID = "storeID"
     
     private init() { }
@@ -55,11 +61,22 @@ extension LoginManager {
         return UserDefaults.standard.integer(forKey: LoginManager.storeID)
     }
     
-    func isLoginValid() -> Bool {
-        return getStoreId() != 0 && getAccessToken().isEmpty && getRefreshToken().isEmpty
-    }
-    
     func removeStoreId() {
         UserDefaults.standard.removeObject(forKey: LoginManager.storeID)
+    }
+    
+    func setLoginOn() {
+        self.isLogin = true
+    }
+    
+    func setLoginOff() {
+        self.isLogin = false
+    }
+    
+    func login(response: LoginResponse) {
+        self.setStoreId(id: response.storeId)
+        self.setRefresh(newToken: response.refreshToken)
+        self.setAccessToken(newToken: response.accessToken)
+        self.setLoginOn()
     }
 }

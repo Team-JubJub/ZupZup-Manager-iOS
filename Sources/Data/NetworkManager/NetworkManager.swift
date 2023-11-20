@@ -12,8 +12,6 @@ import Alamofire
 class NetworkManager {
     static let shared = NetworkManager()
     
-    let accessToken = LoginManager.shared.getAccessToken()
-    
     private init() {}
     
     func sendRequest<T: Decodable, P: Encodable>(
@@ -22,6 +20,8 @@ class NetworkManager {
         parameters: P? = nil,
         completion: @escaping (Result<T, NetworkError>) -> Void
     ) {
+        let accessToken = LoginManager.shared.getAccessToken()
+        
         let headers: HTTPHeaders = ["accessToken": accessToken]
         
         AF.request(
@@ -47,6 +47,7 @@ class NetworkManager {
         method: HTTPMethod,
         completion: @escaping (Result<T, NetworkError>) -> Void
     ) {
+        let accessToken = LoginManager.shared.getAccessToken()
         let parameters: String? = nil
         let headers: HTTPHeaders = ["accessToken": accessToken]
         
@@ -78,6 +79,7 @@ class NetworkManager {
         method: HTTPMethod,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
+        let accessToken = LoginManager.shared.getAccessToken()
         let parameters: String? = nil
         let hearders: HTTPHeaders = ["accessToken": accessToken]
         
@@ -97,7 +99,8 @@ class NetworkManager {
                 completion(
                     .failure(
                         NetworkError(
-                            code: response.response?.statusCode ?? 600)
+                            code: response.response?.statusCode ?? 600
+                        )
                     )
                 )
             }

@@ -43,7 +43,7 @@ enum LoginAction: Equatable {
     case tapMakeAccount                                                 // 회원가입을 터치한 경우
     
     // API관련
-    case loginRequestResult(Result<LoginResponse, LoginError>)        // 로그인 API Response 받은 경우
+    case loginRequestResult(Result<LoginResponse, LoginError>)          // 로그인 API Response 받은 경우
     
     // 색상 변경 관련
     case textFieldColorChanged                                          // textFieldColor 바인딩 함수
@@ -131,9 +131,7 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
         
     // API관련
     case let .loginRequestResult(.success(response)): // 로그인 API Response 받은 경우 - 성공
-        LoginManager.shared.setStoreId(id: response.storeId)
-        LoginManager.shared.setAccessToken(newToken: response.accessToken)
-        LoginManager.shared.setRefresh(newToken: response.refreshToken)
+        LoginManager.shared.login(response: response)
         state.isLoading = false
         return .none
         
