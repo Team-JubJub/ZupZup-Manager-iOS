@@ -67,7 +67,8 @@ class NetworkManager {
                 completion(
                     .failure(
                         NetworkError(
-                            code: response.response?.statusCode ?? 600)
+                            code: response.response?.statusCode ?? 600
+                        )
                     )
                 )
             }

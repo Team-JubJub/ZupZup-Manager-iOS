@@ -28,11 +28,29 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             options: authOptions,
             completionHandler: { _, _ in }
         )
-                                                                                // UNUserNotificationCenterDelegate를 구현한 메서드를 실행
+        // UNUserNotificationCenterDelegate를 구현한 메서드를 실행
         application.registerForRemoteNotifications()
         
         Messaging.messaging().delegate = self                                   // 파이어베이스 Meesaging 설정
         
+        let refreshToken = LoginManager.shared.getRefreshToken()
+        
+        if !refreshToken.isEmpty {
+            let autoLoginRequest = AutoLoginRequest(refreshToken: refreshToken)
+            
+            AutoLoginRepository().autoLogin(request: autoLoginRequest) { result in
+                switch result {
+                case .success(let response):
+                    DispatchQueue.main.async {
+                        LoginManager.shared.autoLogin(response: response)
+                    }
+                case .failure:
+                    DispatchQueue.main.async {
+                        LoginManager.shared.removeAccessToken()
+                    }
+                }
+            }
+        }
         return true
     }
     
@@ -40,9 +58,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFailToRegisterForRemoteNotificationsWithError error: Error
     ) {
-        #if DEBUG
+#if DEBUG
         print("APN 등록 실패 \n \(error.localizedDescription)")
-        #endif
+#endif
     }
 }
 
@@ -70,9 +88,9 @@ extension AppDelegate: MessagingDelegate {
         _ messaging: Messaging,
         didReceiveRegistrationToken fcmToken: String?                           // 파이어베이스 MessagingDelegate 설정
     ) {
-        #if DEBUG
+#if DEBUG
         print("⭐️FCM 토큰:\n \(String(describing: fcmToken))")
-        #endif
+#endif
         
         let dataDict: [String: String] = ["token": fcmToken ?? ""]
         NotificationCenter.default.post(

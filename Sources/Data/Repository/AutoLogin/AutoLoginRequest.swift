@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct AutoLoginRequest: Equatable {
+struct AutoLoginRequest: Encodable {
     var refreshToken: String
 }

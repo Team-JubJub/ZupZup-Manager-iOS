@@ -65,6 +65,10 @@ extension LoginManager {
         UserDefaults.standard.removeObject(forKey: LoginManager.storeID)
     }
     
+    func removeAccessToken() {
+        UserDefaults.standard.removeObject(forKey: LoginManager.accessToken)
+    }
+    
     func setLoginOn() {
         self.isLogin = true
     }
@@ -76,6 +80,11 @@ extension LoginManager {
     func login(response: LoginResponse) {
         self.setStoreId(id: response.storeId)
         self.setRefresh(newToken: response.refreshToken)
+        self.setAccessToken(newToken: response.accessToken)
+        self.setLoginOn()
+    }
+    
+    func autoLogin(response: AutoLoginResponse) {
         self.setAccessToken(newToken: response.accessToken)
         self.setLoginOn()
     }
