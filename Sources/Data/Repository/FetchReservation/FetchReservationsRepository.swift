@@ -31,7 +31,6 @@ final class FetchReservationsRepositoryImpl: FetchReservationsRepository {
             switch result {
             case .success(let response):
                 completion(.success(response))
-                completion(.failure(.tokenExpired))
             case .failure(let error):
                 switch error.code {
                 case 204:

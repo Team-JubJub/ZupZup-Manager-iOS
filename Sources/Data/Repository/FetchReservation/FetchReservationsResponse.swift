@@ -32,7 +32,7 @@ struct FetchReservationsResponse: Codable {
         let itemName: String
         let imageUrl: String?
         let itemPrice: Int
-        let salePrice: Int
+        let salePrice: Int?
         let itemCount: Int
     }
 }
