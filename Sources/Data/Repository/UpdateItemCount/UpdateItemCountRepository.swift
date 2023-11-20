@@ -13,7 +13,7 @@ import Alamofire
 protocol UpdateItemCountRepository {
     func updateItemCount(
         request: UpdateItemCountRequest,
-        completion: @escaping (Result<UpdateItemCountResponse, NetworkError>) -> Void
+        completion: @escaping (Result<UpdateItemCountResponse, UpdateItemCountError>) -> Void
     )
 }
 
@@ -21,7 +21,7 @@ final class UpdateItemCountRepositoryImpl: UpdateItemCountRepository {
 
     func updateItemCount(
         request: UpdateItemCountRequest,
-        completion: @escaping (Result<UpdateItemCountResponse, NetworkError>) -> Void
+        completion: @escaping (Result<UpdateItemCountResponse, UpdateItemCountError>) -> Void
     ) {
         
         let storeId = LoginManager.shared.getStoreId()
@@ -38,10 +38,14 @@ final class UpdateItemCountRepositoryImpl: UpdateItemCountRepository {
         AF.upload(multipartFormData: { multipartFormData in
             do {
                 let jsonData = try JSONEncoder().encode(request.quantity)
-                multipartFormData.append(jsonData, withName: "quantity", fileName: "item.json", mimeType: "application/json")
+                multipartFormData.append(
+                    jsonData,
+                    withName: "quantity",
+                    fileName: "item.json",
+                    mimeType: "application/json"
+                )
             } catch {
-                // TODO: Error Handling
-                completion(.failure(NetworkError.failToEncode))
+                completion(.failure(.failToEncode))
                 return
             }
         },
@@ -54,9 +58,19 @@ final class UpdateItemCountRepositoryImpl: UpdateItemCountRepository {
             case .success:
                 completion(.success(UpdateItemCountResponse()))
             case .failure:
-                completion(.failure(NetworkError.invalidResponse))
+                switch response.response?.statusCode {
+                case 400:
+                    completion(.failure(.noToken))
+                case 401:
+                    completion(.failure(.tokenExpired))
+                case 404:
+                    completion(.failure(.noItem))
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unKnown))
+                }
             }
         }
-
     }
 }

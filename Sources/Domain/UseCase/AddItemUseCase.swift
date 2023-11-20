@@ -9,7 +9,10 @@
 import UIKit
 
 protocol AddItemUseCase {
-    func addItem(request: AddItemRequest, completion: @escaping (Result<AddItemResponse, NetworkError>) -> Void)
+    func addItem(
+        request: AddItemRequest,
+        completion: @escaping (Result<AddItemResponse, AddItemError>) -> Void
+    )
 }
 
 final class AddItemUseCaseImpl: AddItemUseCase {
@@ -20,7 +23,10 @@ final class AddItemUseCaseImpl: AddItemUseCase {
         self.addItemRepository = addItemRepository
     }
     
-    func addItem(request: AddItemRequest, completion: @escaping (Result<AddItemResponse, NetworkError>) -> Void) {
+    func addItem(
+        request: AddItemRequest,
+        completion: @escaping (Result<AddItemResponse, AddItemError>) -> Void
+    ) {
         
         addItemRepository.addItem(request: request) { result in
             switch result {

@@ -38,6 +38,13 @@ struct ProductGridItem: View {
                             ZStack {
                                 KFImage(URL(string: url))
                                     .resizable()
+                                    .placeholder {
+                                        Image(assetName: .ic_mockImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(height: 110)
+                                            .clipped()
+                                    }
                                     .scaledToFill()
                                     .frame(width: Device.Width * 175 / 390, height: 110)
                                     .clipped()

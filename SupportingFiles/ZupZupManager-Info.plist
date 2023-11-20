@@ -2,25 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>SUIT-Thin.otf</string>
-		<string>SUIT-SemiBold.otf</string>
-		<string>SUIT-Regular.otf</string>
-		<string>SUIT-Medium.otf</string>
-		<string>SUIT-Light.otf</string>
-		<string>SUIT-Heavy.otf</string>
-		<string>SUIT-ExtraLight.otf</string>
-		<string>SUIT-ExtraBold.otf</string>
-		<string>SUIT-Bold.otf</string>
-		<string>SUITE-SemiBold.otf</string>
-		<string>SUITE-Regular.otf</string>
-		<string>SUITE-Medium.otf</string>
-		<string>SUITE-Light.otf</string>
-		<string>SUITE-Heavy.otf</string>
-		<string>SUITE-ExtraBold.otf</string>
-		<string>SUITE-Bold.otf</string>
-	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -69,6 +50,25 @@
 	<string>사용자의 현재 위치가 지도상에 표시되며, 현재 위치 주변의 장소에 빠르게 접근할 수 있습니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>앨범 접근 권한이 필요합니다.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SUIT-Thin.otf</string>
+		<string>SUIT-SemiBold.otf</string>
+		<string>SUIT-Regular.otf</string>
+		<string>SUIT-Medium.otf</string>
+		<string>SUIT-Light.otf</string>
+		<string>SUIT-Heavy.otf</string>
+		<string>SUIT-ExtraLight.otf</string>
+		<string>SUIT-ExtraBold.otf</string>
+		<string>SUIT-Bold.otf</string>
+		<string>SUITE-SemiBold.otf</string>
+		<string>SUITE-Regular.otf</string>
+		<string>SUITE-Medium.otf</string>
+		<string>SUITE-Light.otf</string>
+		<string>SUITE-Heavy.otf</string>
+		<string>SUITE-ExtraBold.otf</string>
+		<string>SUITE-Bold.otf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

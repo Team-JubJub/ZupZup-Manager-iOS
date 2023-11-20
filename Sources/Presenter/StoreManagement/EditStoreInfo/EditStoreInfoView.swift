@@ -44,7 +44,8 @@ struct EditStoreInfoView: View {
                                     image: viewStore.binding(
                                         get: { $0.selectedImage },
                                         send: EditStoreInfoAction.selectedImageChanged
-                                    )
+                                    ),
+                                    imageUrl: viewStore.state.storeImageUrl
                                 ) {
                                     viewStore.send(.tapImagePicker)  // MARK: Action - 이미지 피커를 누른 경우
                                 }

@@ -9,7 +9,7 @@
 import Foundation
 
 protocol FetchItemsUseCase {
-    func fetchItems(completion: @escaping (Result<[ItemEntity], NetworkError>) -> Void)
+    func fetchItems(completion: @escaping (Result<[ItemEntity], FetchItemsError>) -> Void)
     
 }
 
@@ -21,7 +21,7 @@ final class FetchItemsUseCaseImpl: FetchItemsUseCase {
         self.fetchItemsRepository = fetchItemsRepository
     }
     
-    func fetchItems(completion: @escaping (Result<[ItemEntity], NetworkError>) -> Void) {
+    func fetchItems(completion: @escaping (Result<[ItemEntity], FetchItemsError>) -> Void) {
         self.fetchItemsRepository.fetchItems { result in
             switch result {
             case .success(let response):

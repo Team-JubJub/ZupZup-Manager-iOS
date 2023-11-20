@@ -11,4 +11,5 @@ import Foundation
 struct LoginRequest: Encodable {
     let loginId: String
     let loginPwd: String
+    let deviceToken: String
 }

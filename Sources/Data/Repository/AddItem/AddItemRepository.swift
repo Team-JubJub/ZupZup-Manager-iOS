@@ -11,7 +11,11 @@ import UIKit
 import Alamofire
 
 protocol AddItemRepository {
-    func addItem(request: AddItemRequest, completion: @escaping(Result<AddItemResponse, NetworkError>) -> Void)
+    func addItem(
+        request: AddItemRequest,
+        completion: @escaping(Result<AddItemResponse, AddItemError>
+        ) -> Void
+    )
 }
 
 final class AddItemRepositoryImpl: AddItemRepository {
@@ -20,7 +24,11 @@ final class AddItemRepositoryImpl: AddItemRepository {
     
     let accessToken = LoginManager.shared.getAccessToken()
     
-    func addItem(request: AddItemRequest, completion: @escaping (Result<AddItemResponse, NetworkError>) -> Void) {
+    func addItem(
+        request: AddItemRequest,
+        completion: @escaping (Result<AddItemResponse, AddItemError>
+        ) -> Void
+    ) {
         
         let headers: HTTPHeaders = [
             "accessToken": accessToken,
@@ -30,19 +38,25 @@ final class AddItemRepositoryImpl: AddItemRepository {
         AF.upload(multipartFormData: { multipartFormData in
             do {
                 let jsonData = try JSONEncoder().encode(request.item)
-                multipartFormData.append(jsonData, withName: "item", fileName: "item.json", mimeType: "application/json")
+                multipartFormData.append(
+                    jsonData,
+                    withName: "item",
+                    fileName: "item.json",
+                    mimeType: "application/json"
+                )
             } catch {
-                // TODO: Error Handling
-                completion(.failure(NetworkError.failToEncode))
+                completion(.failure(.failToEncode))
                 return
             }
             
             if let imageData = request.image.jpegData(compressionQuality: 0.8) {
-                multipartFormData.append(imageData, withName: "image", fileName: "image.jpg", mimeType: "image/jpeg")
-            } else {
-                completion(.failure(NetworkError.failToEncode))
-                return
-            }
+                multipartFormData.append(
+                    imageData, 
+                    withName: "image",
+                    fileName: "image.jpg",
+                    mimeType: "image/jpeg"
+                )
+            } 
         },
                   to: url,
                   headers: headers
@@ -52,9 +66,19 @@ final class AddItemRepositoryImpl: AddItemRepository {
             case .success:
                 completion(.success(AddItemResponse()))
             case .failure:
-                completion(.failure(NetworkError.invalidResponse))
+                switch response.response?.statusCode {
+                case 400:
+                    completion(.failure(.noAccessToken))
+                case 401:
+                    completion(.failure(.tokenExpired))
+                case 404:
+                    completion(.failure(.noStore))
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unKnown))
+                }
             }
         }
     }
-    
 }

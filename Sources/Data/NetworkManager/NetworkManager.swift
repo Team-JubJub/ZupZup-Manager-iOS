@@ -12,8 +12,6 @@ import Alamofire
 class NetworkManager {
     static let shared = NetworkManager()
     
-    let accessToken = LoginManager.shared.getAccessToken()
-    
     private init() {}
     
     func sendRequest<T: Decodable, P: Encodable>(
@@ -22,6 +20,8 @@ class NetworkManager {
         parameters: P? = nil,
         completion: @escaping (Result<T, NetworkError>) -> Void
     ) {
+        let accessToken = LoginManager.shared.getAccessToken()
+        
         let headers: HTTPHeaders = ["accessToken": accessToken]
         
         AF.request(
@@ -36,12 +36,8 @@ class NetworkManager {
             switch response.result {
             case .success(let value):
                 completion(.success(value))
-            case .failure(let error):
-                if error.underlyingError != nil {
-                    completion(.failure(.requestFailed))
-                } else {
-                    completion(.failure(.invalidResponse))
-                }
+            case .failure:
+                completion(.failure(NetworkError(code: response.response?.statusCode ?? 600)))
             }
         }
     }
@@ -51,6 +47,7 @@ class NetworkManager {
         method: HTTPMethod,
         completion: @escaping (Result<T, NetworkError>) -> Void
     ) {
+        let accessToken = LoginManager.shared.getAccessToken()
         let parameters: String? = nil
         let headers: HTTPHeaders = ["accessToken": accessToken]
         
@@ -66,12 +63,14 @@ class NetworkManager {
             switch response.result {
             case .success(let value):
                 completion(.success(value))
-            case .failure(let error):
-                if error.underlyingError != nil {
-                    completion(.failure(.requestFailed))
-                } else {
-                    completion(.failure(.invalidResponse))
-                }
+            case .failure:
+                completion(
+                    .failure(
+                        NetworkError(
+                            code: response.response?.statusCode ?? 600
+                        )
+                    )
+                )
             }
         }
     }
@@ -81,9 +80,10 @@ class NetworkManager {
         method: HTTPMethod,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
+        let accessToken = LoginManager.shared.getAccessToken()
         let parameters: String? = nil
         let hearders: HTTPHeaders = ["accessToken": accessToken]
-
+        
         AF.request(
             url,
             method: method,
@@ -97,7 +97,13 @@ class NetworkManager {
             case .success:
                 completion(.success(Void()))
             case .failure:
-                completion(.failure(.invalidResponse))
+                completion(
+                    .failure(
+                        NetworkError(
+                            code: response.response?.statusCode ?? 600
+                        )
+                    )
+                )
             }
         }
     }

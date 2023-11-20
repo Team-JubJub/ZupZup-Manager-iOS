@@ -12,27 +12,26 @@ import Combine
 
 // MARK: ContentView
 struct ContentView: View {
-    // 로그인 여부를 확인하는 변수입니다.
-    @State var isLogin = false
-    // 탭바 아이템의 인덱스 번호
-    @State private var selectedIndex = 0
-    // 탭바 아이콘의 정보를 담고 있는 배열
-    let tabBarImangeNames: [AssetName] = [ .tab_zero_off, .tab_one_off, .tab_two_off]
-    // 탭바 아이콘의 이미지를 담고 있는 배열
-    let seletedImage: [AssetName] = [.tab_zero_on, .tab_one_on, .tab_two_on]
-    // MARK: 유즈케이스
-    let openStoreUseCase: OpenStoreUseCase = OpenStoreUseCaseImpl()
+    
+    @ObservedObject var loginManager = LoginManager.shared
+    
+    @State private var selectedIndex = 0                                                    // 탭바 아이템의 인덱스 번호
+    
+    let tabBarImangeNames: [AssetName] = [.tab_zero_off, .tab_one_off, .tab_two_off]       // 탭바 아이콘의 정보를 담고 있는 배열
+    
+    let seletedImage: [AssetName] = [.tab_zero_on, .tab_one_on, .tab_two_on]                // 탭바 아이콘의 이미지를 담고 있는 배열
+    
+    let openStoreUseCase: OpenStoreUseCase = OpenStoreUseCaseImpl()                         // MARK: 유즈케이스
+    
     let fetchStoreUseCase: FetchStoreUseCase = FetchStoreUseCaseImpl()
     
     var body: some View {
         NavigationStack {
-            if LoginManager.shared.isLoginValid() || isLogin { // MARK: 로그인이 된 상태
+            if loginManager.isLogin {                              // MARK: 로그인이 된 상태
                 VStack(spacing: 0) {
                     ZStack {
-                        // 화면 부분
                         switch selectedIndex {
-                        case 0:
-                            // MARK: 1본 탭 : 예약 상황 화면
+                        case 0:                                                             // MARK: 1번 탭 : 예약 상황 화면
                             let store = Store<ReservationState, ReservationAction>(
                                 initialState: ReservationState(),
                                 reducer: reservationReducer,
@@ -49,13 +48,11 @@ struct ContentView: View {
                                     }
                                 )
                             )
-                            // MARK: OnAppear 시점에 예약 조회 API 호출
-                            ReservationView(store: store)
+                            ReservationView(store: store)                                   // MARK: OnAppear 시점에 예약 조회 API 호출
                                 .onAppear {
                                     ViewStore(store).send(.fetchReservation)
                                 }
-                        case 1:
-                            // MARK: 2번 탭 : 제품 관리 화면
+                        case 1:                                                             // MARK: 2번 탭 : 제품 관리 화면
                             let store = Store<ItemManageState, ItemManageAction>(
                                 initialState: ItemManageState(),
                                 reducer: itemManageReducer,
@@ -71,13 +68,11 @@ struct ContentView: View {
                                     }
                                 )
                             )
-                            // MARK: OnAppear 시점에 API 호출
-                            ItemManagementView(store: store)
+                            ItemManagementView(store: store)                                // MARK: OnAppear 시점에 API 호출
                                 .onAppear {
                                     ViewStore(store).send(.fetchItems)
                                 }
-                        default:
-                            // MARK: 3번 탭 : 매장 관리 화면
+                        default:                                                            // MARK: 3번 탭 : 매장 관리 화면
                             let store = Store<StoreManagementState, StoreManagementAction>(
                                 initialState: StoreManagementState(),
                                 reducer: storeManagementReducer,
@@ -110,8 +105,8 @@ struct ContentView: View {
                         }
                     }
                     Spacer()
-                    // 탭바 부분
-                    HStack(spacing: 0) {
+                    
+                    HStack(spacing: 0) {                                                    // 탭바 부분
                         ForEach(tabBarImangeNames.indices, id: \.self) { num in
                             TabbarItem(
                                 defaultAsset: tabBarImangeNames[num],
@@ -123,8 +118,7 @@ struct ContentView: View {
                     }
                     .frame(height: 50)
                 }
-            } else { // MARK: 로그인이 되지 않은 상태
-                // 로그인 화면 호출
+            } else {                                                                        // MARK: 로그인이 되지 않은 상태
                 let store = Store<LoginState, LoginAction>(
                     initialState: LoginState(),
                     reducer: loginReducer,
@@ -133,7 +127,6 @@ struct ContentView: View {
                         login: { request in
                             return Future { promise in
                                 LoginRepository().login(request: request) { result in
-                                    self.isLogin.toggle()
                                     promise(.success(result))
                                 }
                             }
@@ -147,7 +140,7 @@ struct ContentView: View {
                         }
                     )
                 )
-                LoginView(store: store, isLogin: $isLogin)
+                LoginView(store: store)
             }
         }
     }

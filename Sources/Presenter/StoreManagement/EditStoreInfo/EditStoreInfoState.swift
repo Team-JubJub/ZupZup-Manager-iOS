@@ -100,7 +100,7 @@ enum EditStoreInfoAction: Equatable {
     case dismissDiscountEndTimePicker
     
     // API 관련
-    case editStoreInfoResponse(Result<EditStoreInfoResponse, NetworkError>)
+    case editStoreInfoResponse(Result<EditStoreInfoResponse, EditStoreInfoError>)
 
     // Alert 관련
     case dismissAlert // isShowing Alert 바인딩 함수
@@ -110,7 +110,7 @@ enum EditStoreInfoAction: Equatable {
 
 // MARK: TCA-Environment
 struct EditStoreInfoEnvironment {
-    let editStoreInfo: (EditStoreInfoRequest) -> EffectPublisher<Result<EditStoreInfoResponse, NetworkError>, Never>
+    let editStoreInfo: (EditStoreInfoRequest) -> EffectPublisher<Result<EditStoreInfoResponse, EditStoreInfoError>, Never>
 }
 
 // MARK: TCA-Reducer
@@ -230,7 +230,12 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
         return .none
         
     case let .editStoreInfoResponse(.failure(error)):
-        // TODO: Error Handling
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         state.isLoading = false
         return .none
     
@@ -248,7 +253,7 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
             closeTime: state.closeTime + ":" + state.closeMinute,
             saleTimeStart: state.discountStartTime + ":" + state.discountStartMinute,
             saleTimeEnd: state.discountEndTime + ":" + state.discountEndMinute,
-            closedDay: nil
+            closedDay: convertBoolArrayToString(state.daysOfWeek)
         )
         
         let request = EditStoreInfoRequest(

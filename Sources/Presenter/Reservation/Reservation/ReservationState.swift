@@ -22,22 +22,27 @@ struct ReservationState: Equatable {
 // Action
 enum ReservationAction: Equatable {
     case fetchReservation
-    case reservationsFetched(Result<[ReservationEntity], NetworkError>)
+    case reservationsFetched(Result<[ReservationEntity], FetchReservationsError>)
     case tapTabbarItem(Int)
 }
 
 // Environment
 struct ReservationEnvironment {
     var mainQueue: AnySchedulerOf<DispatchQueue>
-    var reservations: (FetchReservationsRequest?) -> EffectPublisher<Result<[ReservationEntity], NetworkError>, Never>
+    var reservations: (FetchReservationsRequest?) -> EffectPublisher<Result<[ReservationEntity], FetchReservationsError>, Never>
 }
 
 // Reducer
 let reservationReducer = AnyReducer<ReservationState, ReservationAction, ReservationEnvironment> { state, action, environment in
     switch action {
     case .fetchReservation:
+        
+        let storeId = LoginManager.shared.getStoreId()
+        
+        let request = FetchReservationsRequest(storeId: 8)
+        
         state.isLoading = true
-        return environment.reservations(nil)
+        return environment.reservations(request)
             .map(ReservationAction.reservationsFetched)
             .eraseToEffect()
         
@@ -60,6 +65,12 @@ let reservationReducer = AnyReducer<ReservationState, ReservationAction, Reserva
         #if DEBUG
         print("예약 상태 조희 API 호출 실패", error)
         #endif
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         return .none
         
     case let .tapTabbarItem(num):

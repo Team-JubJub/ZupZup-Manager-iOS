@@ -37,11 +37,11 @@ enum StoreIntroduceAction: Equatable {
     case tapAlertCancel // Alert - Cancel을 탭한 경우
     
     // API 관련
-    case editStoreIntroduceResponse(Result<EditStoreIntroduceResponse, NetworkError>) // 가게 소개 수정 API의 Response
+    case editStoreIntroduceResponse(Result<EditStoreIntroduceResponse, EditStoreIntroduceError>) // 가게 소개 수정 API의 Response
 }
 
 struct StoreIntroduceEnvironment {
-    let editStoreIntroduce: (EditStoreIntroduceRequest) -> EffectPublisher<Result<EditStoreIntroduceResponse, NetworkError>, Never>
+    let editStoreIntroduce: (EditStoreIntroduceRequest) -> EffectPublisher<Result<EditStoreIntroduceResponse, EditStoreIntroduceError>, Never>
 }
 
 let storeIntroduceReducer = AnyReducer<StoreIntroduceState, StoreIntroduceAction, StoreIntroduceEnvironment> { state, action, environment in
@@ -83,7 +83,13 @@ let storeIntroduceReducer = AnyReducer<StoreIntroduceState, StoreIntroduceAction
         state.isPop = true
         return .none
         
-    case .editStoreIntroduceResponse(.failure): // 가게 소개 수정 API의 Response - 실패
+    case .editStoreIntroduceResponse(.failure(let error)): // 가게 소개 수정 API의 Response - 실패
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         return .none
     }
 }

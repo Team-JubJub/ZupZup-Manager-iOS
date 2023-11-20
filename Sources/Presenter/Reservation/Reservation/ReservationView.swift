@@ -56,42 +56,51 @@ struct ReservationView: View {
                     ForEach(viewStore.tabBarNames.indices, id: \.self) { num in
                         VStack(spacing: 0) {
                             ScrollView(showsIndicators: false) {
-                                ForEach(viewStore.filteredReservations, id: \.self) { reservation in
-                                    NavigationLink(
-                                        destination: ReserveDetailView(
-                                            store: Store<ReservationDetailState, ReservationDetailAction>(
-                                                initialState: ReservationDetailState(
-                                                    reservation: reservation
-                                                ),
-                                                reducer: reservationDetailReducer,
-                                                environment: ReservationDetailEnvironment(
-                                                    changeState: { request in
-                                                        return Future { promise in
-                                                            changeStateUseCase.changeState(request: request) { result in
-                                                                promise(.success(result))
+                                if viewStore.filteredReservations.isEmpty {
+                                    VStack(spacing: 0) {
+                                        InfiniteSpacer()
+                                        EmptyReservationView()
+                                        InfiniteSpacer()
+                                    }
+                                    .frame(width: Device.Width, height: Device.Height / 2, alignment: .center)
+                                } else {
+                                    ForEach(viewStore.filteredReservations, id: \.self) { reservation in
+                                        NavigationLink(
+                                            destination: ReserveDetailView(
+                                                store: Store<ReservationDetailState, ReservationDetailAction>(
+                                                    initialState: ReservationDetailState(
+                                                        reservation: reservation
+                                                    ),
+                                                    reducer: reservationDetailReducer,
+                                                    environment: ReservationDetailEnvironment(
+                                                        changeState: { request in
+                                                            return Future { promise in
+                                                                changeStateUseCase.changeState(request: request) { result in
+                                                                    promise(.success(result))
+                                                                }
                                                             }
-                                                        }
-                                                        .eraseToEffect()
-                                                    },
-                                                    changeJustState: { request in
-                                                        return Future { promise in
-                                                            changeJustStateUseCase.changeJustState(request: request) { result in
-                                                                promise(.success(result))
+                                                            .eraseToEffect()
+                                                        },
+                                                        changeJustState: { request in
+                                                            return Future { promise in
+                                                                changeJustStateUseCase.changeJustState(request: request) { result in
+                                                                    promise(.success(result))
+                                                                }
                                                             }
+                                                            .eraseToEffect()
                                                         }
-                                                        .eraseToEffect()
-                                                    }
+                                                    )
                                                 )
                                             )
-                                        )
-                                    ) {
-                                        ReservationItem(
-                                            date: reservation.date,
-                                            menu: reservation.orderedItemdName,
-                                            time: reservation.orderedTime,
-                                            customer: reservation.customerName,
-                                            state: reservation.state
-                                        )
+                                        ) {
+                                            ReservationItem(
+                                                date: reservation.date,
+                                                menu: reservation.orderedItemdName,
+                                                time: reservation.orderedTime,
+                                                customer: reservation.customerName,
+                                                state: reservation.state
+                                            )
+                                        }
                                     }
                                 }
                             }

@@ -9,14 +9,20 @@
 import Foundation
 
 protocol OpenStoreRepository {
-    func openStore(request: OpenStoreRequest, completion: @escaping (Result<OpenStoreResponse, NetworkError>) -> Void)
+    func openStore(
+        request: OpenStoreRequest,
+        completion: @escaping (Result<OpenStoreResponse, OpenStoreError>) -> Void
+    )
 }
 
 final class OpenStoreRepositoryImpl: OpenStoreRepository {
     
     let storeId = LoginManager.shared.getStoreId()
     
-    func openStore(request: OpenStoreRequest, completion: @escaping (Result<OpenStoreResponse, NetworkError>) -> Void) {
+    func openStore(
+        request: OpenStoreRequest,
+        completion: @escaping (Result<OpenStoreResponse, OpenStoreError>) -> Void
+    ) {
         
         let url = "https://zupzuptest.com:8080/seller/open/\(storeId)?isOpened=\(request.openOrClose)"
         
@@ -27,8 +33,21 @@ final class OpenStoreRepositoryImpl: OpenStoreRepository {
             switch result {
             case .success:
                 completion(.success(OpenStoreResponse()))
-            case .failure:
-                completion(.failure(.invalidResponse))
+            case .failure(let error):
+                switch error.code {
+                case 400:
+                    completion(.failure(.badRequest))
+                case 401:
+                    completion(.failure(.noStore))
+                case 403:
+                    completion(.failure(.wrongPassword))
+                case 404:
+                    completion(.failure(.wrongId))
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unKnown))
+                }
             }
         }
     }

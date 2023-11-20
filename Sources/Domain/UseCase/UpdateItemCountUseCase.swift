@@ -11,7 +11,7 @@ import Foundation
 protocol UpdateItemCountUseCase {
     func updateItemCount(
         request: UpdateItemCountRequest,
-        completion: @escaping (Result<UpdateItemCountResponse, NetworkError>) -> Void
+        completion: @escaping (Result<UpdateItemCountResponse, UpdateItemCountError>) -> Void
     )
 }
 
@@ -25,7 +25,7 @@ class UpdateItemCountUseCaseImpl: UpdateItemCountUseCase {
     
     func updateItemCount(
         request: UpdateItemCountRequest,
-        completion: @escaping (Result<UpdateItemCountResponse, NetworkError>) -> Void
+        completion: @escaping (Result<UpdateItemCountResponse, UpdateItemCountError>) -> Void
     ) {
         updateItemCountRepository.updateItemCount(request: request) { result in
             switch result {

@@ -100,6 +100,9 @@ struct StoreManagementView: View {
                                             )
                                         )
                                         EditStoreInfoView(store: store)
+                                            .onDisappear {
+                                                viewStore.send(.fetchStore)
+                                            }
                                     }
                                 }
                                 
@@ -226,8 +229,10 @@ struct StoreManagementView: View {
                     )
                 )
                 StoreIntroduceView(store: store)
+                    .onDisappear {
+                        viewStore.send(.fetchStore)
+                    }
             }
-            
         }
     }
 }

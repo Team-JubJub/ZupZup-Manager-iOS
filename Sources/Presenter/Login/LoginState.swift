@@ -19,8 +19,8 @@ struct LoginState: Equatable {
     var isLoading: Bool = false // API 호출 사이 인디케이터 트리거
     
     // 텍스트 필드 관련
-    var id: String = "test123"
-    var password: String = "test1234"
+    var id: String = ""
+    var password: String = ""
     
     // 색상 변경 관련
     var failCount: Int = 0
@@ -33,28 +33,28 @@ struct LoginState: Equatable {
 enum LoginAction: Equatable {
     
     // 텍스트 필드 관련
-    case idChanged(String) // 텍스트 필드 ID 업데이트
-    case passwordChanged(String) // 텍스트 필드 Password 업데이트
+    case idChanged(String)                                              // 텍스트 필드 ID 업데이트
+    case passwordChanged(String)                                        // 텍스트 필드 Password 업데이트
     
     // 터치 액션 관련
-    case tapLoginButton // 로그인 버튼을 누른 경우
-    case tapEmptySpace // 빈 화면을 터치한 경우
-    case tapFindMyAcoount // 내 계정 찾기를 터치한 경우
-    case tapMakeAccount // 회원가입을 터치한 경우
+    case tapLoginButton                                                 // 로그인 버튼을 누른 경우
+    case tapEmptySpace                                                  // 빈 화면을 터치한 경우
+    case tapFindMyAcoount                                               // 내 계정 찾기를 터치한 경우
+    case tapMakeAccount                                                 // 회원가입을 터치한 경우
     
     // API관련
-    case loginRequestResult(Result<LoginResponse, NetworkError>) // 로그인 API Response 받은 경우
+    case loginRequestResult(Result<LoginResponse, LoginError>)          // 로그인 API Response 받은 경우
     
     // 색상 변경 관련
-    case textFieldColorChanged // textFieldColor 바인딩 함수
-    case buttonBodyColorChanged // buttonBodyColor 바인딩 함수
-    case buttonTextColorChanged // buttonTextColor 바인딩 함수
+    case textFieldColorChanged                                          // textFieldColor 바인딩 함수
+    case buttonBodyColorChanged                                         // buttonBodyColor 바인딩 함수
+    case buttonTextColorChanged                                         // buttonTextColor 바인딩 함수
 }
 
 // MARK: TCA - Environment
 struct LoginEnvironment {
     var loginRepository: LoginRepository
-    var login: (LoginRequest) -> EffectPublisher<Result<LoginResponse, NetworkError>, Never>
+    var login: (LoginRequest) -> EffectPublisher<Result<LoginResponse, LoginError>, Never>
     let openFindMyAcoountURL: () -> Void // 내 계정 찾기 URL로 전환
     let openMakeAccountURL: () -> Void // 회원가입 URL로 전환
 }
@@ -97,7 +97,15 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
     
     // 터치 액션 관련
     case .tapLoginButton: // 로그인 버튼을 누른 경우
-        let request = LoginRequest(loginId: state.id, loginPwd: state.password)
+        
+        let deviceToken = LoginManager.shared.getDeviceToken()
+        
+        let request = LoginRequest(
+            loginId: state.id,
+            loginPwd: state.password,
+            deviceToken: deviceToken
+        )
+        
         state.isLoading = true
         
         return environment.login(request)
@@ -123,9 +131,7 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
         
     // API관련
     case let .loginRequestResult(.success(response)): // 로그인 API Response 받은 경우 - 성공
-        LoginManager.shared.setStoreId(id: response.storeId)
-        LoginManager.shared.setAccessToken(newToken: response.accessToken)
-        LoginManager.shared.setRefresh(newToken: response.refreshToken)
+        LoginManager.shared.login(response: response)
         state.isLoading = false
         return .none
         

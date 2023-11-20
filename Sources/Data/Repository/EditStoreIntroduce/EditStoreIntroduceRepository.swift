@@ -13,7 +13,7 @@ import Alamofire
 protocol EditStoreIntroduceRepository {
     func editStoreIntroduce(
         request: EditStoreIntroduceRequest,
-        completion: @escaping (Result<EditStoreIntroduceResponse, NetworkError>) -> Void
+        completion: @escaping (Result<EditStoreIntroduceResponse, EditStoreIntroduceError>) -> Void
     )
 }
 
@@ -21,7 +21,7 @@ final class EditStoreIntroduceRepositoryImpl: EditStoreIntroduceRepository {
     
     func editStoreIntroduce(
         request: EditStoreIntroduceRequest,
-        completion: @escaping (Result<EditStoreIntroduceResponse, NetworkError>) -> Void
+        completion: @escaping (Result<EditStoreIntroduceResponse, EditStoreIntroduceError>) -> Void
     ) {
         
         let url = "https://zupzuptest.com:8080/seller/notice/\(LoginManager.shared.getStoreId())"
@@ -39,7 +39,20 @@ final class EditStoreIntroduceRepositoryImpl: EditStoreIntroduceRepository {
             case .success:
                 completion(.success(EditStoreIntroduceResponse()))
             case .failure:
-                completion(.failure(NetworkError.invalidResponse))
+                switch response.response?.statusCode {
+                case 400:
+                    completion(.failure(.noToken))
+                case 401:
+                    completion(.failure(.tokenExpired))
+                case 403:
+                    completion(.failure(.notAllowed))
+                case 404:
+                    completion(.failure(.noStore))
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unKnown))
+                }
             }
         }
     }

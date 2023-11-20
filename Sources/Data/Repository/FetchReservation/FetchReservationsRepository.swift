@@ -11,29 +11,42 @@ import Foundation
 protocol FetchReservationsRepository {
     func fetchReservations(
         request: FetchReservationsRequest?,
-        completion: @escaping(Result<FetchReservationsResponse, NetworkError>) -> Void
+        completion: @escaping(Result<FetchReservationsResponse, FetchReservationsError>) -> Void
     )
 }
 
 final class FetchReservationsRepositoryImpl: FetchReservationsRepository {
     
-    func fetchReservations(request: FetchReservationsRequest?, completion: @escaping(Result<FetchReservationsResponse, NetworkError>) -> Void) {
+    func fetchReservations(
+        request: FetchReservationsRequest?,
+        completion: @escaping(Result<FetchReservationsResponse, FetchReservationsError>) -> Void
+    ) {
         
         let storeId = LoginManager.shared.getStoreId()
         
         NetworkManager.shared.sendRequest(
             to: "https://zupzuptest.com:8080/seller/\(String(describing: storeId))/order",
-            method: .get,
-            parameters: request
+            method: .get
         ) { (result: Result<FetchReservationsResponse, NetworkError>) in
             switch result {
             case .success(let response):
                 completion(.success(response))
+                completion(.failure(.tokenExpired))
             case .failure(let error):
-                #if DEBUG
-                print("⭐️ 예약조회 API 호출 실패 ⭐️")
-                #endif
-                completion(.failure(error))
+                switch error.code {
+                case 204:
+                    completion(.success(FetchReservationsResponse(orders: [])))
+                case 400:
+                    completion(.failure(.noToken))
+                case 401:
+                    completion(.failure(.tokenExpired))
+                case 403:
+                    completion(.failure(.noPermission))
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unKnown))
+                }
             }
         }
     }

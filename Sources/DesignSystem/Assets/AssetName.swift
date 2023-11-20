@@ -28,6 +28,7 @@ enum AssetName: String {
     case ic_clock_black
     case ic_clock_white
     case ic_user
+    case ic_empty_image
     
     // StoreManagement
     case ic_day

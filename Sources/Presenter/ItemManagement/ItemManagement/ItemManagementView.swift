@@ -89,7 +89,17 @@ struct ItemManagementView: View {
                             let store = Store<EditItemInfoState, EditItemInfoAction>(
                                 initialState: EditItemInfoState(items: viewStore.state.items),
                                 reducer: editItemInfoReducer,
-                                environment: EditItemInfoEnvironment()
+                                environment: EditItemInfoEnvironment(
+                                    items: {
+                                        return Future { promise in
+                                            FetchItemsUseCaseImpl()
+                                                .fetchItems { result in
+                                                    promise(.success(result))
+                                                }
+                                        }
+                                        .eraseToEffect()
+                                    }
+                                )
                             )
                             EditItemInfoView(store: store)
                         }

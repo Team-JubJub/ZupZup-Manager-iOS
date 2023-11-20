@@ -9,7 +9,7 @@
 import Foundation
 
 struct FetchReservationsResponse: Codable {
-    let orderList: [Order]
+    let orders: [Order] // "orderList" 대신 "orders"로 변경
     
     struct Order: Codable {
         let orderId: Int
@@ -30,7 +30,9 @@ struct FetchReservationsResponse: Codable {
     struct Item: Codable {
         let itemId: Int
         let itemName: String
+        let imageUrl: String?
         let itemPrice: Int
+        let salePrice: Int
         let itemCount: Int
     }
 }
@@ -38,7 +40,7 @@ struct FetchReservationsResponse: Codable {
 extension FetchReservationsResponse {
     
     func toReservations() -> [ReservationEntity] {
-        return self.orderList.map { order in
+        return self.orders.map { order in
             ReservationEntity(
                 id: order.orderId,
                 customerName: order.userName,

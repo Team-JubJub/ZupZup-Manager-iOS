@@ -11,7 +11,7 @@ import Foundation
 protocol EditStoreIntroduceUseCase {
     func editStoreIntroduce(
         request: EditStoreIntroduceRequest,
-        completion: @escaping (Result<EditStoreIntroduceResponse, NetworkError>) -> Void
+        completion: @escaping (Result<EditStoreIntroduceResponse, EditStoreIntroduceError>) -> Void
     )
 }
 
@@ -25,7 +25,7 @@ final class EditStoreIntroduceUseCaseImpl: EditStoreIntroduceUseCase {
     
     func editStoreIntroduce(
         request: EditStoreIntroduceRequest,
-        completion: @escaping (Result<EditStoreIntroduceResponse, NetworkError>) -> Void
+        completion: @escaping (Result<EditStoreIntroduceResponse, EditStoreIntroduceError>) -> Void
     ) {
         editStoreIntroduceRepository.editStoreIntroduce(request: request) { result in
             switch result {

@@ -65,6 +65,10 @@ struct EditItemInfoView: View {
                                         )
                                     )
                                     EditItemInfoDetailView(store: store)
+                                        .onDisappear {
+                                            // TODO: 아이템 패치
+                                            viewStore.send(.fetchItems)
+                                        }
                                 } label: {
                                     ProductGridItem(
                                         count: item.count,
@@ -94,6 +98,11 @@ struct EditItemInfoView: View {
             }
             .navigationBarBackButtonHidden()
             .navigationTitle("")
+            .overlay {
+                if viewStore.isLoading {
+                    FullScreenProgressView()
+                }
+            }
             .onChange(of: viewStore.isPop) { isPop in
                 if isPop { dismiss() }
             }
