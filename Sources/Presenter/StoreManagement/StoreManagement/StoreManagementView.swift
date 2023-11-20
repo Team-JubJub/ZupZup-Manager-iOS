@@ -168,10 +168,6 @@ struct StoreManagementView: View {
                         VStack(spacing: 0) {
                             StoreManageViewItem(title: "고객 센터") { viewStore.send(.tapCustomerCenterButton) }
                             
-                            StoreManageViewItem(title: "가게 위치 이전") {
-                                // TODO: 가게 위치 이전 구현
-                            }
-                            
                             StoreManageViewItem(title: "로그아웃") { viewStore.send(.tapLogoutButton) }
                         }
                     }
