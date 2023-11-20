@@ -154,8 +154,12 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         return .none
         
     case let .updateItemInfoResponse(.failure(error)):  // 제품 업데이트 API 호출 실패
-        // TODO: Error Handling
-        
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         state.isLoading = false
         return .none
         
@@ -165,7 +169,12 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         return .none
         
     case let .deleteItemResponse(.failure(error)):      // 제품 삭제 API 호출 실패
-        // TODO: Error Handling
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         state.isLoading = false
         return .none
         

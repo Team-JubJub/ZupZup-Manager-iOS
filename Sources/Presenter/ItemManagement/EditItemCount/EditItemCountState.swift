@@ -96,7 +96,12 @@ let editItemCountReducer = AnyReducer<EditItemCountState, EditItemCountAction, E
         return .none
         
     case let .updateItemCountResponse(.failure(error)): // 제품 수량 수정 API의 결과가 실패
-        // TODO: Error Handling
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         state.isLoading = false
         return .none
     }

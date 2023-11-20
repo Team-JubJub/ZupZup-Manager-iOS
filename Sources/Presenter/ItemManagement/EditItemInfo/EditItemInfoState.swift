@@ -56,7 +56,12 @@ let editItemInfoReducer = AnyReducer<EditItemInfoState, EditItemInfoAction, Edit
         return .none
         
     case let .itemsFetched(.failure(error)): // 제품 리스트 호출 실패
-        // TODO: Error Handling
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         state.isLoading = false
         return .none
         

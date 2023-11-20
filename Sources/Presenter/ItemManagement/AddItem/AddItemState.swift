@@ -139,6 +139,12 @@ let addItemReducer = AnyReducer<AddItemState, AddItemAction, AddItemEnvironment>
         
     case let .addItemResponse(.failure(error)):                     // 제품 추가 API의 Response
         state.isLoading = false
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         return .none
         
     case .alertCancelButton:                                        // Alert - 아니오 누른 경우

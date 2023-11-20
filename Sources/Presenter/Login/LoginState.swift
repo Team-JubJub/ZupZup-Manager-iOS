@@ -19,8 +19,8 @@ struct LoginState: Equatable {
     var isLoading: Bool = false // API 호출 사이 인디케이터 트리거
     
     // 텍스트 필드 관련
-    var id: String = "zupzup6"
-    var password: String = "sksahffk22!"
+    var id: String = ""
+    var password: String = ""
     
     // 색상 변경 관련
     var failCount: Int = 0

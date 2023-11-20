@@ -63,10 +63,6 @@ struct ReservationView: View {
                                         InfiniteSpacer()
                                     }
                                     .frame(width: Device.Width, height: Device.Height / 2, alignment: .center)
-                                    .onAppear {
-                                        dump(viewStore.reservations)
-                                        dump(viewStore.filteredReservations)
-                                    }
                                 } else {
                                     ForEach(viewStore.filteredReservations, id: \.self) { reservation in
                                         NavigationLink(

@@ -96,7 +96,12 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         return .none
         
     case let .fetchStoreResponse(.failure(error)): // 가게 정보 조희 API 호출의 결과 - 실패
-        // TODO: Error Handling
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         state.isLoading = false
         return .none
         

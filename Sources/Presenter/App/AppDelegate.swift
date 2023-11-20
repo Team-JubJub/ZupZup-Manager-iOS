@@ -32,25 +32,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         
         Messaging.messaging().delegate = self                                   // 파이어베이스 Meesaging 설정
-        
-        let refreshToken = LoginManager.shared.getRefreshToken()
-        
-        if !refreshToken.isEmpty {
-            let autoLoginRequest = AutoLoginRequest(refreshToken: refreshToken)
-            
-            AutoLoginRepository().autoLogin(request: autoLoginRequest) { result in
-                switch result {
-                case .success(let response):
-                    DispatchQueue.main.async {
-                        LoginManager.shared.autoLogin(response: response)
-                    }
-                case .failure:
-                    DispatchQueue.main.async {
-                        LoginManager.shared.removeAccessToken()
-                    }
-                }
-            }
-        }
+    
+        LoginManager.shared.requestAutoLogin()
         return true
     }
     

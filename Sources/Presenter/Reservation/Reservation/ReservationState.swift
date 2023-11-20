@@ -65,6 +65,12 @@ let reservationReducer = AnyReducer<ReservationState, ReservationAction, Reserva
         #if DEBUG
         print("예약 상태 조희 API 호출 실패", error)
         #endif
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         return .none
         
     case let .tapTabbarItem(num):

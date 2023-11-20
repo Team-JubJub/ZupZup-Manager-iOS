@@ -83,7 +83,13 @@ let storeIntroduceReducer = AnyReducer<StoreIntroduceState, StoreIntroduceAction
         state.isPop = true
         return .none
         
-    case .editStoreIntroduceResponse(.failure): // 가게 소개 수정 API의 Response - 실패
+    case .editStoreIntroduceResponse(.failure(let error)): // 가게 소개 수정 API의 Response - 실패
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         return .none
     }
 }

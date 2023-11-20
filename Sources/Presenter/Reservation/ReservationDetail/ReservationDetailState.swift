@@ -103,6 +103,12 @@ let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDet
         return .none
         
     case let .updatedCondition(.failure(error)): // 예약 상태 변경 API - 실패
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         state.isLoading = false
         #if DEBUG
         print("예약 상태 변경 API 호출 실패", error)

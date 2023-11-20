@@ -230,7 +230,12 @@ let editStoreInfoReducer = AnyReducer<EditStoreInfoState, EditStoreInfoAction, E
         return .none
         
     case let .editStoreInfoResponse(.failure(error)):
-        // TODO: Error Handling
+        switch error {
+        case .tokenExpired:
+            LoginManager.shared.setLoginOff()
+        default:
+            break
+        }
         state.isLoading = false
         return .none
     

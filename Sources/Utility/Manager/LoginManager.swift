@@ -88,4 +88,25 @@ extension LoginManager {
         self.setAccessToken(newToken: response.accessToken)
         self.setLoginOn()
     }
+    
+    func requestAutoLogin() {
+        let refreshToken = self.getRefreshToken()
+        
+        if !refreshToken.isEmpty {
+            let autoLoginRequest = AutoLoginRequest(refreshToken: refreshToken)
+            
+            AutoLoginRepository().autoLogin(request: autoLoginRequest) { result in
+                switch result {
+                case .success(let response):
+                    DispatchQueue.main.async {
+                        self.autoLogin(response: response)
+                    }
+                case .failure:
+                    DispatchQueue.main.async {
+                        self.removeAccessToken()
+                    }
+                }
+            }
+        }
+    }
 }
