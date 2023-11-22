@@ -24,7 +24,7 @@ struct ReserveDetailView: View {
                     VSpacer(height: Device.Height * 2 / 844)
                     
                     HStack(spacing: 0) {
-                        LargeNavigationTitle(title: "예약")
+                        LargeNavigationTitle(title: "예약")   
                         InfiniteSpacer()
                         if viewStore.reservation.state != .new { StateCapsule(state: viewStore.reservation.state) }
                     }
@@ -100,7 +100,7 @@ struct ReserveDetailView: View {
                                 HalfSquareButton(
                                     backgroundColor: .neutralGray150,
                                     fontColor: .neutralGray400,
-                                    title: "취소"
+                                    title: "예약 취소"
                                 )
                                 .frame(height: 56)
                                 .padding(EdgeInsets(top: 0, leading: Device.HPadding, bottom: 0, trailing: 0))
@@ -113,7 +113,7 @@ struct ReserveDetailView: View {
                                 HalfSquareButton(
                                     backgroundColor: .Tangerine300,
                                     fontColor: .pureBlack,
-                                    title: "완료"
+                                    title: "예약 완료"
                                 )
                                 .frame(height: 56)
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Device.HPadding))
@@ -134,6 +134,33 @@ struct ReserveDetailView: View {
                         .presentationDetents([.medium])
                 }
             }
+            
+            .alert(
+                "예약 취소하기",
+                isPresented: viewStore.binding(
+                    get: { $0.isRejectAlertOn },
+                    send: ReservationDetailAction.dismissRejectAlert
+                ),
+                actions: {
+                    Button("네", role: .destructive) { viewStore.send(.tabRejectAlertOK) }
+                    Button("아니오", role: .cancel) { viewStore.send(.tabRejectAlertNO) }
+                },
+                message: { Text("예약을 취소하시겠습니까? \n 취소한 예약은 돌릴 수 없어요.") }
+            )
+            
+            .alert(
+                "예약 완료하기",
+                isPresented: viewStore.binding(
+                    get: { $0.isCompleteAlertOn },
+                    send: ReservationDetailAction.dismissCompleteAlert
+                ),
+                actions: {
+                    Button("네", role: .destructive) { viewStore.send(.tabCompleteAlertOK) }
+                    Button("아니오", role: .cancel) { viewStore.send(.tabCompleteAlertNO) }
+                },
+                message: { Text("픽업이 완료되었나요? \n 예약의 상태를 완료로 바꾸시겠습니까?") }
+            )
+            
             .overlay {
                 if viewStore.isLoading {
                     FullScreenProgressView()
