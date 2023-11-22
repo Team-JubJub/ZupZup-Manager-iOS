@@ -19,6 +19,8 @@ struct ReservationDetailState: Equatable {
     var isShowingHalfModal: Bool = false // 하프 모달 트리거
     // API 관련
     var isLoading: Bool = false // API 호출시 indicator 트리거
+    
+    var isShowingAlert: Bool = false
 }
 
 // MARK: TCA - Action
@@ -31,6 +33,9 @@ enum ReservationDetailAction: Equatable {
     case tabCompleteButton // 완료 버튼을 눌렀을 경우
     case tabRejectButton // 반려 버튼을 눌렀을 경우
     case tabConfirmButton // 화정 버튼을 눌렀을 경우
+    
+    case dismissAlert
+    case cancelAlert
     
     // API 관련
     case updatedCondition(Result<ReservationCondition, ChangeStateError>) // 예약 상태 변경 API 리턴
@@ -106,6 +111,8 @@ let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDet
         switch error {
         case .tokenExpired:
             LoginManager.shared.setLoginOff()
+        case .badRequest:
+            state.isShowingAlert = true
         default:
             break
         }
@@ -118,6 +125,13 @@ let reservationDetailReducer = AnyReducer<ReservationDetailState, ReservationDet
     // 모달 관련
     case .bindIsShowingHalfModal: // isShowingHalfModal 변수 바인딩
         state.isShowingHalfModal = false
+        return .none
+        
+    case .dismissAlert:                           // isShowingAlert 바인딩
+        state.isShowingAlert = false
+        return .none
+        
+    case .cancelAlert:
         return .none
     }
 }

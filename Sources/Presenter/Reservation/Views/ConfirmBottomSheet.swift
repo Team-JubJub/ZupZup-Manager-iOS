@@ -150,6 +150,17 @@ struct ConfirmBottomSheet: View {
                     }
                 }
             }
+            .alert(
+                "제품 확정 실패",
+                isPresented: viewstore.binding(
+                    get: { $0.isShowingAlert },
+                    send: ReservationDetailAction.dismissAlert
+                ),
+                actions: {
+                    Button("확인", role: .cancel) { viewstore.send(.cancelAlert) }
+                },
+                message: { Text("예약을 확정할 수 없어요! \n 개수를 확인해주세요") }
+            )
         }
     }
 }
