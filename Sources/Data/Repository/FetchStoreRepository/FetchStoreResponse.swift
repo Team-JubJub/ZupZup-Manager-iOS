@@ -15,8 +15,8 @@ struct FetchStoreResponse: Decodable {
     let storeImageUrl: String?
     let storeAddress: String
     let category: String
-    let longitude: Float
-    let latitude: Float
+    let longitude: Float?
+    let latitude: Float?
     let openTime: String
     let closeTime: String
     let saleTimeStart: String
@@ -35,8 +35,8 @@ extension FetchStoreResponse {
             imageUrl: self.storeImageUrl ?? "",
             address: self.storeAddress,
             category: self.category,
-            latitude: self.latitude,
-            longitude: self.longitude,
+            latitude: self.latitude ?? 0,
+            longitude: self.longitude ?? 0,
             openTime: self.openTime,
             closeTime: self.closeTime,
             saleStartTime: self.saleTimeStart,
