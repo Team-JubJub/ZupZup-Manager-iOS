@@ -47,7 +47,7 @@ extension FetchReservationsResponse {
                 phoneNumber: order.phoneNumber,
                 state: order.orderStatus.toReservationState,
                 storeId: order.storeId,
-                date: order.visitTime,
+                visitTime: order.visitTime,
                 cartList: order.orderList.map { $0.toCart() },
                 orderedItemdName: order.orderTitle,
                 orderedTime: order.orderTime

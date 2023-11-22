@@ -14,7 +14,7 @@ struct ReservationEntity: Hashable, Equatable {
     var phoneNumber: String
     var state: ReservationCondition
     var storeId: Int
-    var date: String
+    var visitTime: String
     var cartList: [CartEntity]
     var orderedItemdName: String
     var orderedTime: String

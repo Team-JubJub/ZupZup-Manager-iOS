@@ -31,7 +31,7 @@ struct ReserveDetailView: View {
                     .frame(width: Device.WidthWithPadding, height: 43)
                     
                     HStack(spacing: 0) {
-                        SuitLabel(text: viewStore.reservation.date, typo: .subhead, color: .designSystem(.ivoryGray300))
+                        SuitLabel(text: viewStore.reservation.visitTime, typo: .subhead, color: .designSystem(.ivoryGray300))
                         InfiniteSpacer()
                     }
                     .frame(width: Device.WidthWithPadding)
@@ -47,7 +47,7 @@ struct ReserveDetailView: View {
                             ReserveInfoView(
                                 customer: viewStore.reservation.customerName,
                                 phoneNumber: viewStore.reservation.phoneNumber,
-                                arrivedTime: viewStore.reservation.orderedTime
+                                arrivedTime: viewStore.reservation.visitTime
                             )
                             
                             VSpacer(height: Device.Height * 48 / 844)
@@ -124,7 +124,12 @@ struct ReserveDetailView: View {
                         EmptyView()
                     }
                 }
-                .sheet(isPresented: viewStore.binding(get: \.isShowingHalfModal, send: ReservationDetailAction.bindIsShowingHalfModal)) {
+                .sheet(
+                    isPresented: viewStore.binding(
+                        get: \.isShowingHalfModal,
+                        send: ReservationDetailAction.bindIsShowingHalfModal
+                    )
+                ) {
                     ConfirmBottomSheet(store: store)
                         .presentationDetents([.medium])
                 }

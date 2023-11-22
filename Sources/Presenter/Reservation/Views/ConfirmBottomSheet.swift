@@ -73,7 +73,10 @@ struct ConfirmBottomSheet: View {
                                 SuitLabel(text: "방문 예정 시간", typo: .caption, color: .designSystem(.Tangerine300))
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                                 
-                                SuitLabel(text: ReservationHelper.twentyMinutePlus(reservation: viewstore.reservation), typo: .body)
+                                SuitLabel(
+                                    text: viewstore.reservation.visitTime.formatDateTimeRange(),
+                                    typo: .body
+                                )
                                 
                                 InfiniteSpacer()
                             }

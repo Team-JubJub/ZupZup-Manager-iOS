@@ -24,24 +24,6 @@ extension Int {
         return formattedDate
     }
     
-    /// Int형으로 시간을 String으로 변환합니다.
-    /// - Returns: 1600 -> 16:00
-    func makeDiscountTime() -> String {
-        let startString = String(self)
-        
-        let startTime = {
-            switch startString.count == 3 {
-            case true:
-                return startString.prefix(1)
-            case false:
-                return startString.prefix(2)
-            }
-        }()
-            
-        let startMinute = startString.suffix(2)
-        return "\(startTime):\(startMinute)"
-    }
-    
     func toString() -> String {
         return String(self)
     }

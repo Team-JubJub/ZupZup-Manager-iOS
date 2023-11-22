@@ -10,9 +10,9 @@ import SwiftUI
 
 struct ReservationItem: View {
     
-    @State var date: String
+    @State var visitTime: String
     @State var menu: String
-    @State var time: String
+    @State var orderedTime: String
     @State var customer: String
     @State var state: ReservationCondition
     
@@ -23,7 +23,7 @@ struct ReservationItem: View {
                     .foregroundColor(Color.designSystem(.ivoryGray150))
                 HStack(spacing: 0) {
                     VStack(alignment: .leading, spacing: 4) {
-                        SuitLabel(text: date, typo: .subhead, color: state.dateTextColor)
+                        SuitLabel(text: orderedTime, typo: .subhead, color: state.dateTextColor)
                         SuiteLabel(text: menu, typo: .h2, color: state.itemTextColor)
                             .lineLimit(1)
                     }
@@ -50,7 +50,7 @@ struct ReservationItem: View {
                                 trailing: Device.Width * 6.5 / 390
                             )
                         )
-                    SuitLabel(text: time, typo: .body, color: state.bottomTextColor)
+                    SuitLabel(text: visitTime, typo: .body, color: state.bottomTextColor)
                     Spacer()
                     
                     SuitLabel(text: customer, typo: .body, color: state.bottomTextColor)
