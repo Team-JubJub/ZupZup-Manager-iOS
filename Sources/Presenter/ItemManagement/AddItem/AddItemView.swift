@@ -74,8 +74,7 @@ struct AddItemView: View {
                                     send: AddItemAction.nameChanged
                                 )
                             ) {
-                                // TODO: action 정의 필요
-                                print("지우기")
+                                viewStore.send(.tabClearButton)
                             }
                         }
                         .frame(width: Device.WidthWithPadding)
@@ -88,8 +87,8 @@ struct AddItemView: View {
                             
                             PriceTextField(
                                 rightText: viewStore.binding(
-                                    get: { $0.price },
-                                    send: AddItemAction.priceChanged
+                                    get: { $0.discountPrice },
+                                    send: AddItemAction.discountChanged
                                 )
                             )
                             
@@ -98,8 +97,8 @@ struct AddItemView: View {
                             
                             PriceTextField(
                                 rightText: viewStore.binding(
-                                    get: { $0.discountPrice },
-                                    send: AddItemAction.discountChanged
+                                    get: { $0.price },
+                                    send: AddItemAction.priceChanged
                                 )
                             )
                         }

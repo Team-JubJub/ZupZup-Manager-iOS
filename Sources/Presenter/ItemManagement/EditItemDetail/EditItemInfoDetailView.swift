@@ -83,8 +83,7 @@ struct EditItemInfoDetailView: View {
                                     send: EditItemDetailAction.nameChanged
                                 )
                             ) {
-                                // TODO: action 정의 필요
-                                print("지우기")
+                                viewStore.send(.tabClearButton)
                             }
                         }
                         .frame(width: Device.WidthWithPadding)

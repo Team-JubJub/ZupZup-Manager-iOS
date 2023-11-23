@@ -52,6 +52,8 @@ enum EditItemDetailAction: Equatable {
     case discountChanged(String)                            // 할인 가격 텍스트 필드 업데이트
     case countChanged(Int)                                  // 개수 텍스트 필드 업데이트
     
+    case tabClearButton
+    
     case tabImagePickerButton                               // 이미지 피커를 누른 경우
     case tabMinusButton                                     // 제품 개수 - 버튼 누른 경우
     case tabPlusButton                                      // 제품 개수 + 버튼 누른 경우
@@ -228,6 +230,10 @@ let editItemDetailReducer = AnyReducer<EditItemDetailState, EditItemDetailAction
         
     case .dismissMaxLengthAlert:                        // 이름 최대 입력 개수 초과 Alert
         state.isShowingTitleMaxLengthAlert = false
+        return .none
+        
+    case .tabClearButton:
+        state.name = ""
         return .none
     }
 }

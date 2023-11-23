@@ -53,6 +53,7 @@ enum AddItemAction: Equatable {
     case tapBottomButton                                        // 하단 제품 등록 버튼을 누른 경우
     
     case tapEmptySpace                                          // 빈 공간을 눌렀을 경우
+    case tabClearButton
     
                                                                 // MARK: Alert 관련
     case dismissAlert                                           // isShowingAlert 바인딩
@@ -174,6 +175,10 @@ let addItemReducer = AnyReducer<AddItemState, AddItemAction, AddItemEnvironment>
         
     case .dismissMaxLengthAlert:                                    // 20자 제한 Alert
         state.isShowingTitleMaxLengthAlert = false
+        return .none
+        
+    case .tabClearButton:
+        state.name = ""
         return .none
     }
 }
