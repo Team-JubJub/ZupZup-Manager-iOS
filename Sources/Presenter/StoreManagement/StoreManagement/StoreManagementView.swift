@@ -184,7 +184,7 @@ struct StoreManagementView: View {
                     Button("아니오", role: .destructive) { viewStore.send(.tapStoreAlertCancel) }
                     Button("네", role: .cancel) { viewStore.send(.tapStoreAlertOk) }
                 },
-                message: { Text(viewStore.storeEntity.isOpen ? "가게 문을 닫을까요?." : "가게 문을 열까요?") }
+                message: { Text(viewStore.storeEntity.isOpen ? "가게 문을 닫을까요?" : "가게 문을 열까요?") }
             )
             .alert(
                 "로그아웃 할까요?",
