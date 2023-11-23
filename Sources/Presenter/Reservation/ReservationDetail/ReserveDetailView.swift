@@ -24,7 +24,7 @@ struct ReserveDetailView: View {
                     VSpacer(height: Device.Height * 2 / 844)
                     
                     HStack(spacing: 0) {
-                        LargeNavigationTitle(title: "예약")   
+                        LargeNavigationTitle(title: "예약")
                         InfiniteSpacer()
                         if viewStore.reservation.state != .new { StateCapsule(state: viewStore.reservation.state) }
                     }

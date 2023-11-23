@@ -9,10 +9,12 @@
 import SwiftUI
 
 struct ImagePicker: UIViewControllerRepresentable {
+    
     @Binding var selectedImage: UIImage?
     @Environment(\.presentationMode) private var presentationMode
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        
         @Binding var presentationMode: PresentationMode
         @Binding var selectedImage: UIImage?
 
@@ -21,8 +23,13 @@ struct ImagePicker: UIViewControllerRepresentable {
             _selectedImage = selectedImage
         }
 
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let selectedImage = info[.originalImage] as? UIImage {
+        func imagePickerController(
+            _ picker: UIImagePickerController,
+            didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+        ) {
+            if let selectedImage = info[.editedImage] as? UIImage {
+                self.selectedImage = selectedImage
+            } else if let selectedImage = info[.originalImage] as? UIImage {
                 self.selectedImage = selectedImage
             }
             presentationMode.dismiss()
@@ -40,10 +47,9 @@ struct ImagePicker: UIViewControllerRepresentable {
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = context.coordinator
+        imagePicker.allowsEditing = true
         return imagePicker
     }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {
-        // No need to update the view controller
-    }
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {}
 }
