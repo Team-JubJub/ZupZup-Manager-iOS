@@ -33,6 +33,7 @@ struct PasswordTextField: View {
                 text: $password,
                 prompt: Text("비밀번호를 입력해주세요").foregroundColor(.designSystem(.ivoryGray500))
             )
+            .textInputAutocapitalization(.never)
             .padding(
                 EdgeInsets(
                     top: 0,

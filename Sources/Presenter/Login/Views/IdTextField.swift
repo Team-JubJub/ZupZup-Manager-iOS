@@ -32,6 +32,7 @@ struct IdTextField: View {
                 text: $idString,
                 prompt: Text("아이디를 입력해주세요").foregroundColor(.designSystem(.ivoryGray500))
             )
+            .textInputAutocapitalization(.never)
             .padding(
                 EdgeInsets(
                     top: 0,
