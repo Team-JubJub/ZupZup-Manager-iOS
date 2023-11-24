@@ -60,7 +60,7 @@ struct ReserveDetailView: View {
                                 ForEach(viewStore.reservation.cartList.indices, id: \.self) { idx in
                                     OrderItem(
                                         itemName: viewStore.reservation.cartList[idx].name,
-                                        price: viewStore.reservation.cartList[idx].price,
+                                        price: viewStore.reservation.cartList[idx].salePrice,
                                         count: viewStore.reservation.cartList[idx].amount,
                                         state: viewStore.reservation.state,
                                         minusAction: { viewStore.send(.tabMinusButton(idx)) },

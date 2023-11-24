@@ -62,7 +62,9 @@ extension FetchReservationsResponse.Item {
             itemId: self.itemId,
             amount: self.itemCount,
             name: self.itemName,
-            price: self.itemPrice
+            price: self.itemPrice,
+            imageUrl: self.imageUrl ?? "",
+            salePrice: self.salePrice ?? 0
         )
     }
 }

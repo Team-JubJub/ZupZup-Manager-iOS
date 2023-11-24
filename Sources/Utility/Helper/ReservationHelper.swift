@@ -14,7 +14,7 @@ class ReservationHelper {
         var totalPrice: Int = 0
 
         for i in reservation.cartList.indices {
-            let sumOfPrice = reservation.cartList[i].amount * reservation.cartList[i].price
+            let sumOfPrice = reservation.cartList[i].amount * reservation.cartList[i].salePrice
             totalPrice += sumOfPrice
         }
         

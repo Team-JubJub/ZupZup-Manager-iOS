@@ -114,7 +114,7 @@ struct ConfirmBottomSheet: View {
                         ScrollView(showsIndicators: false) {
                             VStack(spacing: 0) {
                                 ForEach(viewstore.reservation.cartList, id: \.self) { item in
-                                    ConfirmBottomSheetItem(itemName: item.name, price: item.price)
+                                    ConfirmBottomSheetItem(itemName: item.name, price: item.salePrice)
                                 }
                             }
                         }

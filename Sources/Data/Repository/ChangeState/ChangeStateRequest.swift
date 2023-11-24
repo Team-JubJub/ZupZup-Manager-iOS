@@ -20,7 +20,9 @@ struct ChangeStateRequest: Encodable, Equatable {
         struct Order: Encodable, Equatable {
             let itemId: Int
             let itemName: String
+            let imageUrl: String
             let itemPrice: Int
+            let salePrice: Int
             let itemCount: Int
         }
     }
