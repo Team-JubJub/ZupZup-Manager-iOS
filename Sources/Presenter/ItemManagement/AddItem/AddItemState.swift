@@ -28,10 +28,13 @@ struct AddItemState: Equatable {
     var isLoading: Bool = false                                 // 로딩 인디케이터 호출 변수
     
                                                                 // MARK: Alert 관련
-    var isShowingTitleMaxLengthAlert: Bool = false              // 제품명 20자 제한
+    var isShowingErrorAlert: Bool = false              // 제품명 20자 제한
     
                                                                 // MARK: Navigation 관련
     var isPop: Bool = false                                     // 네비게이션 POP 변수
+    
+    var errorTitle: String = ""
+    var errorMessage: String = ""
 }
 
 // MARK: TCA - Action
@@ -60,7 +63,9 @@ enum AddItemAction: Equatable {
     case alertOkButton                                          // Alert - 네 누른 경우
     case alertCancelButton                                      // Alert - 아니오 누른 경우
     
-    case dismissMaxLengthAlert                                  // isShowingTitleMaxLengthAlert 바인딩
+    case dismissErrorAlert                                  // dismissErrorAlert 바인딩
+    
+    case tabErrorAlertOK
     
                                                                 // MARK: API 관련
     case addItemResponse(Result<AddItemResponse, AddItemError>) // 아이템 추가 API 호출의 결과
@@ -76,13 +81,20 @@ let addItemReducer = AnyReducer<AddItemState, AddItemAction, AddItemEnvironment>
     
     switch action {
     case let .nameChanged(name):                                    // 이름 텍스트 필드 업데이트
-        state.name = name
-        if state.name.count > 20 {
-            state.isShowingTitleMaxLengthAlert = true
-            state.name = ""
-        } else {
-            state.isShowingTitleMaxLengthAlert = false
+        
+        if name != state.name {
+            state.name = name
+            
+            if state.name.count <= 20 {
+                state.isShowingErrorAlert = false
+            } else {
+                state.errorTitle = "텍스트 초과"
+                state.errorMessage = "입력 가능한 제품명은 최대 20자 입니다."
+                state.isShowingErrorAlert = true
+                state.name = ""
+            }
         }
+        
         return .none
         
     case let .priceChanged(price):                                  // 가격 텍스트 필드 업데이트
@@ -116,9 +128,37 @@ let addItemReducer = AnyReducer<AddItemState, AddItemAction, AddItemEnvironment>
     case .alertOkButton:                                            // Alert - 네 버튼을 누른 경우
         state.isLoading = true
         
-        guard let image = state.selectedImage else { return .none }
-        guard let itemPrice = Int(state.price) else { return .none }
-        guard let salePrice = Int(state.discountPrice) else { return .none }
+        if state.name.isEmpty {
+            state.errorTitle = "제품의 이름이 없어요"
+            state.errorMessage = "제품의 이름을 등록해주세요!"
+            state.isShowingErrorAlert = true
+            state.isLoading = false
+            return .none
+        }
+        
+        guard let image = state.selectedImage else {
+            state.errorTitle = "이미지가 없어요"
+            state.errorMessage = "제품의 이미지를 등록해주세요!"
+            state.isShowingErrorAlert = true
+            state.isLoading = false
+            return .none
+        }
+        
+        guard let itemPrice = Int(state.price) else {
+            state.errorTitle = "가격이 비었어요"
+            state.errorMessage = "제품의 가격을 입력해주세요!"
+            state.isShowingErrorAlert = true
+            state.isLoading = false
+            return .none
+        }
+        
+        guard let salePrice = Int(state.discountPrice) else {
+            state.errorTitle = "할인 가격이 비었어요"
+            state.errorMessage = "제품의 할인 가격을 입력해주세요!"
+            state.isShowingErrorAlert = true
+            state.isLoading = false
+            return .none
+        }
         
         let items = AddItemRequest.Item(
             itemName: state.name,
@@ -173,12 +213,16 @@ let addItemReducer = AnyReducer<AddItemState, AddItemAction, AddItemEnvironment>
         state.selectedImage = image
         return .none
         
-    case .dismissMaxLengthAlert:                                    // 20자 제한 Alert
-        state.isShowingTitleMaxLengthAlert = false
+    case .dismissErrorAlert:                  
+        state.isShowingErrorAlert = false
         return .none
         
     case .tabClearButton:
         state.name = ""
+        return .none
+        
+    case .tabErrorAlertOK:
+        state.isShowingAlert = false
         return .none
     }
 }
