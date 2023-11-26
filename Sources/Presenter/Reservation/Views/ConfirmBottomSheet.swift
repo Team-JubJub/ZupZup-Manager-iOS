@@ -54,7 +54,7 @@ struct ConfirmBottomSheet: View {
                                     
                                     SuitLabel(text: viewstore.reservation.phoneNumber, typo: .subhead, color: .designSystem(.ivoryGray300))
                                         .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
-                                        
+                                    
                                     InfiniteSpacer()
                                 }
                                 .frame(height: Device.Height * 65 / 844)
@@ -73,7 +73,10 @@ struct ConfirmBottomSheet: View {
                                 SuitLabel(text: "방문 예정 시간", typo: .caption, color: .designSystem(.Tangerine300))
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding * 5 / 16, trailing: 0))
                                 
-                                SuitLabel(text: ReservationHelper.twentyMinutePlus(reservation: viewstore.reservation), typo: .body)
+                                SuitLabel(
+                                    text: viewstore.reservation.visitTime.formatDateTimeRange(),
+                                    typo: .body
+                                )
                                 
                                 InfiniteSpacer()
                             }
@@ -111,7 +114,7 @@ struct ConfirmBottomSheet: View {
                         ScrollView(showsIndicators: false) {
                             VStack(spacing: 0) {
                                 ForEach(viewstore.reservation.cartList, id: \.self) { item in
-                                    ConfirmBottomSheetItem(itemName: item.name, price: item.price)
+                                    ConfirmBottomSheetItem(itemName: item.name, price: item.salePrice)
                                 }
                             }
                         }
@@ -147,6 +150,43 @@ struct ConfirmBottomSheet: View {
                     }
                 }
             }
+            .alert(
+                "제품 확정 실패",
+                isPresented: viewstore.binding(
+                    get: { $0.isShowingAlert },
+                    send: ReservationDetailAction.dismissAlert
+                ),
+                actions: {
+                    Button("확인", role: .cancel) { viewstore.send(.cancelAlert) }
+                },
+                message: { Text("예약을 확정할 수 없어요! \n 개수를 확인해주세요") }
+            )
+            
+            .alert(
+                "예약 취소하기",
+                isPresented: viewstore.binding(
+                    get: { $0.isCancelAlertOn },
+                    send: ReservationDetailAction.dismissCancelAlert
+                ),
+                actions: {
+                    Button("아니오", role: .cancel) { viewstore.send(.tabCancelAlertNO) }
+                    Button("네", role: .destructive) { viewstore.send(.tabCancelAlertOK) }
+                },
+                message: { Text("예약을 취소하시겠습니까? \n 취소한 예약은 돌릴 수 없어요.") }
+            )
+            
+            .alert(
+                "예약 확정하기",
+                isPresented: viewstore.binding(
+                    get: { $0.isConfirmAlertOn },
+                    send: ReservationDetailAction.dismissConfirmAlert
+                ),
+                actions: {
+                    Button("아니오", role: .cancel) { viewstore.send(.tabConfirmAlertNO) }
+                    Button("네", role: .destructive) { viewstore.send(.tabConfirmAlertOK) }
+                },
+                message: { Text("예약을 확정하시겠습니까?") }
+            )
         }
     }
 }

@@ -13,6 +13,8 @@ struct CartEntity: Hashable, Equatable {
     var amount: Int
     var name: String
     var price: Int
+    var imageUrl: String
+    var salePrice: Int
 }
 
 extension CartEntity {
@@ -20,7 +22,9 @@ extension CartEntity {
         return ChangeStateRequest.Body.Order(
             itemId: self.itemId,
             itemName: self.name,
+            imageUrl: self.imageUrl,
             itemPrice: self.price,
+            salePrice: self.salePrice,
             itemCount: self.amount
         )
     }

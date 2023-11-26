@@ -132,7 +132,7 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         return .none
         
     case .tapLogoutAlertOK: // 로그아웃 Alert - 네 누른 경우
-        LoginManager.shared.setLoginOff()
+        LoginManager.shared.Logout()
         return .none
         
     case .tapLogoutAlertCancel: // 로그아웃 Alert - 취소 누른 경우

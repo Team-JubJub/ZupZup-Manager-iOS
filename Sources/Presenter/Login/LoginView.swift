@@ -144,6 +144,17 @@ struct LoginView: View {
                 }
             }
             .ignoresSafeArea()
+            .alert(
+                viewStore.errorTitle,
+                isPresented: viewStore.binding(
+                    get: { $0.isErrorOn },
+                    send: LoginAction.isErrorDismiss
+                ),
+                actions: {
+                    Button("확인", role: .cancel) { }
+                },
+                message: { Text(viewStore.errorMessage) }
+            )
         }
     }
 }

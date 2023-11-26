@@ -33,6 +33,28 @@ extension String {
         let result = numberFormatter.string(from: NSNumber(value: transformed))
         return result!
     }
+    
+    func formatDateTimeRange() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        
+        if let date = dateFormatter.date(from: self) {
+            let calendar = Calendar.current
+            var endDate = calendar.date(byAdding: .minute, value: 20, to: date) 
+            
+            if let endDate = endDate {
+                let dateFormatter2 = DateFormatter()
+                dateFormatter2.dateFormat = "HH:mm"
+                
+                let startTime = dateFormatter2.string(from: date)
+                let endTime = dateFormatter2.string(from: endDate)
+                
+                return "\(startTime) ~ \(endTime)"
+            }
+        }
+        
+        return "정보 없음"
+    }
 }
 
 extension String: Identifiable {

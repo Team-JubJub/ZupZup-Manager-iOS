@@ -74,8 +74,7 @@ struct AddItemView: View {
                                     send: AddItemAction.nameChanged
                                 )
                             ) {
-                                // TODO: action 정의 필요
-                                print("지우기")
+                                viewStore.send(.tabClearButton)
                             }
                         }
                         .frame(width: Device.WidthWithPadding)
@@ -88,8 +87,8 @@ struct AddItemView: View {
                             
                             PriceTextField(
                                 rightText: viewStore.binding(
-                                    get: { $0.price },
-                                    send: AddItemAction.priceChanged
+                                    get: { $0.discountPrice },
+                                    send: AddItemAction.discountChanged
                                 )
                             )
                             
@@ -98,8 +97,8 @@ struct AddItemView: View {
                             
                             PriceTextField(
                                 rightText: viewStore.binding(
-                                    get: { $0.discountPrice },
-                                    send: AddItemAction.discountChanged
+                                    get: { $0.price },
+                                    send: AddItemAction.priceChanged
                                 )
                             )
                         }
@@ -161,15 +160,17 @@ struct AddItemView: View {
             )
             
             .alert(
-                "텍스트 초과",
+                viewStore.errorTitle,
                 isPresented: viewStore.binding(
-                    get: { $0.isShowingTitleMaxLengthAlert },
-                    send: AddItemAction.dismissMaxLengthAlert
+                    get: { $0.isShowingErrorAlert },
+                    send: AddItemAction.dismissErrorAlert
                 ),
                 actions: {
-                    Button("확인", role: .cancel) { }
+                    Button("확인", role: .cancel) {
+                        viewStore.send(.tabErrorAlertOK)
+                    }
                 },
-                message: { Text("입력 가능한 제품명은 최대 20자 입니다.") }
+                message: { Text(viewStore.errorMessage) }
             )
             .overlay {
                 if viewStore.isLoading {

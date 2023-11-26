@@ -39,7 +39,7 @@ let reservationReducer = AnyReducer<ReservationState, ReservationAction, Reserva
         
         let storeId = LoginManager.shared.getStoreId()
         
-        let request = FetchReservationsRequest(storeId: 8)
+        let request = FetchReservationsRequest(storeId: storeId)
         
         state.isLoading = true
         return environment.reservations(request)

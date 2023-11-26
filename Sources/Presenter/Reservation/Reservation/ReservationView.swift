@@ -94,9 +94,9 @@ struct ReservationView: View {
                                             )
                                         ) {
                                             ReservationItem(
-                                                date: reservation.date,
+                                                visitTime: reservation.visitTime,
                                                 menu: reservation.orderedItemdName,
-                                                time: reservation.orderedTime,
+                                                orderedTime: reservation.orderedTime,
                                                 customer: reservation.customerName,
                                                 state: reservation.state
                                             )

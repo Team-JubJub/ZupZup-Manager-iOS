@@ -47,7 +47,7 @@ extension FetchReservationsResponse {
                 phoneNumber: order.phoneNumber,
                 state: order.orderStatus.toReservationState,
                 storeId: order.storeId,
-                date: order.visitTime,
+                visitTime: order.visitTime,
                 cartList: order.orderList.map { $0.toCart() },
                 orderedItemdName: order.orderTitle,
                 orderedTime: order.orderTime
@@ -62,7 +62,9 @@ extension FetchReservationsResponse.Item {
             itemId: self.itemId,
             amount: self.itemCount,
             name: self.itemName,
-            price: self.itemPrice
+            price: self.itemPrice,
+            imageUrl: self.imageUrl ?? "",
+            salePrice: self.salePrice ?? 0
         )
     }
 }

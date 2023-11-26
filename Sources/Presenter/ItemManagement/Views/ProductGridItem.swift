@@ -42,16 +42,16 @@ struct ProductGridItem: View {
                                         Image(assetName: .ic_mockImage)
                                             .resizable()
                                             .scaledToFill()
-                                            .frame(height: 110)
+                                            .frame(height: Device.Width * 175 / 390)
                                             .clipped()
                                     }
                                     .scaledToFill()
-                                    .frame(width: Device.Width * 175 / 390, height: 110)
+                                    .frame(width: Device.Width * 175 / 390, height: Device.Width * 175 / 390)
                                     .clipped()
                                 
                                 if (count == 0 && type == .common) || type == .editInfo {
                                     Rectangle()
-                                        .frame(width: Device.Width * 175 / 390, height: 110)
+                                        .frame(width: Device.Width * 175 / 390, height: Device.Width * 175 / 390)
                                         .foregroundColor(.designSystem(.ScrimBlack40))
                                     
                                     if type == .editInfo {
@@ -106,7 +106,7 @@ struct ProductGridItem: View {
                             .padding(Device.VPadding / 2)
                         }
                     }
-                    .frame(width: Device.Width * 175 / 390, height: 200)
+                    .frame(width: Device.Width * 175 / 390, height: Device.Width * 262.5 / 390)
                     .background(Color.designSystem(count == 0 && type == .common ? .ivoryGray200 : .ivoryGray100))
             }
             .cornerRadius(8)

@@ -62,10 +62,12 @@ final class AddItemRepositoryImpl: AddItemRepository {
                   headers: headers
         )
         .responseString { response in
+            
             switch response.result {
             case .success:
                 completion(.success(AddItemResponse()))
             case .failure:
+                
                 switch response.response?.statusCode {
                 case 400:
                     completion(.failure(.noAccessToken))
