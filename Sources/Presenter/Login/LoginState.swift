@@ -27,6 +27,10 @@ struct LoginState: Equatable {
     var textFieldColor: Color = .designSystem(.ivoryGray300)!
     var buttonBodyColor: Color = .designSystem(.neutralGray150)!
     var buttonTextColor: Color = .designSystem(.neutralGray400)!
+    
+    var isErrorOn: Bool = false
+    var errorTitle: String = ""
+    var errorMessage: String = ""
 }
 
 // MARK: TCA - Action
@@ -49,6 +53,8 @@ enum LoginAction: Equatable {
     case textFieldColorChanged                                          // textFieldColor 바인딩 함수
     case buttonBodyColorChanged                                         // buttonBodyColor 바인딩 함수
     case buttonTextColorChanged                                         // buttonTextColor 바인딩 함수
+    
+    case isErrorDismiss
 }
 
 // MARK: TCA - Environment
@@ -138,11 +144,50 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
     case let .loginRequestResult(.failure(error)): // 로그인 API Response 받은 경우 - 실패
         state.isLoading = false
         
-        state.failCount += 1
+        if state.failCount < 5 { state.failCount += 1 }
+        
         state.id = ""
         state.password = ""
-        
         state.textFieldColor = .designSystem(.red500)!
+        
+        switch error {
+        case .failToDecode:
+            break
+            
+        case .failToEncode:
+            break
+            
+        case .badRequest:
+            state.errorTitle = "로그인 실패"
+            state.errorMessage = "아이디와 비밀번호를 확인해주세요!"
+            state.isErrorOn = true
+            
+        case .noStore:
+            state.errorTitle = "입점이 신청이 필요해요"
+            state.errorMessage = "서비스 이용을 위해서는\n줍줍 홈페이지에서 입점신청을 해주세요!"
+            state.isErrorOn = true
+            
+        case .wrongPassword:
+            state.errorTitle = "비밀번호 확인"
+            state.errorMessage = "비밀번호를 확인해주세요!"
+            state.isErrorOn = true
+            
+        case .wrongId:
+            state.errorTitle = "아이디 확인"
+            state.errorMessage = "아이디를 확인해주세요!"
+            state.isErrorOn = true
+            
+        case .serverError:
+            state.errorTitle = "내부 서비스 에러"
+            state.errorMessage = "죄송합니다. 서버 내부에 문제가 발생했어요!"
+            state.isErrorOn = true
+            
+        case .unKnown:
+            state.errorTitle = "알수없는 에러"
+            state.errorMessage = "죄송합니다. 알수 없는 에러가 발생했어요!"
+            state.isErrorOn = true
+        }
+        
         return .none
         
     // 색상 변경 관련
@@ -153,6 +198,10 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
         return .none
         
     case .buttonTextColorChanged: // buttonTextColor 바인딩 함수
+        return .none
+        
+    case .isErrorDismiss:
+        state.isErrorOn = false
         return .none
     }
 }
