@@ -22,7 +22,7 @@ final class AutoLoginRepository {
         
         let headers: HTTPHeaders = ["refreshToken": refreshToken]
         
-        let url = "https://zupzuptest.com:8080/mobile/sign-in/refresh"
+        let url = UrlManager.baseUrl + "/mobile/sign-in/refresh"
         
         AF.request(
             url,

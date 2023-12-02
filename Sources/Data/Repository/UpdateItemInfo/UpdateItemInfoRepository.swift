@@ -26,7 +26,7 @@ final class UpdateItemInfoRespositoryImpl: UpdateItemInfoRepository {
         completion: @escaping (Result<UpdateItemInfoResponse, UpdateItemInfoError>) -> Void
     ) {
         
-        let url = "https://zupzuptest.com:8080/seller/\(LoginManager.shared.getStoreId())/\(request.itemid)"
+        let url = UrlManager.baseUrl + "/seller/\(LoginManager.shared.getStoreId())/\(request.itemid)"
         
         let headers: HTTPHeaders = [
             "accessToken": accessToken,

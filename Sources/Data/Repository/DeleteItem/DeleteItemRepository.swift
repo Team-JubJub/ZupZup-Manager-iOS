@@ -16,7 +16,7 @@ final class DeleteItemRepositoryImpl: DeleteItemRepository {
     
     func deleteItem(request: DeleteItemRequest, completion: @escaping (Result<DeleteItemResponse, DeleteItemError>) -> Void) {
         
-        let url = "https://zupzuptest.com:8080/seller/\(LoginManager.shared.getStoreId())/\(request.itemId)"
+        let url = UrlManager.baseUrl + "/seller/\(LoginManager.shared.getStoreId())/\(request.itemId)"
         
         NetworkManager.shared.justRequest(
             to: url,

@@ -16,7 +16,7 @@ final class FetchStoreRepositoryImpl: FetchStoreRepository {
     func fetchStore(completion: @escaping (Result<FetchStoreResponse, FetchStoreError>) -> Void) {
         
         let storeId = LoginManager.shared.getStoreId()
-        let url = "https://zupzuptest.com:8080/seller/\(storeId)"
+        let url = UrlManager.baseUrl + "/seller/\(storeId)"
         
         NetworkManager.shared.sendRequest(
             to: url,

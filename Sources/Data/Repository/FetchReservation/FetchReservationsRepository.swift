@@ -25,7 +25,7 @@ final class FetchReservationsRepositoryImpl: FetchReservationsRepository {
         let storeId = LoginManager.shared.getStoreId()
         
         NetworkManager.shared.sendRequest(
-            to: "https://zupzuptest.com:8080/seller/\(String(describing: storeId))/order",
+            to: UrlManager.baseUrl + "/seller/\(String(describing: storeId))/order",
             method: .get
         ) { (result: Result<FetchReservationsResponse, NetworkError>) in
             switch result {

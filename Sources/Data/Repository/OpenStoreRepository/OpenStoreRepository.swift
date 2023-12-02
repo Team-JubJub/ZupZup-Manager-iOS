@@ -24,7 +24,7 @@ final class OpenStoreRepositoryImpl: OpenStoreRepository {
         completion: @escaping (Result<OpenStoreResponse, OpenStoreError>) -> Void
     ) {
         
-        let url = "https://zupzuptest.com:8080/seller/open/\(storeId)?isOpened=\(request.openOrClose)"
+        let url = UrlManager.baseUrl + "/seller/open/\(storeId)?isOpened=\(request.openOrClose)"
         
         NetworkManager.shared.justRequest(
             to: url,
