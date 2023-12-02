@@ -24,14 +24,14 @@ extension Int {
         return formattedDate
     }
     
-    func toString() -> String {
-        return String(self)
-    }
+    func toString() -> String { return String(self) }
     
     func toPrice() -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
+        
         let result = numberFormatter.string(from: NSNumber(value: self))
+        
         return result! + "원"
     }
 }

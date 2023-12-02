@@ -26,9 +26,9 @@ final class ChangeJustStateRepositoryImpl: ChangeJustStateRepository {
         let url = {
             switch request.state {
             case .cancel:
-                return "https://zupzuptest.com:8080/seller/\(storeId)/order/new-order/\(request.orderId)/cancel"
+                return UrlManager.baseUrl + "/seller/\(storeId)/order/new-order/\(request.orderId)/cancel"
             case .complete:
-                return "https://zupzuptest.com:8080/seller/\(storeId)/order/confirmed-order/\(request.orderId)/complete"
+                return UrlManager.baseUrl + "/seller/\(storeId)/order/confirmed-order/\(request.orderId)/complete"
             }
         }()
         

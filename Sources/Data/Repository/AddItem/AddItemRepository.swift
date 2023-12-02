@@ -20,7 +20,7 @@ protocol AddItemRepository {
 
 final class AddItemRepositoryImpl: AddItemRepository {
     
-    let url = "https://zupzuptest.com:8080/seller/\(LoginManager.shared.getStoreId())"
+    let url = UrlManager.baseUrl + "/seller/\(LoginManager.shared.getStoreId())"
     
     let accessToken = LoginManager.shared.getAccessToken()
     

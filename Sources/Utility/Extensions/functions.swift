@@ -9,7 +9,9 @@
 import Foundation
 
 func splitTime(_ timeString: String) -> (hour: String, minute: String) {
+    
     let components = timeString.split(separator: ":")
+    
     guard components.count == 2, let hour = components.first, let minute = components.last else {
         return ("", "")
     }

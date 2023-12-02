@@ -18,7 +18,7 @@ final class FetchItemsRepositoryImpl: FetchItemsRepository {
         
         let storeId = LoginManager.shared.getStoreId()
         
-        let url = "https://zupzuptest.com:8080/seller/\(String(describing: storeId))/management"
+        let url = UrlManager.baseUrl + "/seller/\(String(describing: storeId))/management"
         
         NetworkManager.shared.sendRequest(
             to: url,

@@ -16,7 +16,7 @@ final class LoginRepository {
         completion: @escaping (Result<LoginResponse, LoginError>) -> Void
     ) {
         NetworkManager.shared.sendRequest(
-            to: "https://zupzuptest.com:8080/mobile/sign-in",
+            to: UrlManager.baseUrl + "/mobile/sign-in",
             method: .post,
             parameters: request
         ) { (result: Result<LoginResponse, NetworkError>) in

@@ -32,7 +32,7 @@ struct FetchReservationsResponse: Codable {
         let itemName: String
         let imageUrl: String?
         let itemPrice: Int
-        let salePrice: Int?
+        let salePrice: Int
         let itemCount: Int
     }
 }
@@ -64,7 +64,7 @@ extension FetchReservationsResponse.Item {
             name: self.itemName,
             price: self.itemPrice,
             imageUrl: self.imageUrl ?? "",
-            salePrice: self.salePrice ?? 0
+            salePrice: self.salePrice
         )
     }
 }

@@ -33,7 +33,7 @@ final class UpdateItemCountRepositoryImpl: UpdateItemCountRepository {
             "Content-Type": "multipart/form-data; boundary=\(UUID().uuidString)"
         ]
         
-        let url = "https://zupzuptest.com:8080/seller/\(String(describing: storeId))/quantity"
+        let url = UrlManager.baseUrl + "/seller/\(String(describing: storeId))/quantity"
 
         AF.upload(multipartFormData: { multipartFormData in
             do {

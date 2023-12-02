@@ -40,7 +40,7 @@ extension String {
         
         if let date = dateFormatter.date(from: self) {
             let calendar = Calendar.current
-            var endDate = calendar.date(byAdding: .minute, value: 20, to: date) 
+            let endDate = calendar.date(byAdding: .minute, value: 20, to: date)
             
             if let endDate = endDate {
                 let dateFormatter2 = DateFormatter()

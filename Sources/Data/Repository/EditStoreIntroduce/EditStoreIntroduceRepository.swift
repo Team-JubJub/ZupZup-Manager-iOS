@@ -24,7 +24,7 @@ final class EditStoreIntroduceRepositoryImpl: EditStoreIntroduceRepository {
         completion: @escaping (Result<EditStoreIntroduceResponse, EditStoreIntroduceError>) -> Void
     ) {
         
-        let url = "https://zupzuptest.com:8080/seller/notice/\(LoginManager.shared.getStoreId())"
+        let url = UrlManager.baseUrl + "/seller/notice/\(LoginManager.shared.getStoreId())"
         let headers: HTTPHeaders = [ "accessToken": LoginManager.shared.getAccessToken() ]
         let parameters: [String: Any] = [ "storeMatters": request.storeMatters ]
         

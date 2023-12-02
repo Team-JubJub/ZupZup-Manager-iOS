@@ -19,7 +19,7 @@ protocol EditStoreInfoRepository {
 
 final class EditStoreInfoRepositoryImpl: EditStoreInfoRepository {
     
-    let url = "https://zupzuptest.com:8080/seller/modification/\(LoginManager.shared.getStoreId())"
+    let url = UrlManager.baseUrl + "/seller/modification/\(LoginManager.shared.getStoreId())"
     
     let accessToken = LoginManager.shared.getAccessToken()
     
