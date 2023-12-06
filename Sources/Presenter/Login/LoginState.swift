@@ -31,6 +31,10 @@ struct LoginState: Equatable {
     var isErrorOn: Bool = false
     var errorTitle: String = ""
     var errorMessage: String = ""
+    
+    var isShowingFindMyAccountWeb: Bool = false
+    var isShowingMakeAccountWeb: Bool = false
+    var isShowingFindPasswordWeb: Bool = false
 }
 
 // MARK: TCA - Action
@@ -45,6 +49,7 @@ enum LoginAction: Equatable {
     case tapEmptySpace                                                  // 빈 화면을 터치한 경우
     case tapFindMyAcoount                                               // 내 계정 찾기를 터치한 경우
     case tapMakeAccount                                                 // 회원가입을 터치한 경우
+    case tapFindPassword
     
     // API관련
     case loginRequestResult(Result<LoginResponse, LoginError>)          // 로그인 API Response 받은 경우
@@ -55,14 +60,16 @@ enum LoginAction: Equatable {
     case buttonTextColorChanged                                         // buttonTextColor 바인딩 함수
     
     case isErrorDismiss
+    
+    case dismissFindMyAcoount                                               // 내 계정 찾기를 터치한 경우
+    case dismissMakeAccount                                                 // 회원가입을 터치한 경우
+    case dismissFindPassword
 }
 
 // MARK: TCA - Environment
 struct LoginEnvironment {
     var loginRepository: LoginRepository
     var login: (LoginRequest) -> EffectPublisher<Result<LoginResponse, LoginError>, Never>
-    let openFindMyAcoountURL: () -> Void // 내 계정 찾기 URL로 전환
-    let openMakeAccountURL: () -> Void // 회원가입 URL로 전환
 }
 
 // MARK: TCA - Reducer
@@ -128,11 +135,12 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
         return .none
         
     case .tapFindMyAcoount: // 내 계정 찾기를 터치한 경우
-        environment.openFindMyAcoountURL()
+        state.isShowingFindMyAccountWeb = true
         return .none
         
+        
     case .tapMakeAccount: // 회원가입을 터치한 경우
-        environment.openMakeAccountURL()
+        state.isShowingMakeAccountWeb = true
         return .none
         
     // API관련
@@ -202,6 +210,22 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
         
     case .isErrorDismiss:
         state.isErrorOn = false
+        return .none
+        
+    case .dismissFindMyAcoount:
+        state.isShowingFindMyAccountWeb = false
+        return .none
+        
+    case .dismissMakeAccount:
+        state.isShowingMakeAccountWeb = false
+        return .none
+        
+    case .tapFindPassword:
+        state.isShowingFindPasswordWeb = true
+        return .none
+        
+    case .dismissFindPassword:
+        state.isShowingFindPasswordWeb = false
         return .none
     }
 }

@@ -24,15 +24,14 @@ struct LoginView: View {
                     
                     InfiniteSpacer()
                     
-                    IdTextField(
-                        idString: viewStore.binding(
-                            get: { $0.id },
-                            send: LoginAction.idChanged
-                        ),
-                        textFieldColor: viewStore.binding(
-                            get: { $0.textFieldColor },
-                            send: LoginAction.textFieldColorChanged
-                        )
+                    IdTextField(idString: viewStore.binding(
+                        get: { $0.id },
+                        send: LoginAction.idChanged
+                    ),
+                                textFieldColor: viewStore.binding(
+                                    get: { $0.textFieldColor },
+                                    send: LoginAction.textFieldColorChanged
+                                )
                     )
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
                     
@@ -108,30 +107,40 @@ struct LoginView: View {
                     .frame(width: Device.WidthWithPadding)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 14, trailing: 0))
                     
-                    HStack(spacing: 8) {
-                        Button {
-                            viewStore.send(.tapFindMyAcoount)
-                        } label: {
-                            SystemLabel(text: "내 계정 찾기", typo: .caption, color: .designSystem(.ivoryGray500))
-                                .frame(width: 64)
-                        }
-                        
-                        Rectangle()
-                            .frame(width: 1, height: 16)
-                            .foregroundColor(.designSystem(.ivoryGray300))
+                    HStack(spacing: 0) {
+                        InfiniteSpacer()
                         
                         Button {
                             viewStore.send(.tapMakeAccount)
                         } label: {
-                            HStack(spacing: 0) {
-                                SystemLabel(text: "회원가입", typo: .caption, color: .designSystem(.ivoryGray500))
-                                InfiniteSpacer()
-                            }
+                            SystemLabel(text: "회원가입", typo: .caption, color: .designSystem(.ivoryGray500))
+                                .frame(width: 52)
                         }
-                        .frame(width: 64)
+                        
+                        
+                        InfiniteSpacer()
+                        
+                        Button {
+                            viewStore.send(.tapFindMyAcoount)
+                        } label: {
+                            SystemLabel(text: "아이디 찾기", typo: .caption, color: .designSystem(.ivoryGray500))
+                                .frame(width: 70)
+                        }
+                        
+                        InfiniteSpacer()
+                        
+                        Button {
+                            viewStore.send(.tapFindPassword)
+                        } label: {
+                            SystemLabel(text: "비밀번호 찾기", typo: .caption, color: .designSystem(.ivoryGray500))
+                                .frame(width: 70)
+                        }
+                        
+                        InfiniteSpacer()
                     }
+                    .frame(width: Device.WidthWithPadding)
                     
-                    VSpacer(height: Device.Height * 56 / 844)
+                    VSpacer(height: Device.Height * 60 / 844)
                     
                 }
                 .background(Color.designSystem(.pureWhite))
@@ -155,6 +164,24 @@ struct LoginView: View {
                 },
                 message: { Text(viewStore.errorMessage) }
             )
+            .sheet(isPresented: viewStore.binding(
+                get: { $0.isShowingFindMyAccountWeb },
+                send: LoginAction.dismissFindMyAcoount)
+            ) {
+                SafariView(url: URL(string: UrlManager.findMyAccountUrl)!)
+            }
+            .sheet(isPresented: viewStore.binding(
+                get: { $0.isShowingMakeAccountWeb },
+                send: LoginAction.dismissMakeAccount)
+            ) {
+                SafariView(url: URL(string: UrlManager.makeAccountUrl)!)
+            }
+            .sheet(isPresented: viewStore.binding(
+                get: { $0.isShowingFindPasswordWeb },
+                send: LoginAction.dismissFindPassword)
+            ) {
+                SafariView(url: URL(string: UrlManager.findPasswordUrl)!)
+            }
         }
     }
 }

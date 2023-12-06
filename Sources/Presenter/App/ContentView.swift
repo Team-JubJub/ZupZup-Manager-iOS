@@ -92,9 +92,6 @@ struct ContentView: View {
                                             }
                                         }
                                         .eraseToEffect()
-                                    },
-                                    openCustomerCenterURL: {
-                                        UrlManager.shared.openCustomerCenter()
                                     }
                                 )
                             )
@@ -131,12 +128,6 @@ struct ContentView: View {
                                 }
                             }
                             .eraseToEffect()
-                        },
-                        openFindMyAcoountURL: {
-                            UrlManager.shared.openFindMyAccount()
-                        },
-                        openMakeAccountURL: {
-                            UrlManager.shared.openMakeAccount()
                         }
                     )
                 )

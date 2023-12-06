@@ -169,6 +169,8 @@ struct StoreManagementView: View {
                             StoreManageViewItem(title: "고객 센터") { viewStore.send(.tapCustomerCenterButton) }
                             
                             StoreManageViewItem(title: "로그아웃") { viewStore.send(.tapLogoutButton) }
+                            
+                            StoreManageViewItem(title: "회원 탈퇴") { viewStore.send(.tapExitService) }
                         }
                     }
                     .navigationTitle("")
@@ -203,13 +205,10 @@ struct StoreManagementView: View {
                     FullScreenProgressView()
                 }
             }
-            .sheet(
-                isPresented: viewStore.binding(
-                    get: { $0.isShowingStoreIntroduce },
-                    send: StoreManagementAction.isShowingStoreIntroduceBinding
-                )
-            ) {
-                
+            .sheet(isPresented: viewStore.binding(
+                get: {$0.isShowingStoreIntroduce },
+                send: StoreManagementAction.isShowingStoreIntroduceBinding
+            )) {
                 let store = Store<StoreIntroduceState, StoreIntroduceAction>(
                     initialState: StoreIntroduceState(viewStore.storeEntity),
                     reducer: storeIntroduceReducer,
@@ -225,9 +224,13 @@ struct StoreManagementView: View {
                     )
                 )
                 StoreIntroduceView(store: store)
-                    .onDisappear {
-                        viewStore.send(.fetchStore)
-                    }
+                    .onDisappear { viewStore.send(.fetchStore) }
+            }
+            .sheet(isPresented: viewStore.binding(
+                get: {$0.isShowingCustomerCenter },
+                send: StoreManagementAction.dismissCustomerCenter
+            )) {
+                SafariView(url: URL(string: UrlManager.customerCenterUrl)!)
             }
         }
     }
