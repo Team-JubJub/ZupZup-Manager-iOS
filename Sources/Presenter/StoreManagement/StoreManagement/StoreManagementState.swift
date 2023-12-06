@@ -34,6 +34,7 @@ enum StoreManagementAction: Equatable {
     case tapInfoButton                                      // 가게 세부 정보 네비게이션
     case tapCustomerCenterButton                            // 고객센터 버튼을 눌렀을 경우
     case tapStoreIntroduceButton                            // 가게소개 버튼을 눌렀을 경우
+    case tapExitService                                     // 회원탈퇴 버튼을 눌렀을 경우
     case isShowingEditStoreInfoBinding                      // isShowingEditStoreInfo 변수 바인딩
     case isShowingStoreIntroduceBinding                     // isShowingStoreIntroduce 변수 바인딩
     
@@ -53,12 +54,13 @@ enum StoreManagementAction: Equatable {
     case fetchStore                                                     // 가게 정보 조희 API 호출
     case openStoreResponse(Result<OpenStoreResponse, OpenStoreError>)   // 가게 ON/OFF API 호출의 결과
     case fetchStoreResponse(Result<StoreEntity, FetchStoreError>)       // 가게 정보 조희 API 호출의 결과
+    case dismissCustomerCenter
+    
 }
 
 struct StoreManagementEnvironment {                                                                         // MARK: 외부 의존성
     let openStore: (OpenStoreRequest) -> EffectPublisher<Result<OpenStoreResponse, OpenStoreError>, Never>  // 가게 ON/OFF
     let fetchStore: () -> EffectPublisher<Result<StoreEntity, FetchStoreError>, Never>                      // 가게 정보 조희
-    let openCustomerCenterURL: () -> Void                                                                   // 고객센터 URL로 전환
 }
 
 let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAction, StoreManagementEnvironment> { state, action, environment in
@@ -106,7 +108,7 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         return .none
         
     case .tapCustomerCenterButton: // 고객센터 버튼을 누른 경우
-        environment.openCustomerCenterURL()
+        state.isShowingCustomerCenter = true
         return .none
         
     case .dismissStoreOpenAlert: // 가게 ON/OFF 스위치 눌렀을 때, Alert 바인딩 함수
@@ -145,6 +147,14 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         
     case .isShowingStoreIntroduceBinding:
         state.isShowingStoreIntroduce = false
+        return .none
+        
+    case .dismissCustomerCenter:
+        state.isShowingCustomerCenter = false
+        return .none
+        
+    case .tapExitService:
+        // TODO: 회원 탈퇴 화면 전환
         return .none
     }
 }
