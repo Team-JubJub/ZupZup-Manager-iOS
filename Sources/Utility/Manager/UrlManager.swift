@@ -22,9 +22,15 @@ final class UrlManager {
 #endif
     
 #if DEBUG
-    static let findMyAccountUrl = "https://zupzuptest.com:3000/login"
+    static let findMyAccountUrl = "https://zupzuptest.com:3000/find_id_main"
 #else
-    static let findMyAccountUrl = "https://zupzupofficial.com/login"
+    static let findMyAccountUrl = "https://zupzupofficial.com/find_id_main"
+#endif
+    
+#if DEBUG
+    static let findPasswordUrl = "https://zupzuptest.com/find_pw_main"
+#else
+    static let findPasswordUrl = "https://zupzupofficial.com/find_pw_main"
 #endif
     
 #if DEBUG

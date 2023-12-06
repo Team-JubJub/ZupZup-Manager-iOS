@@ -34,6 +34,7 @@ struct LoginState: Equatable {
     
     var isShowingFindMyAccountWeb: Bool = false
     var isShowingMakeAccountWeb: Bool = false
+    var isShowingFindPasswordWeb: Bool = false
 }
 
 // MARK: TCA - Action
@@ -48,6 +49,7 @@ enum LoginAction: Equatable {
     case tapEmptySpace                                                  // 빈 화면을 터치한 경우
     case tapFindMyAcoount                                               // 내 계정 찾기를 터치한 경우
     case tapMakeAccount                                                 // 회원가입을 터치한 경우
+    case tapFindPassword
     
     // API관련
     case loginRequestResult(Result<LoginResponse, LoginError>)          // 로그인 API Response 받은 경우
@@ -61,6 +63,7 @@ enum LoginAction: Equatable {
     
     case dismissFindMyAcoount                                               // 내 계정 찾기를 터치한 경우
     case dismissMakeAccount                                                 // 회원가입을 터치한 경우
+    case dismissFindPassword
 }
 
 // MARK: TCA - Environment
@@ -217,5 +220,12 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
         state.isShowingMakeAccountWeb = false
         return .none
         
+    case .tapFindPassword:
+        state.isShowingFindPasswordWeb = true
+        return .none
+        
+    case .dismissFindPassword:
+        state.isShowingFindPasswordWeb = false
+        return .none
     }
 }
