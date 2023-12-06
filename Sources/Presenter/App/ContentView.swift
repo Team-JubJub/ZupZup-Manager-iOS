@@ -131,12 +131,6 @@ struct ContentView: View {
                                 }
                             }
                             .eraseToEffect()
-                        },
-                        openFindMyAcoountURL: {
-                            UrlManager.shared.openFindMyAccount()
-                        },
-                        openMakeAccountURL: {
-                            UrlManager.shared.openMakeAccount()
                         }
                     )
                 )

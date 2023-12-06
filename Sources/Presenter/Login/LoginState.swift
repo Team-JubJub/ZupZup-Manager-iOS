@@ -61,8 +61,6 @@ enum LoginAction: Equatable {
 struct LoginEnvironment {
     var loginRepository: LoginRepository
     var login: (LoginRequest) -> EffectPublisher<Result<LoginResponse, LoginError>, Never>
-    let openFindMyAcoountURL: () -> Void // 내 계정 찾기 URL로 전환
-    let openMakeAccountURL: () -> Void // 회원가입 URL로 전환
 }
 
 // MARK: TCA - Reducer
@@ -128,11 +126,11 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
         return .none
         
     case .tapFindMyAcoount: // 내 계정 찾기를 터치한 경우
-        environment.openFindMyAcoountURL()
+        
         return .none
         
     case .tapMakeAccount: // 회원가입을 터치한 경우
-        environment.openMakeAccountURL()
+        
         return .none
         
     // API관련
