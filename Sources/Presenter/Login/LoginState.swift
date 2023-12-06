@@ -31,6 +31,9 @@ struct LoginState: Equatable {
     var isErrorOn: Bool = false
     var errorTitle: String = ""
     var errorMessage: String = ""
+    
+    var isShowingFindMyAccountWeb: Bool = false
+    var isShowingMakeAccountWeb: Bool = false
 }
 
 // MARK: TCA - Action
@@ -55,6 +58,9 @@ enum LoginAction: Equatable {
     case buttonTextColorChanged                                         // buttonTextColor 바인딩 함수
     
     case isErrorDismiss
+    
+    case dismissFindMyAcoount                                               // 내 계정 찾기를 터치한 경우
+    case dismissMakeAccount                                                 // 회원가입을 터치한 경우
 }
 
 // MARK: TCA - Environment
@@ -126,11 +132,12 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
         return .none
         
     case .tapFindMyAcoount: // 내 계정 찾기를 터치한 경우
-        
+        state.isShowingFindMyAccountWeb = true
         return .none
         
-    case .tapMakeAccount: // 회원가입을 터치한 경우
         
+    case .tapMakeAccount: // 회원가입을 터치한 경우
+        state.isShowingMakeAccountWeb = true
         return .none
         
     // API관련
@@ -201,5 +208,14 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
     case .isErrorDismiss:
         state.isErrorOn = false
         return .none
+        
+    case .dismissFindMyAcoount:
+        state.isShowingFindMyAccountWeb = false
+        return .none
+        
+    case .dismissMakeAccount:
+        state.isShowingMakeAccountWeb = false
+        return .none
+        
     }
 }

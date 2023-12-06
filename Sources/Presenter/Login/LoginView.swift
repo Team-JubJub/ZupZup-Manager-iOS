@@ -24,8 +24,7 @@ struct LoginView: View {
                     
                     InfiniteSpacer()
                     
-                    IdTextField(
-                        idString: viewStore.binding(
+                    IdTextField(idString: viewStore.binding(
                             get: { $0.id },
                             send: LoginAction.idChanged
                         ),
@@ -155,6 +154,18 @@ struct LoginView: View {
                 },
                 message: { Text(viewStore.errorMessage) }
             )
+            .sheet(isPresented: viewStore.binding(
+                get: { $0.isShowingFindMyAccountWeb },
+                send: LoginAction.dismissFindMyAcoount)
+            ) {
+                SafariView(url: URL(string: UrlManager.findMyAccountUrl)!)
+            }
+            .sheet(isPresented: viewStore.binding(
+                get: { $0.isShowingMakeAccountWeb },
+                send: LoginAction.dismissMakeAccount)
+            ) {
+                SafariView(url: URL(string: UrlManager.makeAccountUrl)!)
+            }
         }
     }
 }
