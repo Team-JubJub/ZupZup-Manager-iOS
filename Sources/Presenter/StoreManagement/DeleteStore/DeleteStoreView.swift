@@ -28,12 +28,12 @@ struct DeleteStoreView: View {
                 ZStack(alignment: .top) {
                     VStack(alignment: .leading) {
                         HStack(spacing: 0) {
-                            SuiteLabel(text: "..000님과의 이별인가요? 너무 아쉬워요.", typo: .h3, color: .designSystem(.Secondary))
+                            SuiteLabel(text: "\(viewStore.name)님\n...이별인가요? 너무 아쉬워요...", typo: .h3, color: .designSystem(.Secondary))
                             InfiniteSpacer()
                         }
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
                         
-                        SuiteLabel(text: "그 동안 줍줍을 이용해주신 000님께 감사해요. 덕분에 이 세상에서 낭비되는 가치를 많이 줄일 수 있었어요.", typo: .subhead, color: .designSystem(.Secondary))
+                        SuiteLabel(text: "그 동안 줍줍을 이용해주신 \(viewStore.name)님께 감사해요. 덕분에 이 세상에서 낭비되는 가치를 많이 줄일 수 있었어요.", typo: .subhead, color: .designSystem(.Secondary))
                             .padding(EdgeInsets(top: 0, leading: Device.HPadding / 2, bottom: Device.VPadding / 2, trailing: Device.HPadding / 2))
                             
                         SuiteLabel(text: "계정을 삭제하면, 제품 목록, 가게 정보, 계정 정보 및 모든 활동 정보가 삭제 되어요. 또한, 계정 삭제 후 7일 간 다시 가입할 수 없어요. ", typo: .subhead, color: .designSystem(.Secondary))
@@ -51,7 +51,7 @@ struct DeleteStoreView: View {
                     .scaledToFit()
 
                 BottomButton(height: 64, text: "정말 이별하기", textColor: .secondary) {
-                    print("hello")
+                    viewStore.send(.tapBottomButton)
                 }
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
             }

@@ -231,7 +231,7 @@ struct StoreManagementView: View {
                 send: StoreManagementAction.dismissDeleteStore
             )) {
                 let store = Store<DeleteStoreState, DeleteStoreAction>(
-                    initialState: DeleteStoreState(),
+                    initialState: DeleteStoreState(name: viewStore.storeEntity.name),
                     reducer: deleteStoreReducer,
                     environment: DeleteStoreEnvironment()
                 )

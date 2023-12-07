@@ -12,12 +12,16 @@ import ComposableArchitecture
 
 // MARK: TCA-State
 struct DeleteStoreState: Equatable {
+    let name: String
     
+    init(name: String) {
+        self.name = name
+    }
 }
 
 // MARK: TCA-Action
 enum DeleteStoreAction: Equatable {
-    
+    case tapBottomButton
     
 }
 
@@ -30,7 +34,9 @@ struct DeleteStoreEnvironment {
 let deleteStoreReducer = AnyReducer<DeleteStoreState, DeleteStoreAction, DeleteStoreEnvironment> { state, action, environment in
     
     switch action {
-    default:
+    case .tapBottomButton:
+        // TODO: 회원탈퇴 API 호출
+        // 토큰 다 지울 것
         return .none
     }
 }
