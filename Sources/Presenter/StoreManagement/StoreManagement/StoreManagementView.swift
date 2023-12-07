@@ -226,6 +226,18 @@ struct StoreManagementView: View {
                 StoreIntroduceView(store: store)
                     .onDisappear { viewStore.send(.fetchStore) }
             }
+            .navigationDestination(isPresented: viewStore.binding(
+                get: { $0.isShowingDeleteStore },
+                send: StoreManagementAction.dismissDeleteStore
+            )) {
+                let store = Store<DeleteStoreState, DeleteStoreAction>(
+                    initialState: DeleteStoreState(name: viewStore.storeEntity.name),
+                    reducer: deleteStoreReducer,
+                    environment: DeleteStoreEnvironment()
+                )
+                
+                DeleteStoreView(store: store)
+            }
             .sheet(isPresented: viewStore.binding(
                 get: {$0.isShowingCustomerCenter },
                 send: StoreManagementAction.dismissCustomerCenter

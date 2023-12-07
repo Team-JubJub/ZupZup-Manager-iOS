@@ -26,6 +26,7 @@ struct StoreManagementState: Equatable {
     var isShowingEditStoreInfo = false                      // 가게 정보 수정 화면 이동 트리거
     var isShowingCustomerCenter = false                     // 고객센터 웹페이지 이동 트리거
     var isShowingStoreIntroduce = false                     // 가게 소개 화면 이동 트리거
+    var isShowingDeleteStore: Bool = false
 }
 
 enum StoreManagementAction: Equatable {
@@ -55,6 +56,8 @@ enum StoreManagementAction: Equatable {
     case openStoreResponse(Result<OpenStoreResponse, OpenStoreError>)   // 가게 ON/OFF API 호출의 결과
     case fetchStoreResponse(Result<StoreEntity, FetchStoreError>)       // 가게 정보 조희 API 호출의 결과
     case dismissCustomerCenter
+    
+    case dismissDeleteStore
     
 }
 
@@ -154,7 +157,11 @@ let storeManagementReducer = AnyReducer<StoreManagementState, StoreManagementAct
         return .none
         
     case .tapExitService:
-        // TODO: 회원 탈퇴 화면 전환
+        state.isShowingDeleteStore = true
+        return .none
+    
+    case .dismissDeleteStore:
+        state.isShowingDeleteStore = false
         return .none
     }
 }
