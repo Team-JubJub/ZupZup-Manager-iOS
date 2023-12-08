@@ -39,6 +39,11 @@ enum ItemManageAction: Equatable {
     case tapEditCountButton // 액션 시트 - 제품 수량 수정
     case tapAddItemButton // 액션 시트 - 제품 추가
     case tapEditInfoButton // 액션 시트 - 제품 정보 수정
+    
+    case dismissEditButton // 좌측 상단의 연필 모양 눌렀을 경우
+    case dismissEditCountButton // 액션 시트 - 제품 수량 수정
+    case dismissAddItemButton // 액션 시트 - 제품 추가
+    case dismissEditInfoButton // 액션 시트 - 제품 정보 수정
 }
 
 // MARK: TCA - Environment
@@ -74,19 +79,35 @@ let itemManageReducer = AnyReducer<ItemManageState, ItemManageAction, ItemManage
         
     // 버튼 관련
     case .tapEditButton: // 좌측 상단의 연필 모양 눌렀을 경우
-        withAnimation { state.isEditable.toggle() }
+        withAnimation { state.isEditable = true }
         return .none
         
     case .tapEditCountButton: // 수량 수정을 눌렀을 경우
-        state.isEditCountVisible.toggle()
+        state.isEditCountVisible = true
         return .none
         
     case .tapEditInfoButton: // 제품 정보 수정을 눌렀을 경우
-        state.isEditInfoVisible.toggle()
+        state.isEditInfoVisible = true
         return .none
         
     case .tapAddItemButton: // 제품 추가를 눌렀을 경우
-        state.isAddItemVisible.toggle()
+        state.isAddItemVisible = true
+        return .none
+        
+    case .dismissEditButton:
+        state.isEditable = false
+        return .none
+        
+    case .dismissEditCountButton:
+        state.isEditCountVisible = false
+        return .none
+        
+    case .dismissAddItemButton:
+        state.isAddItemVisible = false
+        return .none
+        
+    case .dismissEditInfoButton:
+        state.isEditInfoVisible = false
         return .none
     }
 }
