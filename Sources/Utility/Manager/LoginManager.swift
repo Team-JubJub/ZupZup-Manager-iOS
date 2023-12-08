@@ -124,4 +124,11 @@ extension LoginManager {
             }
         }
     }
+    
+    func deleteStore() {
+        self.setLoginOff()
+        self.removeAccessToken()
+        self.removeStoreId()
+        self.removeRefreshToken()
+    }
 }

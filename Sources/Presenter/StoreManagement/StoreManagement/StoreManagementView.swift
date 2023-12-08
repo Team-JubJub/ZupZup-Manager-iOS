@@ -18,6 +18,7 @@ struct StoreManagementView: View {
     // MARK: 유즈 케이스
     let editStoreInfoUseCase: EditStoreInfoUseCase = EditStoreInfoUseCaseImpl()
     let editStoreIntroduceUseCase: EditStoreIntroduceUseCase = EditStoreIntroduceUseCaseImpl()
+    let deleteStoreUseCase: DeleteStoreUseCase = DeleteStoreUseCaseImpl()
     
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -233,7 +234,16 @@ struct StoreManagementView: View {
                 let store = Store<DeleteStoreState, DeleteStoreAction>(
                     initialState: DeleteStoreState(name: viewStore.storeEntity.name),
                     reducer: deleteStoreReducer,
-                    environment: DeleteStoreEnvironment()
+                    environment: DeleteStoreEnvironment(
+                        deleteStore: {
+                            return Future { promise in
+                                deleteStoreUseCase.deleteStore { result in
+                                    promise(.success(result))
+                                }
+                            }
+                            .eraseToEffect()
+                        }
+                    )
                 )
                 
                 DeleteStoreView(store: store)
