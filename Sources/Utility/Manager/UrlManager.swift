@@ -15,10 +15,15 @@ final class UrlManager {
     private init() {}
     
 #if DEBUG
-//    static let baseUrl = "https://zupzuptest.com:8080"
-    static let baseUrl = "https://zupzupofficial.com:8080"
+    static let baseUrl = "https://zupzuptest.com:8080"
 #else
     static let baseUrl = "https://zupzupofficial.com:8080"
+#endif
+    
+#if DEBUG
+    static let urlForDeleteStore = "https://zupzuptest.com:8095"
+#else
+    static let urlForDeleteStore = "https://zupzupofficial.com:8095"
 #endif
     
 #if DEBUG

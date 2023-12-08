@@ -19,7 +19,7 @@ final class DeleteStoreRepositoryImpl: DeleteStoreRepository {
     func deleteStore(completion: @escaping (Result<DeleteStoreResponse, DeleteStoreError>) -> Void) {
         
         let storeId = LoginManager.shared.getStoreId()
-        let url = UrlManager.baseUrl + "/cancel/\(storeId)"
+        let url = UrlManager.urlForDeleteStore + "/cancel/\(storeId)"
         
         AF.request(
             url,
