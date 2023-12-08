@@ -57,12 +57,24 @@ struct DeleteStoreView: View {
             }
             .navigationTitle("")
             .navigationBarHidden(true)
-        
+            .alert(
+                viewStore.errorTitle,
+                isPresented: viewStore.binding(get: {$0.isErrorOn}, send: DeleteStoreAction.isErrorDismiss),
+                actions: {
+                    Button("확인", role: .cancel) { }
+                },
+                message: { Text(viewStore.errorMessage) }
+            )
+            .alert(
+                "회원 탈퇴하기",
+                isPresented: viewStore.binding(get: { $0.isShowingAlert }, send: DeleteStoreAction.dismissAlert),
+                actions: {
+                    Button("네", role: .destructive) { viewStore.send(.tabAlertOk) }
+                    Button("아니오", role: .cancel) { }
+                },
+                message: { Text("정말 회원 탈퇴하시나요?") }
+            )
             
         }
     }
 }
-
-//#Preview {
-//    DeleteStoreView(store: Store(initialState: DeleteStoreState(), reducer: deleteStoreReducer, environment: DeleteStoreEnvironment()))
-//}
