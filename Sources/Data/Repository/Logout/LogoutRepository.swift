@@ -12,7 +12,7 @@ import Alamofire
 
 final class LogoutRepository {
     
-    func login(
+    func logout(
         request: LogoutRequest,
         completion: @escaping (Result<LogoutResponse, LogoutError>) -> Void
     ) {

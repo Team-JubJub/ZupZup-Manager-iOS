@@ -89,10 +89,14 @@ extension LoginManager {
     }
     
     func Logout() {
-        self.setLoginOff()
-        self.removeAccessToken()
-        self.removeStoreId()
-        self.removeRefreshToken()
+        let request = LogoutRequest(deviceToken: self.getDeviceToken())
+        
+        LogoutRepository().logout(request: request) { _ in
+            self.setLoginOff()
+            self.removeAccessToken()
+            self.removeStoreId()
+            self.removeRefreshToken()
+        }
     }
     
     func autoLogin(response: AutoLoginResponse) {
