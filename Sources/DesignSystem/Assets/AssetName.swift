@@ -44,4 +44,5 @@ enum AssetName: String {
     case ic_mockImage
     case ic_cancel
     case ic_goodbye
+    case ic_empty_item
 }
