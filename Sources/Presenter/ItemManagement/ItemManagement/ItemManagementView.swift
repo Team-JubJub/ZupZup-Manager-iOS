@@ -107,19 +107,28 @@ struct ItemManagementView: View {
                 .padding(EdgeInsets(top: 46, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
                 
                 ScrollView(showsIndicators: false) {
-                    LazyVGrid(columns: columns) {
-                        ForEach(viewStore.items.indices, id: \.self) { index in
-                            ProductGridItem(
-                                count: viewStore.state.items[index].count,
-                                url: viewStore.state.items[index].imageUrl,
-                                title: viewStore.state.items[index].name,
-                                originalPrice: viewStore.state.items[index].priceOrigin,
-                                salePrice: viewStore.state.items[index].priceDiscount,
-                                type: .common
-                            )
+                    if viewStore.items.isEmpty {
+                        VStack(spacing: 0) {
+                            InfiniteSpacer()
+                            EmptyItemView()
+                            InfiniteSpacer()
                         }
+                        .frame(width: Device.Width, height: Device.Height * 0.55, alignment: .center)
+                    } else {
+                        LazyVGrid(columns: columns) {
+                            ForEach(viewStore.items.indices, id: \.self) { index in
+                                ProductGridItem(
+                                    count: viewStore.state.items[index].count,
+                                    url: viewStore.state.items[index].imageUrl,
+                                    title: viewStore.state.items[index].name,
+                                    originalPrice: viewStore.state.items[index].priceOrigin,
+                                    salePrice: viewStore.state.items[index].priceDiscount,
+                                    type: .common
+                                )
+                            }
+                        }
+                        .frame(width: Device.WidthWithPadding)
                     }
-                    .frame(width: Device.WidthWithPadding)
                 }
             }
             .navigationTitle("")
