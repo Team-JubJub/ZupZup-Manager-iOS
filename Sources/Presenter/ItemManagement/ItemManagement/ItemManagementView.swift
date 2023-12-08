@@ -33,7 +33,7 @@ struct ItemManagementView: View {
                             "Title",
                             isPresented: viewStore.binding(
                                 get: { $0.isEditable },
-                                send: ItemManageAction.tapEditButton
+                                send: ItemManageAction.dismissEditButton
                             )
                         ) {
                             Button("수량 수정") { viewStore.send(.tapEditCountButton) }
@@ -43,7 +43,7 @@ struct ItemManagementView: View {
                         }
                         .navigationDestination(isPresented: viewStore.binding(
                             get: { $0.isEditCountVisible },
-                            send: ItemManageAction.tapEditCountButton
+                            send: ItemManageAction.dismissEditCountButton
                         )) {
                             let store = Store<EditItemCountState, EditItemCountAction>(
                                 initialState: EditItemCountState(items: viewStore.state.items),
@@ -64,7 +64,7 @@ struct ItemManagementView: View {
                         }
                         .navigationDestination(isPresented: viewStore.binding(
                             get: { $0.isAddItemVisible },
-                            send: ItemManageAction.tapAddItemButton
+                            send: ItemManageAction.dismissAddItemButton
                         )) {
                             let store = Store<AddItemState, AddItemAction>(
                                 initialState: AddItemState(),
@@ -84,7 +84,7 @@ struct ItemManagementView: View {
                         }
                         .navigationDestination(isPresented: viewStore.binding(
                             get: { $0.isEditInfoVisible },
-                            send: ItemManageAction.tapEditInfoButton
+                            send: ItemManageAction.dismissEditInfoButton
                         )) {
                             let store = Store<EditItemInfoState, EditItemInfoAction>(
                                 initialState: EditItemInfoState(items: viewStore.state.items),

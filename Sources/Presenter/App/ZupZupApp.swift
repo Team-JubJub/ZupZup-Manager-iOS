@@ -5,9 +5,9 @@ struct ZupZupApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
-    init() {
-        FontSet.registerFonts() // 폰트를 등록합니다.
-    }
+//    init() {
+//        FontSet.registerFonts() // 폰트를 등록합니다.
+//    }
     
     var body: some Scene {
         WindowGroup {
