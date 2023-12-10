@@ -36,72 +36,28 @@ struct ItemManagementView: View {
                                 send: ItemManageAction.dismissEditButton
                             )
                         ) {
-                            Button("수량 수정") { viewStore.send(.tapEditCountButton) }
-                            Button("제품 정보 수정") { viewStore.send(.tapEditInfoButton) }
-                            Button("제품 추가") { viewStore.send(.tapAddItemButton) }
-                            Button("취소", role: .cancel) {}
+                            if viewStore.items.isEmpty {
+                                Button("제품 추가") { viewStore.send(.tapAddItemButton) }
+                                Button("취소", role: .cancel) {}
+                            } else {
+                                Button("수량 수정") { viewStore.send(.tapEditCountButton) }
+                                Button("제품 정보 수정") { viewStore.send(.tapEditInfoButton) }
+                                Button("제품 추가") { viewStore.send(.tapAddItemButton) }
+                                Button("취소", role: .cancel) {}
+                            }
                         }
                         .navigationDestination(isPresented: viewStore.binding(
-                            get: { $0.isEditCountVisible },
-                            send: ItemManageAction.dismissEditCountButton
+                            get: { $0.isNavigate },
+                            send: ItemManageAction.dismissTarget
                         )) {
-                            let store = Store<EditItemCountState, EditItemCountAction>(
-                                initialState: EditItemCountState(items: viewStore.state.items),
-                                reducer: editItemCountReducer,
-                                environment: EditItemCountEnvironment(
-                                    updateItemCount: { request in
-                                        return Future { promise in
-                                            updateItemCountUseCase.updateItemCount(request: request) { result in
-                                                promise(.success(result))
-                                            }
-                                        }
-                                        .eraseToEffect()
-                                    }
-                                )
-                            )
-                            
-                            EditItemCountView(store: store)
-                        }
-                        .navigationDestination(isPresented: viewStore.binding(
-                            get: { $0.isAddItemVisible },
-                            send: ItemManageAction.dismissAddItemButton
-                        )) {
-                            let store = Store<AddItemState, AddItemAction>(
-                                initialState: AddItemState(),
-                                reducer: addItemReducer,
-                                environment: AddItemEnvironment(
-                                    addItem: { request in
-                                        return Future { promise in
-                                            addItemUseCase.addItem(request: request) { result in
-                                                promise(.success(result))
-                                            }
-                                        }
-                                        .eraseToEffect()
-                                    }
-                                )
-                            )
-                            AddItemView(store: store)
-                        }
-                        .navigationDestination(isPresented: viewStore.binding(
-                            get: { $0.isEditInfoVisible },
-                            send: ItemManageAction.dismissEditInfoButton
-                        )) {
-                            let store = Store<EditItemInfoState, EditItemInfoAction>(
-                                initialState: EditItemInfoState(items: viewStore.state.items),
-                                reducer: editItemInfoReducer,
-                                environment: EditItemInfoEnvironment(
-                                    items: {
-                                        return Future { promise in
-                                            FetchItemsUseCaseImpl()
-                                                .fetchItems { result in
-                                                    promise(.success(result))
-                                                }
-                                        }
-                                        .eraseToEffect()
-                                    }
-                                )
-                            )
-                            EditItemInfoView(store: store)
+                            switch viewStore.targetViewType {
+                            case .addItem: 
+                                makeAddItemView()
+                            case .editItemCount:
+                                makeEditItemCountView(items: viewStore.items)
+                            case .editItemInfo:
+                                makeEditItemInfoView(items: viewStore.items)
+                            }
                         }
                 }
                 .padding(EdgeInsets(top: 46, leading: Device.HPadding, bottom: Device.Height * 20 / 844, trailing: Device.HPadding))
@@ -138,5 +94,65 @@ struct ItemManagementView: View {
                 }
             }
         }
+    }
+}
+
+extension ItemManagementView {
+    @ViewBuilder
+    func makeAddItemView() -> some View {
+        let store = Store<AddItemState, AddItemAction>(
+            initialState: AddItemState(),
+            reducer: addItemReducer,
+            environment: AddItemEnvironment(
+                addItem: { request in
+                    return Future { promise in
+                        addItemUseCase.addItem(request: request) { result in
+                            promise(.success(result))
+                        }
+                    }
+                    .eraseToEffect()
+                }
+            )
+        )
+        AddItemView(store: store)
+    }
+    
+    @ViewBuilder
+    func makeEditItemInfoView(items: [ItemEntity]) -> some View {
+        let store = Store<EditItemInfoState, EditItemInfoAction>(
+            initialState: EditItemInfoState(items: items),
+            reducer: editItemInfoReducer,
+            environment: EditItemInfoEnvironment(
+                items: {
+                    return Future { promise in
+                        FetchItemsUseCaseImpl()
+                            .fetchItems { result in
+                                promise(.success(result))
+                            }
+                    }
+                    .eraseToEffect()
+                }
+            )
+        )
+        EditItemInfoView(store: store)
+    }
+    
+    @ViewBuilder
+    func makeEditItemCountView(items: [ItemEntity]) -> some View {
+        let store = Store<EditItemCountState, EditItemCountAction>(
+            initialState: EditItemCountState(items: items),
+            reducer: editItemCountReducer,
+            environment: EditItemCountEnvironment(
+                updateItemCount: { request in
+                    return Future { promise in
+                        updateItemCountUseCase.updateItemCount(request: request) { result in
+                            promise(.success(result))
+                        }
+                    }
+                    .eraseToEffect()
+                }
+            )
+        )
+        EditItemCountView(store: store)
     }
 }

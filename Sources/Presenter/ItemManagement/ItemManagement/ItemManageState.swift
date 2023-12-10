@@ -11,6 +11,14 @@ import Combine
 
 import ComposableArchitecture
 
+extension ItemManageState {
+    enum TargetView {
+        case editItemCount
+        case editItemInfo
+        case addItem
+    }
+}
+
 // MARK: TCA - State
 struct ItemManageState: Equatable {
     
@@ -22,9 +30,10 @@ struct ItemManageState: Equatable {
     
     // 네비게이션 관련
     var isEditable = false // 액션 시트 호출
-    var isEditCountVisible = false // EditCountView호출
-    var isAddItemVisible = false // AddItemView 호출
-    var isEditInfoVisible = false // EditInfoView 호출
+    
+    var isNavigate: Bool = false
+    
+    var targetViewType: TargetView = .addItem
 }
 
 // MARK: TCA - Action
@@ -41,9 +50,7 @@ enum ItemManageAction: Equatable {
     case tapEditInfoButton // 액션 시트 - 제품 정보 수정
     
     case dismissEditButton // 좌측 상단의 연필 모양 눌렀을 경우
-    case dismissEditCountButton // 액션 시트 - 제품 수량 수정
-    case dismissAddItemButton // 액션 시트 - 제품 추가
-    case dismissEditInfoButton // 액션 시트 - 제품 정보 수정
+    case dismissTarget
 }
 
 // MARK: TCA - Environment
@@ -53,7 +60,6 @@ struct ItemManageEnvironment {
 
 // MARK: TCA - Reducer
 let itemManageReducer = AnyReducer<ItemManageState, ItemManageAction, ItemManageEnvironment> { state, action, environment in
-    
     switch action {
     // API 관련
     case .fetchItems: // 제품 리스트 호출
@@ -83,31 +89,26 @@ let itemManageReducer = AnyReducer<ItemManageState, ItemManageAction, ItemManage
         return .none
         
     case .tapEditCountButton: // 수량 수정을 눌렀을 경우
-        state.isEditCountVisible = true
+        state.targetViewType = .editItemCount
+        state.isNavigate = true
         return .none
         
     case .tapEditInfoButton: // 제품 정보 수정을 눌렀을 경우
-        state.isEditInfoVisible = true
+        state.targetViewType = .editItemInfo
+        state.isNavigate = true
         return .none
         
     case .tapAddItemButton: // 제품 추가를 눌렀을 경우
-        state.isAddItemVisible = true
+        state.targetViewType = .addItem
+        state.isNavigate = true
         return .none
         
     case .dismissEditButton:
         state.isEditable = false
         return .none
-        
-    case .dismissEditCountButton:
-        state.isEditCountVisible = false
-        return .none
-        
-    case .dismissAddItemButton:
-        state.isAddItemVisible = false
-        return .none
-        
-    case .dismissEditInfoButton:
-        state.isEditInfoVisible = false
+    
+    case .dismissTarget:
+        state.isNavigate = false
         return .none
     }
 }
