@@ -15,6 +15,10 @@ struct EditItemInfoView: View {
     
     @Environment(\.dismiss) private var dismiss
     
+    @State private var isNavigate: Bool = false
+    
+    @State private var selectedItem: ItemEntity?
+    
     let store: Store<EditItemInfoState, EditItemInfoAction>
     
     // MARK: UseCase
@@ -39,45 +43,16 @@ struct EditItemInfoView: View {
                     ScrollView(showsIndicators: false) {
                         LazyVGrid(columns: columns) {
                             ForEach(viewStore.state.items, id: \.self) { item in
-                                NavigationLink {
-                                    let store = Store<EditItemDetailState, EditItemDetailAction>(
-                                        initialState: EditItemDetailState(item: item),
-                                        reducer: editItemDetailReducer,
-                                        environment: EditItemDetailEnvironment(
-                                            updateItemInfo: { request in
-                                                return Future { promise in
-                                                    updateItemInfoUseCase.updateItemInformation(
-                                                        request: request) { result in
-                                                            promise(.success(result))
-                                                    }
-                                                }
-                                                .eraseToEffect()
-                                            },
-                                            deleteItem: { request in
-                                                return Future { promise in
-                                                    deleteItemUseCase.deleteItem(
-                                                        request: request) { result in
-                                                            promise(.success(result))
-                                                    }
-                                                }
-                                                .eraseToEffect()
-                                            }
-                                        )
-                                    )
-                                    EditItemInfoDetailView(store: store)
-                                        .onDisappear {
-                                            // TODO: 아이템 패치
-                                            viewStore.send(.fetchItems)
-                                        }
-                                } label: {
-                                    ProductGridItem(
-                                        count: item.count,
-                                        url: item.imageUrl,
-                                        title: item.name,
-                                        originalPrice: item.priceOrigin,
-                                        salePrice: item.priceDiscount,
-                                        type: .editInfo
-                                    )
+                                ProductGridItem(
+                                    count: item.count,
+                                    url: item.imageUrl,
+                                    title: item.name,
+                                    originalPrice: item.priceOrigin,
+                                    salePrice: item.priceDiscount,
+                                    type: .editInfo
+                                )
+                                .onTapGesture {
+                                    tabItem(item)
                                 }
                             }
                         }
@@ -106,6 +81,47 @@ struct EditItemInfoView: View {
             .onChange(of: viewStore.isPop) { isPop in
                 if isPop { dismiss() }
             }
+            .sheet(
+                isPresented: $isNavigate) {
+                    if let item = self.selectedItem {
+                        let store = Store<EditItemDetailState, EditItemDetailAction>(
+                            initialState: EditItemDetailState(item: item),
+                            reducer: editItemDetailReducer,
+                            environment: EditItemDetailEnvironment(
+                                updateItemInfo: { request in
+                                    return Future { promise in
+                                        updateItemInfoUseCase.updateItemInformation(
+                                            request: request) { result in
+                                                promise(.success(result))
+                                            }
+                                    }
+                                    .eraseToEffect()
+                                },
+                                deleteItem: { request in
+                                    return Future { promise in
+                                        deleteItemUseCase.deleteItem(
+                                            request: request) { result in
+                                                promise(.success(result))
+                                            }
+                                    }
+                                    .eraseToEffect()
+                                }
+                            )
+                        )
+                        EditItemInfoDetailView(store: store)
+                            .onDisappear {
+                                // TODO: 아이템 패치
+                                viewStore.send(.fetchItems)
+                            }
+                    }
+                }
         }
+    }
+}
+
+extension EditItemInfoView {
+    func tabItem(_ item: ItemEntity) {
+        self.selectedItem = item
+        self.isNavigate = true
     }
 }
