@@ -49,7 +49,7 @@ struct EditStoreInfoView: View {
                                 ) {
                                     viewStore.send(.tapImagePicker)  // MARK: Action - 이미지 피커를 누른 경우
                                 }
-                                .frame(height: 192)
+                                .frame(height: 250)
                                 .sheet(
                                     // MARK: 이미지 피커 변수 바인딩
                                     isPresented: viewStore.binding(

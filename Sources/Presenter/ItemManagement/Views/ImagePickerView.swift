@@ -24,17 +24,17 @@ struct ImagePickerView: View {
                     Image(assetName: .ic_mockImage)
                         .resizable()
                         .scaledToFill()
-                        .frame(height: 192)
+                        .frame(height: 250)
                         .clipped()
                 }
                 .scaledToFill()
-                .frame(height: 192)
+                .frame(height: 250)
                 .clipped()
             if image != nil {
                 Image(uiImage: image!)
                     .resizable()
                     .scaledToFill()
-                    .frame(height: 192)
+                    .frame(height: 250)
                     .clipped()
             }
             

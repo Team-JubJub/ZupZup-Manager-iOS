@@ -19,14 +19,9 @@ struct EditItemInfoDetailView: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack(spacing: 0) {
+                VSpacer(height: 12)
+                
                 ZStack {
-                    // 네비게이션바 뒤로가기 버튼
-                    HStack(spacing: 0) {
-                        NavigationBarWithDismiss(label: "제품 관리")
-                        InfiniteSpacer()
-                    }
-                    .frame(height: 42)
-                    
                     // 네비게이션 타이틀
                     HStack(spacing: 0) {
                         InfiniteSpacer()
@@ -57,7 +52,7 @@ struct EditItemInfoDetailView: View {
                         ) {
                             viewStore.send(.tabImagePickerButton)
                         }
-                        .frame(height: 192)
+                        .frame(height: 250)
                         .sheet(
                             isPresented: viewStore.binding(
                                 get: { $0.isShowingImagePicker },

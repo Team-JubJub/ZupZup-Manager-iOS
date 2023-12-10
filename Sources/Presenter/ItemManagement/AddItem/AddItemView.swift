@@ -48,7 +48,7 @@ struct AddItemView: View {
                         ) {
                             viewStore.send(.tabImagePickerButton)
                         }
-                        .frame(height: 192)
+                        .frame(height: 250)
                         .sheet(
                             isPresented: viewStore.binding(
                                 get: { $0.isShowingImagePicker },
