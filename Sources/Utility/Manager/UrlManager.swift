@@ -21,9 +21,9 @@ final class UrlManager {
 #endif
     
 #if DEBUG
-    static let urlForDeleteStore = "https://zupzuptest.com:8095"
+    static let urlForDeleteStore = "https://zupzuptest.com:8085"
 #else
-    static let urlForDeleteStore = "https://zupzupofficial.com:8095"
+    static let urlForDeleteStore = "https://zupzupofficial.com:8085"
 #endif
     
 #if DEBUG
