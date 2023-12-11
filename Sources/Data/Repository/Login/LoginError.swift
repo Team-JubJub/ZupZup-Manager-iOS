@@ -15,6 +15,7 @@ enum LoginError: Error, Equatable {
     case noStore         // (401) 가게가 없는 경우
     case wrongPassword   // (403) 아이디를 통한 로그인 시 비밀번호가 틀린 경우
     case wrongId         // (404) 제공된 login ID를 가진 사장님 조회가 불가능한 경우(login ID가 잘못된 경우)
+    case storeExpired    // (451) 회원탈퇴가 진행 중인 사장님의 경우(로그인 방지)
     case serverError     // (500) 내부 서버 오류
     case unKnown         // (그외) 알 수 없는 오류
 }

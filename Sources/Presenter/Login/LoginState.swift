@@ -194,6 +194,11 @@ let loginReducer = AnyReducer<LoginState, LoginAction, LoginEnvironment> { state
             state.errorTitle = "알수없는 에러"
             state.errorMessage = "죄송합니다. 알수 없는 에러가 발생했어요!"
             state.isErrorOn = true
+            
+        case .storeExpired:
+            state.errorTitle = "탈퇴한 회원"
+            state.errorMessage = "이미 탈퇴한 회원입니다!"
+            state.isErrorOn = true
         }
         
         return .none

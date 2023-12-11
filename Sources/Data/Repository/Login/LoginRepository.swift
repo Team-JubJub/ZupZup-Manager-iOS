@@ -33,6 +33,8 @@ final class LoginRepository {
                     completion(.failure(.wrongPassword))
                 case 404:
                     completion(.failure(.wrongId))
+                case 451:
+                    completion(.failure(.storeExpired))
                 case 500:
                     completion(.failure(.serverError))
                 default:

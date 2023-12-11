@@ -27,7 +27,6 @@ final class DeleteStoreRepositoryImpl: DeleteStoreRepository {
         )
         .validate()
         .response { response in
-            dump(response)
             switch response.result {
             case .success:
                 completion(.success(DeleteStoreResponse()))
