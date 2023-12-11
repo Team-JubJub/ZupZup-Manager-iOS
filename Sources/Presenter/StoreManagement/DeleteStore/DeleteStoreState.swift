@@ -19,6 +19,8 @@ struct DeleteStoreState: Equatable {
     var errorTitle: String = ""
     var errorMessage: String = ""
     
+    var isPop: Bool = false
+    
     init(name: String) {
         self.name = name
     }
@@ -59,6 +61,7 @@ let deleteStoreReducer = AnyReducer<DeleteStoreState, DeleteStoreAction, DeleteS
         return .none
         
     case let .deleteStoreResponse(.success(response)):
+        state.isPop = true
         LoginManager.shared.deleteStore()
         return .none
         

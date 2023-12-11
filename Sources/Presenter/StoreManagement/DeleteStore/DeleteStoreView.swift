@@ -12,6 +12,8 @@ import ComposableArchitecture
 
 struct DeleteStoreView: View {
     
+    @Environment(\.dismiss) private var dismiss
+    
     var store: Store<DeleteStoreState, DeleteStoreAction>
     
     var body: some View {
@@ -57,6 +59,9 @@ struct DeleteStoreView: View {
             }
             .navigationTitle("")
             .navigationBarHidden(true)
+            .onChange(of: viewStore.isPop) { isPop in
+                if isPop { dismiss() }
+            }
             .alert(
                 viewStore.errorTitle,
                 isPresented: viewStore.binding(get: {$0.isErrorOn}, send: DeleteStoreAction.isErrorDismiss),
