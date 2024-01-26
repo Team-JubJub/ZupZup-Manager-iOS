@@ -12,10 +12,12 @@ import ComposableArchitecture
 
 struct LoginView: View {
     
-    let store: Store<LoginState, LoginAction>
+    let store: StoreOf<Login>
+    
+    //    let store: Store<LoginState, LoginAction>
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
             ZStack {
                 VStack(spacing: 0) {
                     InfiniteSpacer()
@@ -24,39 +26,22 @@ struct LoginView: View {
                     
                     InfiniteSpacer()
                     
-                    IdTextField(idString: viewStore.binding(
-                        get: { $0.id },
-                        send: LoginAction.idChanged
-                    ),
-                                textFieldColor: viewStore.binding(
-                                    get: { $0.textFieldColor },
-                                    send: LoginAction.textFieldColorChanged
-                                )
+                    IdTextField(
+                        idString: viewStore.binding(get: \.id, send: { .idChanged($0) }),
+                        textFieldColor: viewStore.binding(get: \.textFieldColor, send: .textFieldColorChanged)
                     )
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
                     
                     PasswordTextField(
-                        password: viewStore.binding(
-                            get: { $0.password },
-                            send: LoginAction.passwordChanged
-                        ),
-                        textFieldColor: viewStore.binding(
-                            get: { $0.textFieldColor },
-                            send: LoginAction.textFieldColorChanged
-                        )
+                        password: viewStore.binding(get: \.password, send: { .passwordChanged($0) }),
+                        textFieldColor: viewStore.binding(get: \.textFieldColor, send: .textFieldColorChanged)
                     )
                     
                     LoginButton(
                         height: 56,
                         text: "로그인",
-                        textColor: viewStore.binding(
-                            get: { $0.buttonTextColor },
-                            send: LoginAction.buttonTextColorChanged
-                        ),
-                        bodyColor: viewStore.binding(
-                            get: { $0.buttonBodyColor },
-                            send: LoginAction.buttonBodyColorChanged
-                        )
+                        textColor: viewStore.binding(get: \.buttonTextColor, send: .buttonTextColorChanged),
+                        bodyColor: viewStore.binding(get: \.buttonBodyColor, send: .buttonBodyColorChanged)
                     ) {
                         viewStore.send(.tapLoginButton)
                     }
@@ -155,31 +140,17 @@ struct LoginView: View {
             .ignoresSafeArea()
             .alert(
                 viewStore.errorTitle,
-                isPresented: viewStore.binding(
-                    get: { $0.isErrorOn },
-                    send: LoginAction.isErrorDismiss
-                ),
-                actions: {
-                    Button("확인", role: .cancel) { }
-                },
+                isPresented: viewStore.binding(get: \.isErrorOn, send: .isErrorDismiss),
+                actions: { Button("확인", role: .cancel) { }},
                 message: { Text(viewStore.errorMessage) }
             )
-            .sheet(isPresented: viewStore.binding(
-                get: { $0.isShowingFindMyAccountWeb },
-                send: LoginAction.dismissFindMyAcoount)
-            ) {
+            .sheet(isPresented: viewStore.binding(get: \.isShowingFindMyAccountWeb, send: .dismissFindMyAcoount)) {
                 SafariView(url: URL(string: UrlManager.findMyAccountUrl)!)
             }
-            .sheet(isPresented: viewStore.binding(
-                get: { $0.isShowingMakeAccountWeb },
-                send: LoginAction.dismissMakeAccount)
-            ) {
+            .sheet(isPresented: viewStore.binding(get: \.isShowingMakeAccountWeb, send: .dismissMakeAccount)) {
                 SafariView(url: URL(string: UrlManager.makeAccountUrl)!)
             }
-            .sheet(isPresented: viewStore.binding(
-                get: { $0.isShowingFindPasswordWeb },
-                send: LoginAction.dismissFindPassword)
-            ) {
+            .sheet(isPresented: viewStore.binding(get: \.isShowingFindPasswordWeb, send: .dismissFindPassword)) {
                 SafariView(url: URL(string: UrlManager.findPasswordUrl)!)
             }
         }
