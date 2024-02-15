@@ -14,8 +14,6 @@ struct LoginView: View {
     
     let store: StoreOf<Login>
     
-    //    let store: Store<LoginState, LoginAction>
-    
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             ZStack {

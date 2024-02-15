@@ -12,6 +12,7 @@ import Combine
 
 // MARK: ContentView
 struct ContentView: View {
+    // TODO: Need To Refactor to TCA
     
     @ObservedObject var loginManager = LoginManager.shared
     
@@ -32,76 +33,30 @@ struct ContentView: View {
                     ZStack {
                         switch selectedIndex {
                         case 0:                                                             // MARK: 1번 탭 : 예약 상황 화면
-//                            let store = Store<ReservationState, ReservationAction>(
-//                                initialState: ReservationState(),
-//                                reducer: reservationReducer,
-//                                environment: ReservationEnvironment(
-//                                    mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-//                                    reservations: { request in
-//                                        return Future { promise in
-//                                            FetchReserveUseCaseImpl()
-//                                                .fetchReserve(request: request) { result in
-//                                                    promise(.success(result))
-//                                                }
-//                                        }
-//                                        .eraseToEffect()
-//                                    }
-//                                )
-//                            )
-//                            ReservationView(store: store)                                   // MARK: OnAppear 시점에 예약 조회 API 호출
-//                                .onAppear {
-//                                    ViewStore(store).send(.fetchReservation)
-//                                }
-                            EmptyView()
+                            ReservationView(
+                                store: Store(initialState: Reservation.State()) {
+                                    Reservation()
+                                    #if DEBUG
+                                        ._printChanges()
+                                    #endif
+                                }
+                            )
                         case 1:                                                             // MARK: 2번 탭 : 제품 관리 화면
-//                            let store = Store<ItemManageState, ItemManageAction>(
-//                                initialState: ItemManageState(),
-//                                reducer: itemManageReducer,
-//                                environment: ItemManageEnvironment(
-//                                    items: {
-//                                        return Future { promise in
-//                                            FetchItemsUseCaseImpl()
-//                                                .fetchItems { result in
-//                                                    promise(.success(result))
-//                                                }
-//                                        }
-//                                        .eraseToEffect()
-//                                    }
-//                                )
-//                            )
-//                            ItemManagementView(store: store)                                // MARK: OnAppear 시점에 API 호출
-//                                .onAppear {
-//                                    ViewStore(store).send(.fetchItems)
-//                                }
-                            EmptyView()
+                            ItemManagementView(
+                                store: Store(initialState: ItemManagement.State()) {
+                                    ItemManagement()
+                                    #if DEBUG
+                                        ._printChanges()
+                                    #endif
+                                }
+                            )
                         default:                                                            // MARK: 3번 탭 : 매장 관리 화면
-//                            let store = Store<StoreManagementState, StoreManagementAction>(
-//                                initialState: StoreManagementState(),
-//                                reducer: storeManagementReducer,
-//                                environment: StoreManagementEnvironment(
-//                                    openStore: { request in
-//                                        return Future { promise in
-//                                            openStoreUseCase.openStore(request: request) { result in
-//                                                promise(.success(result))
-//                                            }
-//                                        }
-//                                        .eraseToEffect()
-//                                    },
-//                                    fetchStore: {
-//                                        return Future { promise in
-//                                            fetchStoreUseCase.fetchStore { result in
-//                                                promise(.success(result))
-//                                            }
-//                                        }
-//                                        .eraseToEffect()
-//                                    }
-//                                )
-//                            )
-//                            StoreManagementView(store: store)
-//                                .onAppear {
-//                                    ViewStore(store).send(.fetchStore)
-//                                }
-                            EmptyView()
+                            StoreManagementView(store: Store(initialState: StoreManagement.State()){
+                                StoreManagement()
+                                #if DEBUG
+                                    ._printChanges()
+                                #endif
+                            })
                         }
                     }
                     Spacer()
@@ -122,9 +77,9 @@ struct ContentView: View {
                 LoginView(
                     store: Store(initialState: Login.State()) {
                         Login()
-                        #if DEBUG
+#if DEBUG
                             ._printChanges()
-                        #endif
+#endif
                     }
                 )
             }
