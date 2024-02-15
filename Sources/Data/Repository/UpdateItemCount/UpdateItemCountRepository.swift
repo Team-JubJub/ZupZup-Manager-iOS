@@ -73,4 +73,57 @@ final class UpdateItemCountRepositoryImpl: UpdateItemCountRepository {
             }
         }
     }
+    
+    func updateItemCount(request: UpdateItemCountRequest) async throws -> UpdateItemCountResponse {
+        
+        let storeId = LoginManager.shared.getStoreId()
+        
+        let accessToken = LoginManager.shared.getAccessToken()
+        
+        let headers: HTTPHeaders = [
+            "accessToken": accessToken,
+            "Content-Type": "multipart/form-data; boundary=\(UUID().uuidString)"
+        ]
+        
+        let url = UrlManager.baseUrl + "/seller/\(String(describing: storeId))/quantity"
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            AF.upload(multipartFormData: { multipartFormData in
+                do {
+                    let jsonData = try JSONEncoder().encode(request.quantity)
+                    multipartFormData.append(
+                        jsonData,
+                        withName: "item",
+                        fileName: "item.json",
+                        mimeType: "application/json"
+                    )
+                } catch {
+                    continuation.resume(throwing: AddItemError.failToEncode)
+                    return
+                }
+            }, 
+                      to: url,
+                      headers: headers
+            )
+            .responseString { response in
+                switch response.result {
+                case .success:
+                    continuation.resume(returning: UpdateItemCountResponse())
+                case .failure:
+                    switch response.response?.statusCode {
+                    case 400:
+                        continuation.resume(throwing: UpdateItemCountError.noToken)
+                    case 401:
+                        continuation.resume(throwing: UpdateItemCountError.tokenExpired)
+                    case 404:
+                        continuation.resume(throwing: UpdateItemCountError.noItem)
+                    case 500:
+                        continuation.resume(throwing: UpdateItemCountError.serverError)
+                    default:
+                        continuation.resume(throwing: UpdateItemCountError.unKnown)
+                    }
+                }
+            }
+        }
+    }
 }

@@ -43,4 +43,26 @@ final class FetchItemsRepositoryImpl: FetchItemsRepository {
             }
         }
     }
+    
+    func fetchItems() async throws -> FetchItemsResponse {
+        let response = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<FetchItemsResponse, Error>) in
+            
+            let storeId = LoginManager.shared.getStoreId()
+            
+            let url = UrlManager.baseUrl + "/seller/\(String(describing: storeId))/management"
+            
+            NetworkManager.shared.sendRequest(
+                to: url,
+                method: .get
+            ) { (result: Result<FetchItemsResponse, NetworkError>) in
+                switch result {
+                case .success(let response):
+                    continuation.resume(returning: response)
+                case .failure(_):
+                    continuation.resume(throwing: FetchReservationsError.failToDecode)
+                }
+            }
+        }
+        return response
+    }
 }

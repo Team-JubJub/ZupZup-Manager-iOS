@@ -15,10 +15,10 @@ struct AddItemView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    var store: Store<AddItemState, AddItemAction>
+    var store: StoreOf<AddItem>
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
             VStack(spacing: 0) {
                 ZStack {
                     HStack(spacing: 0) {
@@ -40,27 +40,12 @@ struct AddItemView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         // 이미지 피커 부분
-                        ImagePickerView(
-                            image: viewStore.binding(
-                                get: { $0.selectedImage },
-                                send: AddItemAction.selectedImageChanged
-                            )
-                        ) {
+                        ImagePickerView(image: viewStore.$pickerImage) {
                             viewStore.send(.tabImagePickerButton)
                         }
                         .frame(height: 250)
-                        .sheet(
-                            isPresented: viewStore.binding(
-                                get: { $0.isShowingImagePicker },
-                                send: AddItemAction.dismissImagePicker
-                            )
-                        ) {
-                            ImagePicker(
-                                selectedImage: viewStore.binding(
-                                    get: { $0.selectedImage },
-                                    send: AddItemAction.selectedImageChanged
-                                )
-                            )
+                        .sheet(isPresented: viewStore.binding(get: \.isShowingImagePicker, send: .dismissImagePicker)) {
+                            ImagePicker(selectedImage: viewStore.$pickerImage)
                         }
                         
                         VStack(alignment: .leading, spacing: 0) {
@@ -69,10 +54,7 @@ struct AddItemView: View {
                             
                             ItemNameTextField(
                                 placeHolder: "제품명을 입력해주세요",
-                                name: viewStore.binding(
-                                    get: { $0.name },
-                                    send: AddItemAction.nameChanged
-                                )
+                                name: viewStore.binding(get: \.name, send: {.nameChanged($0)})
                             ) {
                                 viewStore.send(.tabClearButton)
                             }
@@ -85,22 +67,12 @@ struct AddItemView: View {
                             
                             SuiteLabel(text: "할인 가격", typo: .body)
                             
-                            PriceTextField(
-                                rightText: viewStore.binding(
-                                    get: { $0.discountPrice },
-                                    send: AddItemAction.discountChanged
-                                )
-                            )
+                            PriceTextField(rightText: viewStore.binding(get: \.discountPrice, send: {.discountChanged($0)}))
                             
                             SuiteLabel(text: "가격", typo: .body)
                                 .padding(EdgeInsets(top: 4, leading: 0, bottom: 0, trailing: 0))
                             
-                            PriceTextField(
-                                rightText: viewStore.binding(
-                                    get: { $0.price },
-                                    send: AddItemAction.priceChanged
-                                )
-                            )
+                            PriceTextField(rightText: viewStore.binding(get: \.price, send: {.priceChanged($0)}))
                         }
                         .frame(width: Device.WidthWithPadding)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
@@ -112,16 +84,9 @@ struct AddItemView: View {
                             }
                             
                             ItemCountRectangle(
-                                count: viewStore.binding(
-                                    get: { $0.count },
-                                    send: AddItemAction.countChanged
-                                ),
-                                minusButtonAction: {
-                                    viewStore.send(.tabMinusButton)
-                                },
-                                plusButtonAction: {
-                                    viewStore.send(.tabPlusButton)
-                                }
+                                count: viewStore.binding(get: \.count, send: {.countChanged($0)}),
+                                minusButtonAction: { viewStore.send(.tabMinusButton) },
+                                plusButtonAction: { viewStore.send(.tabPlusButton) }
                             )
                         }
                         .frame(width: Device.WidthWithPadding)
@@ -148,10 +113,7 @@ struct AddItemView: View {
             
             .alert(
                 "제품 추가",
-                isPresented: viewStore.binding(
-                    get: { $0.isShowingAlert },
-                    send: AddItemAction.dismissAlert
-                ),
+                isPresented: viewStore.binding(get: \.isShowingAlert, send: .dismissAlert),
                 actions: {
                     Button("아니오", role: .destructive) { viewStore.send(.alertCancelButton) }
                     Button("네", role: .cancel) { viewStore.send(.alertOkButton) }
@@ -161,10 +123,7 @@ struct AddItemView: View {
             
             .alert(
                 viewStore.errorTitle,
-                isPresented: viewStore.binding(
-                    get: { $0.isShowingErrorAlert },
-                    send: AddItemAction.dismissErrorAlert
-                ),
+                isPresented: viewStore.binding(get: \.isShowingErrorAlert, send: .dismissErrorAlert),
                 actions: {
                     Button("확인", role: .cancel) {
                         viewStore.send(.tabErrorAlertOK)

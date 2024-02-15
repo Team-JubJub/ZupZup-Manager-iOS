@@ -14,10 +14,10 @@ struct EditStoreInfoView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    var store: Store<EditStoreInfoState, EditStoreInfoAction>
+    var store: StoreOf<EditStoreInfo>
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(self.store, observe: {$0}) { viewStore in
             ZStack {
                 VStack(spacing: 0) {
                     ZStack {
@@ -41,10 +41,7 @@ struct EditStoreInfoView: View {
                                 
                                 ImagePickerView(
                                     // MARK: 이미지 피커 변수 바인딩
-                                    image: viewStore.binding(
-                                        get: { $0.selectedImage },
-                                        send: EditStoreInfoAction.selectedImageChanged
-                                    ),
+                                    image: viewStore.binding(get: \.selectedImage, send: {.selectedImageChanged($0)}),
                                     imageUrl: viewStore.state.storeImageUrl
                                 ) {
                                     viewStore.send(.tapImagePicker)  // MARK: Action - 이미지 피커를 누른 경우
@@ -52,17 +49,11 @@ struct EditStoreInfoView: View {
                                 .frame(height: 250)
                                 .sheet(
                                     // MARK: 이미지 피커 변수 바인딩
-                                    isPresented: viewStore.binding(
-                                        get: { $0.isShowingImagePicker },
-                                        send: EditStoreInfoAction.dismissImagePicker
-                                    )
+                                    isPresented: viewStore.binding(get: \.isShowingImagePicker, send: .dismissImagePicker)
                                 ) {
                                     // MARK: 이미지 피커 호출
                                     ImagePicker(
-                                        selectedImage: viewStore.binding(
-                                            get: { $0.selectedImage },
-                                            send: EditStoreInfoAction.selectedImageChanged
-                                        )
+                                        selectedImage: viewStore.binding(get: \.selectedImage, send: {.selectedImageChanged($0)})
                                     )
                                 }
                                 .frame(height: 235)
@@ -75,34 +66,16 @@ struct EditStoreInfoView: View {
                                 }
                                 // MARK: 가게 영업 시작 시간, 종료 시간 Time-Picker
                                 AdjustTimeView(
-                                    isShowingStartPicker: viewStore.binding(
-                                        get: { $0.isShowingOpenTimePicker },
-                                        send: EditStoreInfoAction.dismissOpenTimePicker
-                                    ),
-                                    isShowingEndPicker: viewStore.binding(
-                                        get: { $0.isShowingCloseTimePicker },
-                                        send: EditStoreInfoAction.dismissCloseTimePicker
-                                    ),
+                                    isShowingStartPicker: viewStore.binding(get: \.isShowingOpenTimePicker, send: .dismissOpenTimePicker),
+                                    isShowingEndPicker: viewStore.binding(get: \.isShowingCloseTimePicker, send: .dismissCloseTimePicker),
                                     // 영업 시작(시간)
-                                    startTime: viewStore.binding(
-                                        get: { $0.openTime },
-                                        send: EditStoreInfoAction.opneTimeChanged
-                                    ),
+                                    startTime: viewStore.binding(get: \.openTime, send: {.openTimeChanged($0)}),
                                     // 영업 시작(분)
-                                    startMinute: viewStore.binding(
-                                        get: { $0.openMinute },
-                                        send: EditStoreInfoAction.openMinuteChanged
-                                    ),
+                                    startMinute: viewStore.binding(get: \.openMinute, send: {.openMinuteChanged($0)}),
                                     // 영업 종료(시간)
-                                    endTime: viewStore.binding(
-                                        get: { $0.closeTime },
-                                        send: EditStoreInfoAction.closeTimeChanged
-                                    ),
+                                    endTime: viewStore.binding(get: \.closeTime, send: {.closeTimeChanged($0)}),
                                     // 영업 종료(분)
-                                    endMinute: viewStore.binding(
-                                        get: { $0.closeMinute },
-                                        send: EditStoreInfoAction.closeMinuteChanged
-                                    ),
+                                    endMinute: viewStore.binding(get: \.closeMinute, send: {.closeMinuteChanged($0)}),
                                     mode: .open,
                                     startAction: { viewStore.send(.tapOpenStartTime, animation: .default) },
                                     endAction: { viewStore.send(.tapOpenEndTime, animation: .default) }
@@ -117,34 +90,16 @@ struct EditStoreInfoView: View {
                                 }
                                 // MARK: 마감 할인 시작 시간, 종료 시간 Time-Picker
                                 AdjustTimeView(
-                                    isShowingStartPicker: viewStore.binding(
-                                        get: { $0.isShowingDiscountStartTimePicker },
-                                        send: EditStoreInfoAction.dismissDiscountStartTimePicker
-                                    ),
-                                    isShowingEndPicker: viewStore.binding(
-                                        get: { $0.isShowingDiscountEndTimePicker },
-                                        send: EditStoreInfoAction.dismissDiscountEndTimePicker
-                                    ),
+                                    isShowingStartPicker: viewStore.binding(get: \.isShowingDiscountStartTimePicker, send: .dismissDiscountStartTimePicker),
+                                    isShowingEndPicker: viewStore.binding(get: \.isShowingDiscountEndTimePicker, send: .dismissDiscountEndTimePicker),
                                     // 마감 할인 시작(시간)
-                                    startTime: viewStore.binding(
-                                        get: { $0.discountStartTime },
-                                        send: EditStoreInfoAction.discountStartTimeChanged
-                                    ),
+                                    startTime: viewStore.binding(get: \.discountStartTime, send: {.discountStartTimeChanged($0)}),
                                     // 마감 할인 시작(분)
-                                    startMinute: viewStore.binding(
-                                        get: { $0.discountStartMinute },
-                                        send: EditStoreInfoAction.discountStartMinuteChanged
-                                    ),
+                                    startMinute: viewStore.binding(get: \.discountStartMinute, send: {.discountStartMinuteChanged($0)}),
                                     // 마감 할인 종료 (시간)
-                                    endTime: viewStore.binding(
-                                        get: { $0.discountEndTime },
-                                        send: EditStoreInfoAction.discountEndTimeChanged
-                                    ),
+                                    endTime: viewStore.binding(get: \.discountEndTime, send: {.discountEndTimeChanged($0)}),
                                     // 마감 할인 종료(분)
-                                    endMinute: viewStore.binding(
-                                        get: { $0.discountEndMinute },
-                                        send: EditStoreInfoAction.discountEndMinuteChanged
-                                    ),
+                                    endMinute: viewStore.binding(get: \.discountEndMinute, send: {.discountEndMinuteChanged($0)}),
                                     mode: .discount,
                                     startAction: { viewStore.send(.tapDiscountStartTime, animation: .default) },
                                     endAction: { viewStore.send(.tapDiscountEndTime, animation: .default) }
@@ -159,10 +114,7 @@ struct EditStoreInfoView: View {
                                 }
                                 SelectDaysView(
                                     // MARK: State - 휴무일 바인딩
-                                    days: viewStore.binding(
-                                        get: { $0.daysOfWeek },
-                                        send: EditStoreInfoAction.daysOfWeekBinding
-                                    )
+                                    days: viewStore.binding(get: \.daysOfWeek, send: .daysOfWeekBinding)
                                 ) { idx in
                                     viewStore.send(.tapDaysButton(idx))
                                 }
@@ -188,10 +140,7 @@ struct EditStoreInfoView: View {
             }
             .alert(
                 "가게 정보 수정",
-                isPresented: viewStore.binding(
-                    get: { $0.isShowingAlert },
-                    send: EditStoreInfoAction.dismissAlert
-                ),
+                isPresented: viewStore.binding(get: \.isShowingAlert, send: .dismissAlert),
                 actions: {
                     Button("취소", role: .destructive) { viewStore.send(.tapAlertCancel) }
                     Button("확인", role: .cancel) { viewStore.send(.tapAlertOK) }

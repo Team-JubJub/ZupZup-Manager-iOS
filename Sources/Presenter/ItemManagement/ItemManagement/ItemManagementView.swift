@@ -14,7 +14,7 @@ import Kingfisher
 
 struct ItemManagementView: View {
     
-    let store: Store<ItemManageState, ItemManageAction>
+    let store: StoreOf<ItemManagement>
     
     let columns = [GridItem(), GridItem()]
     
@@ -23,7 +23,7 @@ struct ItemManagementView: View {
     let updateItemCountUseCase: UpdateItemCountUseCase = UpdateItemCountUseCaseImpl()
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
                     LargeNavigationTitle(title: "제품 관리")
@@ -31,10 +31,7 @@ struct ItemManagementView: View {
                     EditButton { viewStore.send(.tapEditButton) }
                         .confirmationDialog(
                             "Title",
-                            isPresented: viewStore.binding(
-                                get: { $0.isEditable },
-                                send: ItemManageAction.dismissEditButton
-                            )
+                            isPresented: viewStore.binding(get: \.isEditable, send: .dismissEditButton)
                         ) {
                             if viewStore.items.isEmpty {
                                 Button("제품 추가") { viewStore.send(.tapAddItemButton) }
@@ -46,13 +43,12 @@ struct ItemManagementView: View {
                                 Button("취소", role: .cancel) {}
                             }
                         }
-                        .navigationDestination(isPresented: viewStore.binding(
-                            get: { $0.isNavigate },
-                            send: ItemManageAction.dismissTarget
-                        )) {
+                    // TODO: Connect Child View
+                        .navigationDestination(isPresented: viewStore.binding(get: \.isNavigate, send: .dismissTarget)) {
                             switch viewStore.targetViewType {
-                            case .addItem: 
+                            case .addItem:
                                 makeAddItemView()
+                                    .onDisappear { viewStore.send(.fetchItems) }
                             case .editItemCount:
                                 makeEditItemCountView(items: viewStore.items)
                             case .editItemInfo:
@@ -93,66 +89,45 @@ struct ItemManagementView: View {
                     FullScreenProgressView()
                 }
             }
+            .onAppear {
+                viewStore.send(.fetchItems)
+            }
         }
     }
 }
 
+// TODO: Connect ChildView
 extension ItemManagementView {
     @ViewBuilder
     func makeAddItemView() -> some View {
-        let store = Store<AddItemState, AddItemAction>(
-            initialState: AddItemState(),
-            reducer: addItemReducer,
-            environment: AddItemEnvironment(
-                addItem: { request in
-                    return Future { promise in
-                        addItemUseCase.addItem(request: request) { result in
-                            promise(.success(result))
-                        }
-                    }
-                    .eraseToEffect()
-                }
-            )
+        AddItemView(
+            store: Store(initialState: AddItem.State()) {
+                AddItem()
+                #if DEBUG
+                    ._printChanges()
+                #endif
+            }
         )
-        AddItemView(store: store)
     }
     
     @ViewBuilder
     func makeEditItemInfoView(items: [ItemEntity]) -> some View {
-        let store = Store<EditItemInfoState, EditItemInfoAction>(
-            initialState: EditItemInfoState(items: items),
-            reducer: editItemInfoReducer,
-            environment: EditItemInfoEnvironment(
-                items: {
-                    return Future { promise in
-                        FetchItemsUseCaseImpl()
-                            .fetchItems { result in
-                                promise(.success(result))
-                            }
-                    }
-                    .eraseToEffect()
-                }
-            )
-        )
-        EditItemInfoView(store: store)
+        EditItemInfoView(store: Store(initialState: EditItemInfo.State(items: items)) {
+            EditItemInfo()
+            #if DEBUG
+                ._printChanges()
+            
+            #endif
+        })
     }
     
     @ViewBuilder
     func makeEditItemCountView(items: [ItemEntity]) -> some View {
-        let store = Store<EditItemCountState, EditItemCountAction>(
-            initialState: EditItemCountState(items: items),
-            reducer: editItemCountReducer,
-            environment: EditItemCountEnvironment(
-                updateItemCount: { request in
-                    return Future { promise in
-                        updateItemCountUseCase.updateItemCount(request: request) { result in
-                            promise(.success(result))
-                        }
-                    }
-                    .eraseToEffect()
-                }
-            )
-        )
-        EditItemCountView(store: store)
+        EditItemCountView(store: Store(initialState: EditItemCount.State(items: items)){
+            EditItemCount()
+            #if DEBUG
+                ._printChanges()
+            #endif
+        })
     }
 }

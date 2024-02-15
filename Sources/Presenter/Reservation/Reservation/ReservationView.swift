@@ -13,14 +13,10 @@ import ComposableArchitecture
 
 struct ReservationView: View {
     
-    let store: Store<ReservationState, ReservationAction>
-    
-    // MARK: 유즈 케이스
-    let changeJustStateUseCase: ChangeJustStateUseCase = ChangeJustStateUseCaseImpl()
-    let changeStateUseCase: ChangeStateUseCase = ChangeStateUseCaseImpl()
+    let store: StoreOf<Reservation>
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
             VSpacer(height: Device.VPadding)
             
             VStack(spacing: 8) {
@@ -39,7 +35,7 @@ struct ReservationView: View {
                 HStack(spacing: 0) {
                     ForEach(viewStore.tabBarNames.indices, id: \.self) { num in
                         ReservationStateTabbarItem(
-                            selectedIndex: viewStore.binding(get: \.selectedIndex, send: ReservationAction.tapTabbarItem),
+                            selectedIndex: viewStore.binding(get: \.selectedIndex, send: .tapTabbarItem(num)),
                             num: num,
                             name: viewStore.tabBarNames[num]
                         )
@@ -52,7 +48,8 @@ struct ReservationView: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: Device.VPadding, trailing: 0))
                 
                 // MARK: 탭 뷰 부분
-                TabView(selection: viewStore.binding(get: \.selectedIndex, send: ReservationAction.tapTabbarItem)) {
+                // TODO: Fix 1
+                TabView(selection: viewStore.binding(get: \.selectedIndex, send: .tapTabbarItem(1))) {
                     ForEach(viewStore.tabBarNames.indices, id: \.self) { num in
                         VStack(spacing: 0) {
                             ScrollView(showsIndicators: false) {
@@ -67,30 +64,14 @@ struct ReservationView: View {
                                     ForEach(viewStore.filteredReservations, id: \.self) { reservation in
                                         NavigationLink(
                                             destination: ReserveDetailView(
-                                                store: Store<ReservationDetailState, ReservationDetailAction>(
-                                                    initialState: ReservationDetailState(
-                                                        reservation: reservation
-                                                    ),
-                                                    reducer: reservationDetailReducer,
-                                                    environment: ReservationDetailEnvironment(
-                                                        changeState: { request in
-                                                            return Future { promise in
-                                                                changeStateUseCase.changeState(request: request) { result in
-                                                                    promise(.success(result))
-                                                                }
-                                                            }
-                                                            .eraseToEffect()
-                                                        },
-                                                        changeJustState: { request in
-                                                            return Future { promise in
-                                                                changeJustStateUseCase.changeJustState(request: request) { result in
-                                                                    promise(.success(result))
-                                                                }
-                                                            }
-                                                            .eraseToEffect()
-                                                        }
-                                                    )
-                                                )
+                                                store: Store(
+                                                    initialState: ReservationDetail.State(reservation: reservation)
+                                                ) {
+                                                    ReservationDetail()
+#if DEBUG
+                                                        ._printChanges()
+#endif
+                                                }
                                             )
                                         ) {
                                             ReservationItem(
@@ -115,6 +96,9 @@ struct ReservationView: View {
                 if viewStore.isLoading {
                     FullScreenProgressView()
                 }
+            }
+            .onAppear {
+                viewStore.send(.fetchReservation)
             }
         }
     }

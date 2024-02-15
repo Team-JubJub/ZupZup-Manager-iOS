@@ -14,12 +14,12 @@ struct EditItemCountView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    let store: Store<EditItemCountState, EditItemCountAction>
+    let store: StoreOf<EditItemCount>
     
     let columns = [GridItem(), GridItem()]
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
             VStack(spacing: 0) {
                 NavigationBarWithDismiss(label: "제품 관리")
                 
@@ -67,10 +67,7 @@ struct EditItemCountView: View {
             }
             .alert(
                 "수량 수정",
-                isPresented: viewStore.binding(
-                    get: { $0.isShowingAlert },
-                    send: EditItemCountAction.dismissAlert
-                ),
+                isPresented: viewStore.binding(get: \.isShowingAlert, send: .dismissAlert),
                 actions: {
                     Button("취소", role: .destructive) { viewStore.send(.alertCancelButton) }
                     Button("확인", role: .cancel) { viewStore.send(.alertOkButton) }

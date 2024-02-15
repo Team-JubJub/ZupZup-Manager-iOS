@@ -14,10 +14,10 @@ struct EditItemInfoDetailView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    let store: Store<EditItemDetailState, EditItemDetailAction>
+    let store: StoreOf<EditItemInfoDetail>
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(self.store, observe: {$0}) { viewStore in
             VStack(spacing: 0) {
                 VSpacer(height: 12)
                 
@@ -44,26 +44,15 @@ struct EditItemInfoDetailView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         ImagePickerView(
-                            image: viewStore.binding(
-                                get: { $0.selectedImage },
-                                send: EditItemDetailAction.selectedImageChanged
-                            ),
+                            image: viewStore.binding(get: \.selectedImage, send: { .selectedImageChanged($0) }),
                             imageUrl: viewStore.state.imageUrl
                         ) {
                             viewStore.send(.tabImagePickerButton)
                         }
                         .frame(height: 250)
-                        .sheet(
-                            isPresented: viewStore.binding(
-                                get: { $0.isShowingImagePicker },
-                                send: EditItemDetailAction.dismissImagePicker
-                            )
-                        ) {
+                        .sheet(isPresented: viewStore.binding(get: \.isShowingImagePicker, send: .dismissImagePicker)) {
                             ImagePicker(
-                                selectedImage: viewStore.binding(
-                                    get: { $0.selectedImage },
-                                    send: EditItemDetailAction.selectedImageChanged
-                                )
+                                selectedImage: viewStore.binding(get: \.selectedImage, send: { .selectedImageChanged($0) })
                             )
                         }
                         
@@ -73,10 +62,7 @@ struct EditItemInfoDetailView: View {
                                                     
                             ItemNameTextField(
                                 placeHolder: viewStore.state.name,
-                                name: viewStore.binding(
-                                    get: { $0.name },
-                                    send: EditItemDetailAction.nameChanged
-                                )
+                                name: viewStore.binding(get: \.name, send: {.nameChanged($0)})
                             ) {
                                 viewStore.send(.tabClearButton)
                             }
@@ -89,21 +75,13 @@ struct EditItemInfoDetailView: View {
                             
                             SuiteLabel(text: "할인 가격", typo: .body)
                             
-                            PriceTextField(
-                                rightText: viewStore.binding(
-                                    get: { $0.discountPrice },
-                                    send: EditItemDetailAction.discountChanged
-                                )
-                            )
+                            PriceTextField(rightText: viewStore.binding(get: \.discountPrice, send: { .discountChanged($0) }))
                             
                             SuiteLabel(text: "가격", typo: .body)
                                 .padding(EdgeInsets(top: 4, leading: 0, bottom: 0, trailing: 0))
                             
                             PriceTextField(
-                                rightText: viewStore.binding(
-                                    get: { $0.price },
-                                    send: EditItemDetailAction.priceChanged
-                                )
+                                rightText: viewStore.binding(get: \.price, send: { .priceChanged($0) })
                             )
                         }
                         .frame(width: Device.WidthWithPadding)
@@ -116,16 +94,9 @@ struct EditItemInfoDetailView: View {
                             }
                             
                             ItemCountRectangle(
-                                count: viewStore.binding(
-                                    get: { $0.count },
-                                    send: EditItemDetailAction.countChanged
-                                ),
-                                minusButtonAction: {
-                                    viewStore.send(.tabMinusButton)
-                                },
-                                plusButtonAction: {
-                                    viewStore.send(.tabPlusButton)
-                                }
+                                count: viewStore.binding(get: \.count, send: { .countChanged($0) }),
+                                minusButtonAction: { viewStore.send(.tabMinusButton)},
+                                plusButtonAction: { viewStore.send(.tabPlusButton) }
                             )
                         }
                         .frame(width: Device.WidthWithPadding)
@@ -152,10 +123,7 @@ struct EditItemInfoDetailView: View {
             
             .alert(
                 "제품 삭제",
-                isPresented: viewStore.binding(
-                    get: { $0.isShowingAlert },
-                    send: EditItemDetailAction.dismissDeleteAlert
-                ),
+                isPresented: viewStore.binding(get: \.isShowingAlert, send: .dismissDeleteAlert),
                 actions: {
                     Button("삭제", role: .destructive) { viewStore.send(.deleteAlertOk) }
                     Button("아니오", role: .cancel) { viewStore.send(.deleteAlertCancel) }
@@ -165,10 +133,7 @@ struct EditItemInfoDetailView: View {
             
             .alert(
                 "제품 정보 수정",
-                isPresented: viewStore.binding(
-                    get: { $0.isShowingEditAlert },
-                    send: EditItemDetailAction.dismissEditAlert
-                ),
+                isPresented: viewStore.binding(get: \.isShowingEditAlert, send: .dismissEditAlert),
                 actions: {
                     Button("확인") { viewStore.send(.EditAlertOk) }
                     Button("취소", role: .cancel) { viewStore.send(.EditAlertCancel) }
@@ -178,13 +143,8 @@ struct EditItemInfoDetailView: View {
             
             .alert(
                 "텍스트 초과",
-                isPresented: viewStore.binding(
-                    get: { $0.isShowingTitleMaxLengthAlert },
-                    send: EditItemDetailAction.dismissMaxLengthAlert
-                ),
-                actions: {
-                    Button("확인", role: .cancel) { }
-                },
+                isPresented: viewStore.binding(get: \.isShowingTitleMaxLengthAlert, send: .dismissMaxLengthAlert),
+                actions: { Button("확인", role: .cancel) { } },
                 message: { Text("입력 가능한 제품명은 최대 20자 입니다.") }
             )
             .overlay {

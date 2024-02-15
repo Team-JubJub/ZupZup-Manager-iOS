@@ -13,7 +13,7 @@ import ComposableArchitecture
 
 struct StoreManagementView: View {
     
-    let store: Store<StoreManagementState, StoreManagementAction>
+    let store: StoreOf<StoreManagement>
     
     // MARK: 유즈 케이스
     let editStoreInfoUseCase: EditStoreInfoUseCase = EditStoreInfoUseCaseImpl()
@@ -21,7 +21,7 @@ struct StoreManagementView: View {
     let deleteStoreUseCase: DeleteStoreUseCase = DeleteStoreUseCaseImpl()
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(self.store, observe: {$0}) { viewStore in
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
                     SuiteLabel(text: "설정", typo: .hero, color: .designSystem(.Secondary))
@@ -56,10 +56,7 @@ struct StoreManagementView: View {
                                 
                                 Toggle(
                                     "\(viewStore.storeEntity.isOpen.description)",
-                                    isOn: viewStore.binding(
-                                        get: { $0.storeEntity.isOpen },
-                                        send: StoreManagementAction.tapToggle
-                                    )
+                                    isOn: viewStore.binding(get: \.storeEntity.isOpen, send: .tapToggle)
                                 )
                                 .toggleStyle(StoreStateToggle())
                                 .cornerRadius(24)
@@ -79,31 +76,18 @@ struct StoreManagementView: View {
                                         viewStore.send(.tapInfoButton)
                                     }
                                     .navigationDestination(
-                                        isPresented: viewStore.binding(
-                                            get: { $0.isShowingEditStoreInfo },
-                                            send: StoreManagementAction.isShowingEditStoreInfoBinding
-                                        )
+                                        isPresented: viewStore.binding(get: \.isShowingEditStoreInfo, send: .isShowingEditStoreInfoBinding)
                                     ) {
-                                        let store = Store<EditStoreInfoState, EditStoreInfoAction>(
-                                            initialState: EditStoreInfoState(
-                                                storeEntity: viewStore.storeEntity
-                                            ),
-                                            reducer: editStoreInfoReducer,
-                                            environment: EditStoreInfoEnvironment(
-                                                editStoreInfo: { request in
-                                                    return Future { promise in
-                                                        editStoreInfoUseCase.editStoreInfo(request: request) { result in
-                                                            promise(.success(result))
-                                                        }
-                                                    }
-                                                    .eraseToEffect()
-                                                }
-                                            )
-                                        )
-                                        EditStoreInfoView(store: store)
-                                            .onDisappear {
-                                                viewStore.send(.fetchStore)
-                                            }
+                                        EditStoreInfoView(
+                                            store: Store(initialState: EditStoreInfo.State(viewStore.storeEntity)) {
+                                                EditStoreInfo()
+#if DEBUG
+                                                    ._printChanges()
+#endif
+                                            })
+                                        .onDisappear {
+                                            viewStore.send(.fetchStore)
+                                        }
                                     }
                                 }
                                 
@@ -179,10 +163,7 @@ struct StoreManagementView: View {
             }
             .alert(
                 viewStore.storeEntity.isOpen ? "가게 문 닫기" : "가게 문 열기",
-                isPresented: viewStore.binding(
-                    get: { $0.isShowingStoreOpenAlert },
-                    send: StoreManagementAction.dismissStoreOpenAlert
-                ),
+                isPresented: viewStore.binding(get: \.isShowingStoreOpenAlert, send: .dismissStoreOpenAlert),
                 actions: {
                     Button("아니오", role: .destructive) { viewStore.send(.tapStoreAlertCancel) }
                     Button("네", role: .cancel) { viewStore.send(.tapStoreAlertOk) }
@@ -191,10 +172,7 @@ struct StoreManagementView: View {
             )
             .alert(
                 "로그아웃 할까요?",
-                isPresented: viewStore.binding(
-                    get: { $0.isShowingLogoutAlert },
-                    send: StoreManagementAction.dismissLogoutAlert
-                ),
+                isPresented: viewStore.binding(get: \.isShowingLogoutAlert, send: .dismissLogoutAlert),
                 actions: {
                     Button("아니오", role: .destructive) { viewStore.send(.tapLogoutAlertCancel) }
                     Button("네", role: .cancel) { viewStore.send(.tapLogoutAlertOK) }
@@ -206,53 +184,31 @@ struct StoreManagementView: View {
                     FullScreenProgressView()
                 }
             }
-            .sheet(isPresented: viewStore.binding(
-                get: {$0.isShowingStoreIntroduce },
-                send: StoreManagementAction.isShowingStoreIntroduceBinding
-            )) {
-                let store = Store<StoreIntroduceState, StoreIntroduceAction>(
-                    initialState: StoreIntroduceState(viewStore.storeEntity),
-                    reducer: storeIntroduceReducer,
-                    environment: StoreIntroduceEnvironment(
-                        editStoreIntroduce: { request in
-                            return Future { promise in
-                                editStoreIntroduceUseCase.editStoreIntroduce(request: request) { result in
-                                    promise(.success(result))
-                                }
-                            }
-                            .eraseToEffect()
-                        }
-                    )
-                )
-                StoreIntroduceView(store: store)
-                    .onDisappear { viewStore.send(.fetchStore) }
+            .sheet(isPresented: viewStore.binding(get: \.isShowingStoreIntroduce, send: .isShowingStoreIntroduceBinding)) {
+                StoreIntroduceView(
+                    store: Store(initialState: StoreIntroduce.State(viewStore.storeEntity)) {
+                        StoreIntroduce()
+#if DEBUG
+                            ._printChanges()
+#endif
+                    })
+                .onDisappear { viewStore.send(.fetchStore) }
             }
-            .navigationDestination(isPresented: viewStore.binding(
-                get: { $0.isShowingDeleteStore },
-                send: StoreManagementAction.dismissDeleteStore
-            )) {
-                let store = Store<DeleteStoreState, DeleteStoreAction>(
-                    initialState: DeleteStoreState(name: viewStore.storeEntity.name),
-                    reducer: deleteStoreReducer,
-                    environment: DeleteStoreEnvironment(
-                        deleteStore: {
-                            return Future { promise in
-                                deleteStoreUseCase.deleteStore { result in
-                                    promise(.success(result))
-                                }
-                            }
-                            .eraseToEffect()
-                        }
-                    )
-                )
+            .navigationDestination(isPresented: viewStore.binding(get: \.isShowingDeleteStore, send: .dismissDeleteStore)) {
+                DeleteStoreView(
+                    store: Store(initialState: DeleteStore.State(name: viewStore.storeEntity.name)) {
+                        DeleteStore()
+#if DEBUG
+                            ._printChanges()
+#endif
+                    })
                 
-                DeleteStoreView(store: store)
             }
-            .sheet(isPresented: viewStore.binding(
-                get: {$0.isShowingCustomerCenter },
-                send: StoreManagementAction.dismissCustomerCenter
-            )) {
+            .sheet(isPresented: viewStore.binding(get: \.isShowingCustomerCenter, send: .dismissCustomerCenter)) {
                 SafariView(url: URL(string: UrlManager.customerCenterUrl)!)
+            }
+            .onAppear {
+                viewStore.send(.fetchStore)
             }
         }
     }

@@ -56,4 +56,40 @@ final class EditStoreIntroduceRepositoryImpl: EditStoreIntroduceRepository {
             }
         }
     }
+    
+    func editStoreIntroduce(request: EditStoreIntroduceRequest) async throws -> EditStoreIntroduceResponse {
+        let url = UrlManager.baseUrl + "/seller/notice/\(LoginManager.shared.getStoreId())"
+        let headers: HTTPHeaders = [ "accessToken": LoginManager.shared.getAccessToken() ]
+        let parameters: [String: Any] = [ "storeMatters": request.storeMatters ]
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            AF.request(
+                url,
+                method: .post,
+                parameters: parameters,
+                headers: headers
+            )
+            .responseString { response in
+                switch response.result {
+                case .success:
+                    continuation.resume(returning: EditStoreIntroduceResponse())
+                case .failure:
+                    switch response.response?.statusCode {
+                    case 400:
+                        continuation.resume(throwing: EditStoreIntroduceError.noToken)
+                    case 401:
+                        continuation.resume(throwing: EditStoreIntroduceError.tokenExpired)
+                    case 403:
+                        continuation.resume(throwing: EditStoreIntroduceError.notAllowed)
+                    case 404:
+                        continuation.resume(throwing: EditStoreIntroduceError.noStore)
+                    case 500:
+                        continuation.resume(throwing: EditStoreIntroduceError.serverError)
+                    default:
+                        continuation.resume(throwing: EditStoreIntroduceError.unKnown)
+                    }
+                }
+            }
+        }
+    }
 }

@@ -14,10 +14,10 @@ struct StoreIntroduceView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    let store: Store<StoreIntroduceState, StoreIntroduceAction>
+    let store: StoreOf<StoreIntroduce>
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(self.store, observe: {$0}) { viewStore in
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
                     InfiniteSpacer()
@@ -33,10 +33,7 @@ struct StoreIntroduceView: View {
                         .foregroundColor(.designSystem(.pureWhite))
                         .overlay {
                             TextEditor(
-                                text: viewStore.binding(
-                                    get: { $0.introduceText },
-                                    send: StoreIntroduceAction.textFieldChanged
-                                )
+                                text: viewStore.binding(get: \.introduceText, send: {.textFieldChanged($0)})
                             )
                             .cornerRadius(8)
                             .font(Suit(weight: .regular, size: ._17))
@@ -72,10 +69,7 @@ struct StoreIntroduceView: View {
             }
             .alert(
                 "가게 소개 수정",
-                isPresented: viewStore.binding(
-                    get: { $0.isShowingAlert },
-                    send: StoreIntroduceAction.dismissAlert
-                ),
+                isPresented: viewStore.binding(get: \.isShowingAlert, send: .dismissAlert),
                 actions: {
                     Button("확인", role: .none) { viewStore.send(.tapAlertOk) }
                     Button("취소", role: .cancel) { viewStore.send(.tapAlertCancel) }

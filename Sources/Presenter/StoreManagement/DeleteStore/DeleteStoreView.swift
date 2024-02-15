@@ -14,10 +14,10 @@ struct DeleteStoreView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    var store: Store<DeleteStoreState, DeleteStoreAction>
+    var store: StoreOf<DeleteStore>
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store, observe: {$0}) { viewStore in
             VStack(spacing: 0) {
                 NavigationBarWithDismiss(label: "설정")
                 
@@ -64,7 +64,7 @@ struct DeleteStoreView: View {
             }
             .alert(
                 viewStore.errorTitle,
-                isPresented: viewStore.binding(get: {$0.isErrorOn}, send: DeleteStoreAction.isErrorDismiss),
+                isPresented: viewStore.binding(get: \.isErrorOn, send: .isErrorDismiss),
                 actions: {
                     Button("확인", role: .cancel) { }
                 },
@@ -72,7 +72,7 @@ struct DeleteStoreView: View {
             )
             .alert(
                 "회원 탈퇴하기",
-                isPresented: viewStore.binding(get: { $0.isShowingAlert }, send: DeleteStoreAction.dismissAlert),
+                isPresented: viewStore.binding(get: \.isShowingAlert, send: .dismissAlert),
                 actions: {
                     Button("네", role: .destructive) { viewStore.send(.tabAlertOk) }
                     Button("아니오", role: .cancel) { }

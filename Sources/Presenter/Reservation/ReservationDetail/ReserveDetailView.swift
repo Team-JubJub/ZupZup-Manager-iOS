@@ -12,10 +12,10 @@ import ComposableArchitecture
 
 struct ReserveDetailView: View {
     
-    let store: Store<ReservationDetailState, ReservationDetailAction>
+    let store: StoreOf<ReservationDetail>
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
             ZStack {
                 VStack(spacing: 0) {
                     
@@ -125,10 +125,7 @@ struct ReserveDetailView: View {
                     }
                 }
                 .sheet(
-                    isPresented: viewStore.binding(
-                        get: \.isShowingHalfModal,
-                        send: ReservationDetailAction.bindIsShowingHalfModal
-                    )
+                    isPresented: viewStore.binding(get: \.isShowingHalfModal, send: .bindIsShowingHalfModal)
                 ) {
                     ConfirmBottomSheet(store: store)
                         .presentationDetents([.medium])
@@ -137,10 +134,7 @@ struct ReserveDetailView: View {
             
             .alert(
                 "예약 취소하기",
-                isPresented: viewStore.binding(
-                    get: { $0.isRejectAlertOn },
-                    send: ReservationDetailAction.dismissRejectAlert
-                ),
+                isPresented: viewStore.binding(get: \.isRejectAlertOn, send: .dismissRejectAlert),
                 actions: {
                     Button("네", role: .destructive) { viewStore.send(.tabRejectAlertOK) }
                     Button("아니오", role: .cancel) { viewStore.send(.tabRejectAlertNO) }
@@ -150,10 +144,7 @@ struct ReserveDetailView: View {
             
             .alert(
                 "예약 완료하기",
-                isPresented: viewStore.binding(
-                    get: { $0.isCompleteAlertOn },
-                    send: ReservationDetailAction.dismissCompleteAlert
-                ),
+                isPresented: viewStore.binding(get: \.isCompleteAlertOn, send: .dismissCompleteAlert),
                 actions: {
                     Button("네", role: .destructive) { viewStore.send(.tabCompleteAlertOK) }
                     Button("아니오", role: .cancel) { viewStore.send(.tabCompleteAlertNO) }

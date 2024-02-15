@@ -18,6 +18,7 @@ final class LogoutRepository {
     ) {
         let accessToken = LoginManager.shared.getAccessToken()
         let refreshToken = LoginManager.shared.getRefreshToken()
+        
         let headers: HTTPHeaders = [
             "accessToken": accessToken,
             "refreshToken": refreshToken
@@ -31,6 +32,7 @@ final class LogoutRepository {
         )
         .validate()
         .response { response in
+            dump(response)
             switch response.result {
             case .success:
                 completion(.success(LogoutResponse()))

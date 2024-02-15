@@ -12,24 +12,19 @@ import Combine
 import ComposableArchitecture
 
 struct EditItemInfoView: View {
-    
+    // TODO: Need to move Entity From View
+    // TODO: Need To Remove Business Logic from View
     @Environment(\.dismiss) private var dismiss
-    
     @State private var isNavigate: Bool = false
-    
     @State private var selectedItem: ItemEntity?
     
-    let store: Store<EditItemInfoState, EditItemInfoAction>
-    
-    // MARK: UseCase
-    let updateItemInfoUseCase: UpdateItemInfoUseCase = UpdateItemInfoUseCaseImpl()
-    let deleteItemUseCase: DeleteItemUseCase = DeleteItemUseCaseImpl()
+    let store: StoreOf<EditItemInfo>
     
     let columns = [GridItem(), GridItem()]
     
     var body: some View {
         
-        WithViewStore(store) { viewStore in
+        WithViewStore(self.store, observe: {$0}) { viewStore in
             ZStack {
                 VStack(spacing: 0) {
                     NavigationBarWithDismiss(label: "제품 관리")
@@ -81,40 +76,19 @@ struct EditItemInfoView: View {
             .onChange(of: viewStore.isPop) { isPop in
                 if isPop { dismiss() }
             }
-            .sheet(
-                isPresented: $isNavigate) {
-                    if let item = self.selectedItem {
-                        let store = Store<EditItemDetailState, EditItemDetailAction>(
-                            initialState: EditItemDetailState(item: item),
-                            reducer: editItemDetailReducer,
-                            environment: EditItemDetailEnvironment(
-                                updateItemInfo: { request in
-                                    return Future { promise in
-                                        updateItemInfoUseCase.updateItemInformation(
-                                            request: request) { result in
-                                                promise(.success(result))
-                                            }
-                                    }
-                                    .eraseToEffect()
-                                },
-                                deleteItem: { request in
-                                    return Future { promise in
-                                        deleteItemUseCase.deleteItem(
-                                            request: request) { result in
-                                                promise(.success(result))
-                                            }
-                                    }
-                                    .eraseToEffect()
-                                }
-                            )
-                        )
-                        EditItemInfoDetailView(store: store)
-                            .onDisappear {
-                                // TODO: 아이템 패치
-                                viewStore.send(.fetchItems)
-                            }
+            .sheet(isPresented: $isNavigate) {
+                if let item = self.selectedItem {
+                    EditItemInfoDetailView(store: Store(initialState: EditItemInfoDetail.State(item)) {
+                        EditItemInfoDetail()
+#if DEBUG
+                            ._printChanges()
+#endif
+                    }) .onDisappear {
+                        viewStore.send(.fetchItems)
                     }
+                    
                 }
+            }
         }
     }
 }

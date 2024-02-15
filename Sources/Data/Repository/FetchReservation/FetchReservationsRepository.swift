@@ -49,4 +49,24 @@ final class FetchReservationsRepositoryImpl: FetchReservationsRepository {
             }
         }
     }
+    
+    func fetchReservations(request: FetchReservationsRequest) async throws -> FetchReservationsResponse {
+        let response = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<FetchReservationsResponse, Error>) in
+            
+            let storeId = LoginManager.shared.getStoreId()
+            
+            NetworkManager.shared.sendRequest(
+                to: UrlManager.baseUrl + "/seller/\(String(describing: storeId))/order",
+                method: .get
+            ) { (result: Result<FetchReservationsResponse, NetworkError>) in
+                switch result {
+                case .success(let response):
+                    continuation.resume(returning: response)
+                case .failure(_):
+                    continuation.resume(throwing: FetchReservationsError.failToDecode)
+                }
+            }
+        }
+        return response
+    }
 }

@@ -80,4 +80,63 @@ final class UpdateItemInfoRespositoryImpl: UpdateItemInfoRepository {
             }
         }
     }
+    
+    func updateItemInformation(request: UpdateItemInfoRequest) async throws -> UpdateItemInfoResponse {
+        
+        let url = UrlManager.baseUrl + "/seller/\(LoginManager.shared.getStoreId())/\(request.itemid)"
+        
+        let headers: HTTPHeaders = [
+            "accessToken": accessToken,
+            "Content-Type": "multipart/form-data; boundary=\(UUID().uuidString)"
+        ]
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            AF.upload(multipartFormData: { multipartFormData in
+                do {
+                    let jsonData = try JSONEncoder().encode(request.item)
+                    multipartFormData.append(
+                        jsonData,
+                        withName: "item",
+                        fileName: "item.json",
+                        mimeType: "application/json"
+                    )
+                } catch {
+                    continuation.resume(throwing: UpdateItemInfoError.failToEncode)
+                    return
+                }
+                
+                if let imageData = request.image?.jpegData(compressionQuality: 0.8) {
+                    multipartFormData.append(
+                        imageData,
+                        withName: "image",
+                        fileName: "image.jpg",
+                        mimeType: "image/jpeg"
+                    )
+                }
+            },
+                      to: url,
+                      method: .patch,
+                      headers: headers
+            )
+            .responseString { response in
+                switch response.result {
+                case .success:
+                    continuation.resume(returning: UpdateItemInfoResponse())
+                case .failure:
+                    switch response.response?.statusCode {
+                    case 400:
+                        continuation.resume(throwing: UpdateItemInfoError.noToken)
+                    case 401:
+                        continuation.resume(throwing: UpdateItemInfoError.tokenExpired)
+                    case 404:
+                        continuation.resume(throwing: UpdateItemInfoError.noItem)
+                    case 500:
+                        continuation.resume(throwing: UpdateItemInfoError.serverError)
+                    default:
+                        continuation.resume(throwing: UpdateItemInfoError.unKnown)
+                    }
+                }
+            }
+        }
+    }
 }

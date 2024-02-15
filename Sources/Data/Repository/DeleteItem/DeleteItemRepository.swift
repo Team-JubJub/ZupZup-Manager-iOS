@@ -41,4 +41,36 @@ final class DeleteItemRepositoryImpl: DeleteItemRepository {
             }
         }
     }
+    
+    func deleteItem(request: DeleteItemRequest) async throws -> DeleteItemResponse {
+        
+        let url = UrlManager.baseUrl + "/seller/\(LoginManager.shared.getStoreId())/\(request.itemId)"
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            let url = UrlManager.baseUrl + "/seller/\(LoginManager.shared.getStoreId())/\(request.itemId)"
+            
+            NetworkManager.shared.justRequest(
+                to: url,
+                method: .delete
+            ) { result in
+                switch result {
+                case .success:
+                    continuation.resume(returning: DeleteItemResponse())
+                case .failure(let error):
+                    switch error.code {
+                    case 400:
+                        continuation.resume(throwing: DeleteItemError.noToken)
+                    case 401:
+                        continuation.resume(throwing: DeleteItemError.tokenExpired)
+                    case 404:
+                        continuation.resume(throwing: DeleteItemError.noItem)
+                    case 500:
+                        continuation.resume(throwing: DeleteItemError.serverError)
+                    default:
+                        continuation.resume(throwing: DeleteItemError.unKnown)
+                    }
+                }
+            }
+        }
+    }
 }
