@@ -44,8 +44,6 @@ import Alamofire
 //        }
 //    }
 //}
-import Foundation
-import Alamofire
 
 final class LoginRepository {
     func login(request: LoginRequest) async throws -> LoginResponse {

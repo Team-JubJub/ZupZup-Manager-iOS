@@ -67,4 +67,50 @@ final class EditStoreInfoRepositoryImpl: EditStoreInfoRepository {
             }
         }
     }
+    
+    func editStoreInfo(request: EditStoreInfoRequest) async throws -> EditStoreInfoResponse {
+        let headers: HTTPHeaders = [
+            "accessToken": accessToken,
+            "Content-Type": "multipart/form-data; boundary=\(UUID().uuidString)"
+        ]
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            AF.upload(multipartFormData: { multipartFormData in
+                do {
+                    let jsonData = try JSONEncoder().encode(request.data)
+                    multipartFormData.append(jsonData, withName: "data", fileName: "data.json", mimeType: "application/json")
+                } catch {
+                    continuation.resume(throwing: EditStoreInfoError.failToDecode)
+                    return
+                }
+                
+                if let imageData = request.image?.jpegData(compressionQuality: 0.8) {
+                    multipartFormData.append(imageData, withName: "image", fileName: "image.jpg", mimeType: "image/jpeg")
+                }
+            },
+                      to: url,
+                      method: .patch,
+                      headers: headers
+            )
+            .responseString { response in
+                switch response.result {
+                case .success:
+                    continuation.resume(returning: EditStoreInfoResponse())
+                case .failure:
+                    switch response.response?.statusCode {
+                    case 400:
+                        continuation.resume(throwing: EditStoreInfoError.noToken)
+                    case 401:
+                        continuation.resume(throwing: EditStoreInfoError.tokenExpired)
+                    case 404:
+                        continuation.resume(throwing: EditStoreInfoError.noItem)
+                    case 500:
+                        continuation.resume(throwing: EditStoreInfoError.serverError)
+                    default:
+                        continuation.resume(throwing: EditStoreInfoError.unKnown)
+                    }
+                }
+            }
+        }
+    }
 }

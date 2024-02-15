@@ -54,4 +54,34 @@ final class ChangeStateRepositoryImpl: ChangeStateRepository {
             }
         }
     }
+    
+    func changeState(request: ChangeStateRequest) async throws -> ChangeStateResponse {
+        
+        let response = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ChangeStateResponse, Error>) in
+            
+            let storeId = LoginManager.shared.getStoreId()
+            
+            let url = {
+                switch request.state {
+                case .cancel:
+                    return UrlManager.baseUrl + "/seller/\(storeId)/order/confirmed-order/\(request.orderId)/cancel"
+                case .confirm:
+                    return UrlManager.baseUrl + "/seller/\(storeId)/order/new-order/\(request.orderId)/confirm"
+                }
+            }()
+            
+            NetworkManager.shared.sendRequest(
+                to: url,
+                method: .get
+            ) { (result: Result<ChangeStateResponse, NetworkError>) in
+                switch result {
+                case .success(let response):
+                    continuation.resume(returning: response)
+                case .failure(_):
+                    continuation.resume(throwing: FetchReservationsError.failToDecode)
+                }
+            }
+        }
+        return response
+    }
 }
