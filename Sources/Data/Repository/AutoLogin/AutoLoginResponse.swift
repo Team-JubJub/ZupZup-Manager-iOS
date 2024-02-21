@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct AutoLoginResponse: Decodable, Equatable {
+struct AutoLoginResponse: Codable, Equatable {
     let result: String
     let message: String
     let accessToken: String
