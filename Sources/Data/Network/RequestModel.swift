@@ -45,12 +45,13 @@ public struct RequestModel {
     
     public init(endPoints: EndPoints, 
                 multipartBody: any Multipartable,
+                multipartType: MultipartType,
                 requestTimeout: Float? = nil,
                 uniqueString: String
     ) {
         self.endPoints = endPoints
         self.requestTimeout = requestTimeout
-        makeMulltipartBodyData(multipartBody, boundary: uniqueString)
+        makeMulltipartBodyData(multipartBody, boundary: uniqueString, type: multipartType)
     }
     
     public init(endPoints: EndPoints,
@@ -88,12 +89,18 @@ extension RequestModel {
 }
 
 extension RequestModel {
-    private mutating func makeMulltipartBodyData<T: Multipartable>(_ dto: T, boundary: String) {
+    
+    public enum MultipartType: String {
+        case item
+        case data
+    }
+    
+    private mutating func makeMulltipartBodyData<T: Multipartable>(_ dto: T, boundary: String, type: MultipartType) {
         
         var body = Data()
         
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"item\"; filename=\"item.json\"\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"\(type.rawValue)\"; filename=\"\(type.rawValue).json\"\r\n".data(using: .utf8)!)
         body.append("Content-Type: application/json\r\n\r\n".data(using: .utf8)!)
         body.append(try! JSONEncoder().encode(dto.item))
         body.append("\r\n".data(using: .utf8)!)

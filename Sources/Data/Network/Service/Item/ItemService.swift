@@ -25,7 +25,12 @@ final class ItemService: ItemServiceProtocol {
     func addItem(_ dto: AddItemDTO, at storeId: Int) -> AnyPublisher<Void, NError> {
         let uniqueString = UUID().uuidString
         let endPoint = ItemEndPoint.addItem(storeId, uniqueString: uniqueString)
-        let request = RequestModel(endPoints: endPoint, multipartBody: dto, uniqueString: uniqueString)
+        let request = RequestModel(
+            endPoints: endPoint,
+            multipartBody: dto,
+            multipartType: .item,
+            uniqueString: uniqueString
+        )
         return self.networkRequest.justRequest(request)
     }
     
@@ -40,7 +45,12 @@ final class ItemService: ItemServiceProtocol {
     func updateItem(_ dto: UpdateItemDTO, for itemId: Int, at storeId: Int) -> AnyPublisher<Void, NError> {
         let uniqueString = UUID().uuidString
         let endPoint = ItemEndPoint.updateItem(itemId, storeId, uniqueString: uniqueString)
-        let request = RequestModel(endPoints: endPoint, multipartBody: dto, uniqueString: uniqueString)
+        let request = RequestModel(
+            endPoints: endPoint,
+            multipartBody: dto,
+            multipartType: .item,
+            uniqueString: uniqueString
+        )
         return self.networkRequest.justRequest(request)
     }
     
