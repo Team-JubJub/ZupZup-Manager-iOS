@@ -13,4 +13,6 @@ public protocol Requestable {
     var requestTimeOut: Float { get }
     
     func request<T: Codable>(_ req: RequestModel) -> AnyPublisher<T, NError>
+    
+    func justRequest(_ req: RequestModel) -> AnyPublisher<Void, NError>
 }

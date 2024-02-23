@@ -22,7 +22,6 @@ public class NetworkRequestable: Requestable {
                 // TODO: Fix
                 dump(output)
                 guard output.response is HTTPURLResponse else {
-                    // TODO: Fix
                     throw NError.badURL("Test2")
                 }
                 return output.data
@@ -36,4 +35,24 @@ public class NetworkRequestable: Requestable {
             }
             .eraseToAnyPublisher()
     }
+    
+    public func justRequest(_ req: RequestModel) -> AnyPublisher<Void, NError> {
+        let sessionConfig = URLSessionConfiguration.default
+        sessionConfig.timeoutIntervalForRequest = TimeInterval(req.requestTimeout ?? requestTimeOut)
+        
+        return URLSession.shared
+            .dataTaskPublisher(for: req.getUrlRequest()!)
+            .tryMap { output in
+                guard output.response is HTTPURLResponse else {
+                    throw NError.badURL("Test2")
+                }
+                return
+            }
+            .mapError { error in
+                dump(error.localizedDescription)
+                return NError.apiError(code: 0, error: "Test1")
+            }
+            .eraseToAnyPublisher()
+    }
+    
 }
