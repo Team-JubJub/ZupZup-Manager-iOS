@@ -6,12 +6,12 @@
 //  Copyright © 2024 ZupZup. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Combine
 
 public struct RequestModel {
     let endPoints: EndPoints
-    let body: Data?
+    var body: Data?
     let requestTimeout: Float?
     
     public init(endPoints: EndPoints,
@@ -21,20 +21,16 @@ public struct RequestModel {
         self.endPoints = endPoints
         
         if let requestBody = requestBody {
-                do {
-                    self.body = try JSONEncoder().encode(requestBody)
-                } catch {
-                    print("Error encoding request body:", error)
-                    self.body = nil
-                }
-            } else {
+            do {
+                self.body = try JSONEncoder().encode(requestBody)
+            } catch {
+                print("Error encoding request body:", error)
                 self.body = nil
             }
+        } else {
+            self.body = nil
+        }
         
-//        self.body = try? JSONEncoder().encode(requestBody!)
-        print("here!!!!")
-        dump(requestBody)
-        print("here!!!!")
         self.requestTimeout = requestTimeout
     }
     
@@ -47,14 +43,31 @@ public struct RequestModel {
         self.requestTimeout = requestTimeOut
     }
     
+    public init(endPoints: EndPoints, 
+                multipartBody: any Multipartable,
+                requestTimeout: Float? = nil,
+                uniqueString: String
+    ) {
+        self.endPoints = endPoints
+        self.requestTimeout = requestTimeout
+        makeMulltipartBodyData(multipartBody, boundary: uniqueString)
+    }
+    
+    public init(endPoints: EndPoints,
+                contentBody: ModifyItemCountDTO,
+                requestTimeout: Float? = nil,
+                uniqueString: String
+    ) {
+        self.endPoints = endPoints
+        self.requestTimeout = requestTimeout
+        makeContentBodyData(contentBody, boundary: uniqueString)
+    }
+}
+
+extension RequestModel {
     func getUrlRequest() -> URLRequest? {
         
-        print("kkkkkkkk")
-        print(self.body)
-        print("kkkkkkkk")
-        
         guard let url = endPoints.getUrl() else {
-            // TODO: fix
             print("URL not Found")
             return nil
         }
@@ -71,5 +84,45 @@ public struct RequestModel {
         dump(request)
         
         return request
+    }
+}
+
+extension RequestModel {
+    private mutating func makeMulltipartBodyData<T: Multipartable>(_ dto: T, boundary: String) {
+        
+        var body = Data()
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"item\"; filename=\"item.json\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: application/json\r\n\r\n".data(using: .utf8)!)
+        body.append(try! JSONEncoder().encode(dto.item))
+        body.append("\r\n".data(using: .utf8)!)
+        
+        if let imageData = dto.image.jpegData(compressionQuality: 0.8) {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            body.append(imageData)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+        
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        self.body = body
+    }
+}
+
+extension RequestModel {
+    private mutating func makeContentBodyData(_ dto: ModifyItemCountDTO, boundary: String) {
+        var body = Data()
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"quantity\"; filename=\"item.json\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: application/json\r\n\r\n".data(using: .utf8)!)
+        body.append(try! JSONEncoder().encode(dto.quantity))
+        body.append("\r\n".data(using: .utf8)!)
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        self.body = body
     }
 }
