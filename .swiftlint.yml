@@ -23,6 +23,7 @@ disabled_rules:
     - trailing_whitespace             # Trailing whitespace를 허용합니다.
     - cyclomatic_complexity
     - multiline_parameters_brackets
+    - force_try
 
 
 # Option Rules 가운데 적용시키는 Rules
