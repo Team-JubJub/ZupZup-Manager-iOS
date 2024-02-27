@@ -21,7 +21,7 @@ struct ReservationDetail {
     @Dependency(\.reservationDetailClient) var reservationDetailClient
     
     struct State: Equatable {
-        var reservation: ReservationEntity // 단건 예약
+        var reservation: OrderEntity // 단건 예약
         var isShowingHalfModal: Bool = false // 하프 모달 트리거
         var isLoading: Bool = false // API 호출시 indicator 트리거
         var isShowingAlert: Bool = false

@@ -13,7 +13,7 @@ import ComposableArchitecture
 
 struct ReservationView: View {
     
-    let store: StoreOf<Reservation>
+    let store: StoreOf<Order>
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -53,7 +53,7 @@ struct ReservationView: View {
                     ForEach(viewStore.tabBarNames.indices, id: \.self) { num in
                         VStack(spacing: 0) {
                             ScrollView(showsIndicators: false) {
-                                if viewStore.filteredReservations.isEmpty {
+                                if viewStore.filteredOrders.isEmpty {
                                     VStack(spacing: 0) {
                                         InfiniteSpacer()
                                         EmptyReservationView()
@@ -61,7 +61,7 @@ struct ReservationView: View {
                                     }
                                     .frame(width: Device.Width, height: Device.Height / 2, alignment: .center)
                                 } else {
-                                    ForEach(viewStore.filteredReservations, id: \.self) { reservation in
+                                    ForEach(viewStore.filteredOrders, id: \.self) { reservation in
                                         NavigationLink(
                                             destination: ReserveDetailView(
                                                 store: Store(
@@ -98,7 +98,7 @@ struct ReservationView: View {
                 }
             }
             .onAppear {
-                viewStore.send(.fetchReservation)
+                viewStore.send(.getAllOrders)
             }
         }
     }

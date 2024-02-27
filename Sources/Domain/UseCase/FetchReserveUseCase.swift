@@ -11,7 +11,7 @@ import Foundation
 protocol FetchReserveUseCase {
     func fetchReserve(
         request: FetchReservationsRequest?,
-        completion: @escaping (Result<[ReservationEntity], FetchReservationsError>) -> Void
+        completion: @escaping (Result<[OrderEntity], FetchReservationsError>) -> Void
     )
 }
 
@@ -25,7 +25,7 @@ final class FetchReserveUseCaseImpl: FetchReserveUseCase {
     
     func fetchReserve(
         request: FetchReservationsRequest?,
-        completion: @escaping (Result<[ReservationEntity], FetchReservationsError>) -> Void
+        completion: @escaping (Result<[OrderEntity], FetchReservationsError>) -> Void
     ) {
         fetchReservationsRepository.fetchReservations(
             request: request

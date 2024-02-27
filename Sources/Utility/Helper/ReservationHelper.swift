@@ -9,7 +9,7 @@
 import Foundation
 
 class ReservationHelper {
-    static func makeTotalPrice(reservation: ReservationEntity) -> Int {
+    static func makeTotalPrice(reservation: OrderEntity) -> Int {
         
         var totalPrice: Int = 0
 

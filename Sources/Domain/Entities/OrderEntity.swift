@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ReservationEntity: Hashable, Equatable {
+struct OrderEntity: Hashable, Equatable {
     var id: Int
     var customerName: String
     var phoneNumber: String
@@ -20,7 +20,7 @@ struct ReservationEntity: Hashable, Equatable {
     var orderedTime: String
 }
 
-extension ReservationEntity {
+extension OrderEntity {
     func toChangeStateRequest(state: ReservationCondition) -> ChangeStateRequest {
         return ChangeStateRequest(
             orderId: self.id,

@@ -34,8 +34,8 @@ struct ContentView: View {
                         switch selectedIndex {
                         case 0:                                                             // MARK: 1번 탭 : 예약 상황 화면
                             ReservationView(
-                                store: Store(initialState: Reservation.State()) {
-                                    Reservation()
+                                store: Store(initialState: Order.State()) {
+                                    Order()
                                     #if DEBUG
                                         ._printChanges()
                                     #endif

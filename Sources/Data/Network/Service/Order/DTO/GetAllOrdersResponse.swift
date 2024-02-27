@@ -39,9 +39,9 @@ struct GetAllOrdersResponse: Codable {
 
 extension GetAllOrdersResponse {
     
-    func toReservations() -> [ReservationEntity] {
+    func toReservations() -> [OrderEntity] {
         return self.orders.map { order in
-            ReservationEntity(
+            OrderEntity(
                 id: order.orderId,
                 customerName: order.userName,
                 phoneNumber: order.phoneNumber,
