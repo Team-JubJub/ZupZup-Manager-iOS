@@ -22,10 +22,6 @@ struct ContentView: View {
     
     let seletedImage: [AssetName] = [.tab_zero_on, .tab_one_on, .tab_two_on]                // 탭바 아이콘의 이미지를 담고 있는 배열
     
-    let openStoreUseCase: OpenStoreUseCase = OpenStoreUseCaseImpl()                         // MARK: 유즈케이스
-    
-    let fetchStoreUseCase: FetchStoreUseCase = FetchStoreUseCaseImpl()
-    
     var body: some View {
         NavigationStack {
             if loginManager.isLogin {                              // MARK: 로그인이 된 상태

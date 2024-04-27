@@ -15,11 +15,6 @@ struct StoreManagementView: View {
     
     let store: StoreOf<StoreManagement>
     
-    // MARK: 유즈 케이스
-    let editStoreInfoUseCase: EditStoreInfoUseCase = EditStoreInfoUseCaseImpl()
-    let editStoreIntroduceUseCase: EditStoreIntroduceUseCase = EditStoreIntroduceUseCaseImpl()
-    let deleteStoreUseCase: DeleteStoreUseCase = DeleteStoreUseCaseImpl()
-    
     var body: some View {
         WithViewStore(self.store, observe: {$0}) { viewStore in
             VStack(spacing: 0) {

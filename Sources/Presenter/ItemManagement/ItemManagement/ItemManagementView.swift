@@ -18,10 +18,6 @@ struct ItemManagementView: View {
     
     let columns = [GridItem(), GridItem()]
     
-    // MARK: UseCase
-    let addItemUseCase: AddItemUseCase = AddItemUseCaseImpl()
-    let updateItemCountUseCase: UpdateItemCountUseCase = UpdateItemCountUseCaseImpl()
-    
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             VStack(spacing: 0) {
