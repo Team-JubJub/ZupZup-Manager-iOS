@@ -13,4 +13,5 @@ protocol GetAllOrdersUseCase {
     var service: OrderServiceProtocol { get set }
     
 //    func getAllOrders(at storeId: Int) async throws -> [OrderEntity]
+    func getAllOrders(at storeId: Int) async throws -> [OrderEntity]
 }

@@ -27,7 +27,7 @@ struct Order {
     
     enum Action {
         case getAllOrders
-        case ordersFetched(Result<[OrderEntity], NError>)
+        case ordersFetched(Result<[OrderEntity], Error>)
         case tapTabbarItem(Int)
     }
     
@@ -38,7 +38,14 @@ struct Order {
             let storeId = LoginManager.shared.getStoreId()
             
             return .run { send in
-                
+                await send(
+                    .ordersFetched(
+                        Result {
+                            let storeID = LoginManager.shared.getStoreId()
+                            return try await self.orderClient.getAllOrders(storeID)
+                        }
+                    )
+                )
             }
 
         case let .ordersFetched(.success(reservations)):
@@ -86,12 +93,18 @@ struct Order {
 }
 
 struct OrderClient {
-    var getAllOrders: (_ storeId: Int)  -> AnyPublisher<[OrderEntity], NError>
+    
+    static let getOrderUseCase: GetAllOrdersUseCase = GetAllOrdersUseCaseImpl()
+    
+    var getAllOrders: (_ storeId: Int)  async throws -> [OrderEntity]
 }
 
 extension OrderClient: DependencyKey {
     static let liveValue = Self(
-        getAllOrders: GetAllOrdersUseCaseImpl().getAllOrders
+        getAllOrders: { id in
+            let response = try await getOrderUseCase.getAllOrders(at: id)
+            return response
+        }
     )
 }
 

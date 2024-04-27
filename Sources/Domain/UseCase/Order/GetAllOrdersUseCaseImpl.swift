@@ -9,7 +9,9 @@
 import Foundation
 import Combine
 
-class GetAllOrdersUseCaseImpl: GetAllOrdersUseCase {
+final class GetAllOrdersUseCaseImpl: GetAllOrdersUseCase {
+    
+    var cancellables = Set<AnyCancellable>()
 
     internal var service: OrderServiceProtocol
     
@@ -17,9 +19,18 @@ class GetAllOrdersUseCaseImpl: GetAllOrdersUseCase {
         self.service = service
     }
     
-    func getAllOrders(at storeId: Int) -> AnyPublisher<[OrderEntity], NError> {
-        return service.getAllOrders(at: storeId)
-            .map { $0.toReservations() }
-            .eraseToAnyPublisher()
+    func getAllOrders(at storeId: Int) async throws -> [OrderEntity] {
+        
+        return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[OrderEntity], Error>) in
+            
+            self.service.getAllOrders(at: storeId)
+                .sink { completion in
+                    // TODO: Error Handling
+                    
+                } receiveValue: { response in
+                    continuation.resume(returning: response.toReservations())
+                }
+                .store(in: &cancellables)
+        }
     }
 }
