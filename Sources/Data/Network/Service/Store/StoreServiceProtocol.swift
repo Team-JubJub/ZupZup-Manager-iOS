@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-protocol StoreServiceProtocol {
+protocol StoreServiceProtocol: Service {
     
     func getStore(at storeId: Int) -> AnyPublisher<GetStoreResponse, NError>
     

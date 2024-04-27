@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-protocol LoginServiceProtocol {
+protocol LoginServiceProtocol: Service {
     
     func login(_ dto: LoginDTO) -> AnyPublisher<LoginResponse, NError>
     

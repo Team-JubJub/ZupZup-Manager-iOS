@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-protocol OrderServiceProtocol {
+protocol OrderServiceProtocol: Service {
     
     func confirmNewOrder(_ dto: ConfirmNewOrderDTO,
                          for orderId: Int,

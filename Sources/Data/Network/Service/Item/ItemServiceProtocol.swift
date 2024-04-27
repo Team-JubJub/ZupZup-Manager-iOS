@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-protocol ItemServiceProtocol {
+protocol ItemServiceProtocol: Service {
     
     func addItem(_ dto: AddItemDTO, at storeId: Int) -> AnyPublisher<Void, NError>
     
