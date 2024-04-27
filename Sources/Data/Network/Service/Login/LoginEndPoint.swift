@@ -13,7 +13,7 @@ enum LoginEndPoint: EndPoints {
     case autoLogin
     case login
     
-    var baseURL: String { return "zupzuptest.com" }
+    var baseURL: String { return "zupzupofficial.com" }
     
     var path: String {
         switch self {

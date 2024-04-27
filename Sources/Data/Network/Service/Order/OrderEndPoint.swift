@@ -17,7 +17,7 @@ enum OrderEndPoint: EndPoints {
     case getAllOrders(_ storeId: Int)
     case getStoreDetails(_ storeId: Int, _ orderId: Int)
     
-    var baseURL: String { return "zupzuptest.com" }
+    var baseURL: String { return "zupzupofficial.com" }
     
     var path: String {
         switch self {

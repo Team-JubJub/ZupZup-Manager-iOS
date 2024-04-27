@@ -15,7 +15,7 @@ enum StoreEndPoint: EndPoints {
     case toggleStoreState(_ storeId: Int, openState: Bool)
     case modifyStoreinfo(_ storeId: Int, uniqueString: String)
     
-    var baseURL: String { return "zupzuptest.com" }
+    var baseURL: String { return "zupzupofficial.com" }
     
     var path: String {
         switch self {

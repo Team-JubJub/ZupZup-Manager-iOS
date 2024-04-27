@@ -16,7 +16,7 @@ enum ItemEndPoint: EndPoints {
     case modifyItemCount(_ itemId: Int, uniqueString: String)
     case getAllItems(_ storeId: Int)
     
-    var baseURL: String { return "zupzuptest.com"}
+    var baseURL: String { return "zupzupofficial.com"}
     
     var path: String {
         switch self {
