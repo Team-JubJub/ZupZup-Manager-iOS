@@ -18,4 +18,6 @@ protocol StoreServiceProtocol: Service {
     func toggleStoreState(at storeId: Int, openState: Bool) -> AnyPublisher<Void, NError>
     
     func modifyStoreinfo(_ dto: ModifyStoreInfoDTO, at storeId: Int) -> AnyPublisher<Void, NError>
+    
+    func deleteStore(at storeId: Int) -> AnyPublisher<Void, NError>
 }

@@ -14,8 +14,16 @@ enum StoreEndPoint: EndPoints {
     case modifyNotice(_ storeId: Int, notice: String)
     case toggleStoreState(_ storeId: Int, openState: Bool)
     case modifyStoreinfo(_ storeId: Int, uniqueString: String)
+    case deleteStore(_ storeId: Int)
     
-    var baseURL: String { return "zupzupofficial.com" }
+    var baseURL: String {
+        switch self {
+        case .deleteStore(_):
+            return "zupzupofficial.com:8085"
+        default:
+            return "zupzupofficial.com"
+        }
+    }
     
     var path: String {
         switch self {
@@ -30,6 +38,9 @@ enum StoreEndPoint: EndPoints {
         
         case let .modifyStoreinfo(storeId, _):
             return "/seller/modification/\(storeId)"
+            
+        case let .deleteStore(storeId):
+            return "/cancel/\(storeId)"
         }
     }
     
@@ -45,6 +56,9 @@ enum StoreEndPoint: EndPoints {
             return [URLQueryItem(name: "isOpened", value: "\(openState)")]
                 
         case .modifyStoreinfo:
+            return []
+            
+        case .deleteStore(_):
             return []
         }
     }
@@ -74,6 +88,12 @@ enum StoreEndPoint: EndPoints {
                 "accessToken": LoginManager.shared.getAccessToken(),
                 "Content-Type": "multipart/form-data; boundary=\(uniqueString)"
             ]
+            
+        case .deleteStore(_):
+            return [
+                "accessToken": LoginManager.shared.getAccessToken(),
+                "Content-Type": "application/json"
+            ]
         }
     }
     
@@ -89,6 +109,9 @@ enum StoreEndPoint: EndPoints {
             return .patch
             
         case .modifyStoreinfo:
+            return .patch
+            
+        case .deleteStore:
             return .patch
         }
     }

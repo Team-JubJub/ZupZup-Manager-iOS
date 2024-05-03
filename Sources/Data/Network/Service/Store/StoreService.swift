@@ -50,4 +50,10 @@ final class StoreService: StoreServiceProtocol {
         )
         return self.networkRequest.justRequest(request)
     }
+    
+    func deleteStore(at storeId: Int) -> AnyPublisher<Void, NError> {
+        let endPoint = StoreEndPoint.deleteStore(storeId)
+        let request = RequestModel(endPoints: endPoint)
+        return self.networkRequest.justRequest(request)
+    }
 }
