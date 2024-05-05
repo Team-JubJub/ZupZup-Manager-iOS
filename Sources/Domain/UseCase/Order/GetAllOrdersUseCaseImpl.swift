@@ -19,7 +19,7 @@ final class GetAllOrdersUseCaseImpl: GetAllOrdersUseCase {
         self.service = service
     }
     
-    func getAllOrders(at storeId: Int) async throws -> [OrderEntity] {
+    func run(at storeId: Int) async throws -> [OrderEntity] {
         
         return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[OrderEntity], Error>) in
             
