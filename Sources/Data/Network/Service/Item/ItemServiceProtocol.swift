@@ -17,7 +17,7 @@ protocol ItemServiceProtocol: Service {
     
     func updateItem(_ dto: UpdateItemDTO, for itemId: Int, at storeId: Int) -> AnyPublisher<Void, NError>
     
-    func modifyItemCount(_ dto: ModifyItemCountDTO, for itemId: Int) -> AnyPublisher<Void, NError>
+    func modifyItemCount(_ dto: ModifyItemCountDTO, at storeId: Int) -> AnyPublisher<Void, NError>
     
     func getAllItems(at storeId: Int) -> AnyPublisher<GetAllItemsResponse, NError>
 }

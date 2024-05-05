@@ -54,7 +54,7 @@ final class ItemService: ItemServiceProtocol {
         return self.networkRequest.justRequest(request)
     }
     
-    func modifyItemCount(_ dto: ModifyItemCountDTO, for itemId: Int) -> AnyPublisher<Void, NError> {
+    func modifyItemCount(_ dto: ModifyItemCountDTO, at itemId: Int) -> AnyPublisher<Void, NError> {
         let uniqueString = UUID().uuidString
         let endPoint = ItemEndPoint.modifyItemCount(itemId, uniqueString: uniqueString)
         let request = RequestModel(endPoints: endPoint, contentBody: dto, uniqueString: uniqueString)

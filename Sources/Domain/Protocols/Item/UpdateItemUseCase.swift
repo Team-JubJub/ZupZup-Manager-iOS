@@ -6,9 +6,13 @@
 //  Copyright © 2024 ZupZup. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol UpdateItemUseCase: UseCase {
     var service: ItemServiceProtocol { get set }
-    func run() async throws -> Void
+    
+    func run(item: ItemEntity,
+             image: UIImage,
+             for itemId: Int,
+             at storeId: Int) async throws -> Void
 }

@@ -10,5 +10,5 @@ import Foundation
 
 protocol GetAllItemsUseCase: UseCase {
     var service: ItemServiceProtocol { get set }
-    func run() async throws -> [ItemEntity]
+    func run(at storeId: Int) async throws -> [ItemEntity]
 }

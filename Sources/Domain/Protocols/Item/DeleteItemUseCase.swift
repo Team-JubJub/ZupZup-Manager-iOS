@@ -1,5 +1,5 @@
 //
-//  AddItemUseCase.swift
+//  DeleteItemUseCase.swift
 //  ZupZupManager
 //
 //  Created by 정영진 on 2024/04/27.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol AddItemUseCase: UseCase {
+protocol DeleteItemUseCase: UseCase {
     var service: ItemServiceProtocol { get set }
-    func run() async throws -> Void
+    func run(for itemId: Int, at storeId: Int) async throws -> Void
 }
